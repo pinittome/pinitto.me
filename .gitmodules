@@ -1,3 +1,9 @@
 [submodule "public/js/vendor/bootstrap-growl"]
 	path = public/js/vendor/bootstrap-growl
 	url = git@github.com:ifightcrime/bootstrap-growl.git
+[submodule "public/js/vendor/jquery-mousewheel"]
+	path = public/js/vendor/jquery-mousewheel
+	url = git@github.com:brandonaaron/jquery-mousewheel.git
+[submodule "public/js/vendor/jquery-infinite-drag"]
+	path = public/js/vendor/jquery-infinite-drag
+	url = git@github.com:ianli/jquery-infinite-drag.git

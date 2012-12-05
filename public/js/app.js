@@ -6,6 +6,11 @@ $(document).ready(function() {
 		id : '',
 		name : ''
 	};
+	var viewport = {
+		scale: 1,
+		offset: { x: $('.viewport-container').offset().left, y: $('.viewport-container').offset().top },
+	};
+	
 	var hasSetName = false;
 
 	setTimeout(function() {
@@ -323,4 +328,29 @@ $(document).ready(function() {
 	$('.leave').click(function() {
 		document.location.href = '/';
 	});
+	
+	$('.viewport-container > div').css('transform-origin', '0px 0px');
+
+	$('.viewport-container').bind('mousewheel', function(event, delta) {
+		var x = (window.innerWidth / 2);
+        var y = (window.innerHeight / 2);
+        viewport.scale = viewport.scale + (delta / 50);
+
+	    $('.viewport-container').children().each(function() {
+	    	if (viewport.scale <= 0) return;
+	    	$(this).css(
+	    		'transform-origin',
+	    		$('.viewport-container').offset().left + 'px ' 
+	    		    + $('.viewport-container').offset().top + 'px'
+	    	);
+	    	$(this).css(
+	    		'transform',
+	    		'scale(' + viewport.scale + ')'
+	    	);
+	    	$(this).css(
+	    		'transform-origin', x + 'px ' + y + 'px'
+	    	);
+	    });
+	});
+
 }); 
