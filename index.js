@@ -10,15 +10,15 @@ var express = require('express')
   , captcha = require('captcha')
   , sanitize = require('validator').sanitize
   , MongoStore = require('connect-mongo')(express)  
-  , connect = require('express/node_modules/connect')
-  , Session = connect.middleware.session.Session;
-
-var config   = require('./config.js');
+  , connect = require('connect')
+  , Session = connect.middleware.session.Session
+  , config = require('./config.js');
+  
+  
 config.cookie.key = 'connect.sid';
 
-var totals   = { cards: 0, boards: 0 };
-
-var db = new require('mongodb').Db(
+var totals = { cards: 0, boards: 0 };
+var db     = new require('mongodb').Db(
 	config.database.name, 
 	new require('mongodb').Server(
 		config.database.host,
@@ -46,7 +46,7 @@ var access = {
     NONE:  'NONE'	
 };
 
-server.listen(3000);
+server.listen(config.server.port);
 
 app.configure(function(){
 	app.use(express.cookieParser(config.cookie.secret)); 

@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	var socket = io.connect('http://localhost');
+	var socket = io.connect('//' + window.document.location.host);
 	var zIndex = 100;
 	var user   = {
 		id : '',
@@ -34,27 +34,29 @@ $(document).ready(function() {
 		$('#' + data.cardId).css('z-index', data.zIndex);
 	});
 	saveCardPosition = function(event, ui) {
+		var position = { 
+			x: $(this).css('left').substring(0, $(this).css('left').length - 2),
+			y: $(this).css('top').substring(0, $(this).css('top').length - 2)
+		};
 		socket.emit('card.moved', {
 			cardId : $(this).attr('id'),
-			position : {
-				x : event.pageX,
-				y : event.pageY
-			}
+			position : position			
 		});
 	}
 	updateCardPosition = function(event, ui) {
+		var position = { 
+			x: $(this).css('left').substring(0, $(this).css('left').length - 2),
+			y: $(this).css('top').substring(0, $(this).css('top').length - 2)
+		};
 		socket.emit('card.moving', {
 			cardId : $(this).attr('id'),
-			position : {
-				x : event.pageX,
-				y : event.pageY
-			}
+			position : position
 		});
 	}
 	setCardPosition = function(id, position) {
 		element = $('#' + id);
-		x = position.x - element.width();
-		y = position.y - element.height();
+		x = position.x; 
+		y = position.y; 
 		element.css('top', y + 'px').css('left', x + 'px').css('position', 'absolute');
 	}
 	addNotification = function(message, messageType, override) {
@@ -161,7 +163,7 @@ $(document).ready(function() {
 
 		card.draggable({
 			cursor : "move",
-			cursorAt : $(this).find(".controls .card-move"),
+			/*cursorAt : { top: 0, left: 0 },*/
 			keyboard : true,
 			containment : "parent",
 			delay : 0,
@@ -169,7 +171,8 @@ $(document).ready(function() {
 			start : bringToFront,
 			stop : saveCardPosition,
 			drag : updateCardPosition,
-			handle: $(this).find(".controls .card-move")
+			/*handle: ".card-move",*/
+			scroll: true
 		});
 		if (data.size) {
 			$(card).width(data.size.width).height(data.size.height);

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	var socket = io.connect('http://localhost/public');
+	var socket = io.connect('//' + window.document.location.host);
 
 	socket.on('totals', function(data) {
 		if ($('.totals-cards')) {
