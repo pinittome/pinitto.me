@@ -1,0 +1,41 @@
+<div class="page-header">
+    <h1>Get access to board</h1>
+</div>
+<% if (typeof(errors) != 'undefined') { %>
+<script type="text/javascript">
+var errors = <%- errors %>
+</script>
+<% } %>
+<div class="row">
+    <div class="span7">
+        <h2>This board requires authorisation</h2>
+        <form class="form-horizontal" method="post">
+            <fieldset>
+                <legend>Board ID</legend>
+                <div class="control-group">
+	                <label class="control-label" for="owner">Board ID</label>
+	                <div class="controls">
+	                	<%=boardId %><input type="hidden" name="board" value="<%=boardId %>" />
+	                </div>
+                </div>
+                <div class="control-group">
+	                <label class="control-label" for="password">Password</label>
+	                <div class="controls">
+	                	<input type="password" name="password" placeholder="" />
+	                </div>
+                </div>
+            </fieldset> 
+         
+            <div class="control-group" >  
+	            <div class="form-actions">
+				    <button type="submit" class="btn btn-primary">Get me some access...</button>
+				    <button type="button" class="btn leave">Cancel</button>
+				</div>
+		    </div>                    
+        </form>
+    </div>
+    <div class="span5">
+        <h2>Help</h2>
+        
+   </div>
+</div>

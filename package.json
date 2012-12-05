@@ -1,0 +1,37 @@
+{
+  "name": "pinitto.me",
+  "version": "0.1.0",
+  "description": "Open source corkboard-type application",
+  "main": "index.js",
+  "dependencies": {
+    "socket.io": "~0.9.11",
+    "captcha": "0.0.4",
+    "crypto": "0.0.3",
+    "express-validator": "0.3.0",
+    "validator": "0.4.19",
+    "ejs-locals": "1.0.2",
+    "express": "3.0.3",
+    "mongodb": "1.2.2",
+    "connect-mongo": "0.2.0",
+    "cookie": "0.0.5",
+    "connect": "2.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lloydwatkin/pin-it-to-me"
+  },
+  "keywords": [
+    "corkboard",
+    "open",
+    "source",
+    "node.js",
+    "websockets",
+    "socket.io"
+  ],
+  "author": "Steven Lloyd Watkin <lloyd@evilprofessor.co.uk>",
+  "license": "BSD"
+}

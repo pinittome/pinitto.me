@@ -1,0 +1,3 @@
+[submodule "public/js/vendor/bootstrap-growl"]
+	path = public/js/vendor/bootstrap-growl
+	url = git@github.com:ifightcrime/bootstrap-growl.git
