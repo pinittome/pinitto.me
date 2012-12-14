@@ -136,6 +136,10 @@ $(document).ready(function() {
 		createCard(data);
 	});
 
+    scrollToCard = function(id) {
+        console.log($('#' + id));	
+    }
+    
 	createCard = function(data) {
         if (data.zIndex) {
         	stackOrder = data.zIndex;
@@ -148,6 +152,14 @@ $(document).ready(function() {
         }
 		div = document.createElement('div');
 		
+		cardListEntry = $(document.createElement('li'));
+		cardListEntry.attr('id', 'entry-' + data.cardId);
+		content = "<i>No content</i>";
+		if (data.content && data.content != '') {
+			content = data.content.substring(0, 30) + '...';
+		}
+		cardListEntry.append('<a href="#">' + content + '</a>');
+	        
 		card = $(div).attr('class', 'card draggable')
 		    .attr('id', data.cardId)
 		    .attr('draggable', 'true')
@@ -155,11 +167,12 @@ $(document).ready(function() {
 		    .css('width', data.size.width + 'px')
 		    .css('height', data.size.height + 'px')
 		    .appendTo(".viewport");
+		css = 'card-yellow';
 		if (data.cssClass) {
-			card.addClass('card-' + data.cssClass);
-		} else {
-			card.addClass('card-yellow');
+			css = 'card-' + data.cssClass;
 		}
+		cardListEntry.addClass(css);
+		card.addClass(css)
 		
 		controls = document.createElement('div');
 		$(controls).attr('class', 'controls');
@@ -205,6 +218,10 @@ $(document).ready(function() {
 				});
 			}
 	    });
+	    
+	    $('.card-list').find('li.no-cards').addClass('hidden');
+	    ul = $('.card-list').find('ul');
+	    cardListEntry.appendTo($(ul));
 	}
 
 	$('body').on('click', '.open-set-name-modal', function() {
@@ -262,6 +279,7 @@ $(document).ready(function() {
 	});
 	$('.viewport').on('click', '.card-delete', function(event) {
 		socket.emit('card.delete', { cardId: $(this).parents('.card').attr('id') });
+		$('ul.card-list').find('li.no-cards').removeClass('hidden');
 		event.stopPropagation();
 	});
 	socket.on('card.delete', function(data) {
@@ -270,15 +288,30 @@ $(document).ready(function() {
 	});
 	$('.viewport').on('click', '.card-colour', function(event){
 		card = $(this).parents('.card');
+		cardListEntry = $('li.card-list').find('#entry-' + card.attr('id'));
+		
 		cssClass = determineCssClasses(card);
 		card.removeClass();
+		cardListEntry.removeClass();
 		card.addClass('card').addClass('card-' + cssClass);
+		cardListEntry.addClass('card-' + cssClass);
 		socket.emit(
 			'card.colour',
 			{ cardId: card.attr('id'), cssClass: cssClass}
 		);
 		event.stopPropagation();
 	});
+	
+	$('li.card-list').on('mouseover', 'li', function(event) {
+	     $('#' + $(this).attr('id').replace('entry-', '')).addClass('highlight');	
+	});
+	$('li.card-list').on('mouseout', 'li', function(event) {
+	     $('#' + $(this).attr('id').replace('entry-', '')).removeClass('highlight');	
+	});
+	$('li.card-list').on('click', 'li', function(event) {
+	     scrollToCard($(this).attr('id').replace('entry-', ''));	
+	});
+	
 	socket.on('card.colour', function(data){
 		$('#' + data.cardId).removeClass().addClass('card').addClass('card-' + data.cssClass);
 	});
@@ -318,6 +351,7 @@ $(document).ready(function() {
 		$('.viewport-container').css('width', window.width);
 		$('.viewport-container').css('height', window.innerHeight - 43);
 		$('body').css('background-position', (0.5 * window.width) + 'px ' + (0.5 * window.innerHeight) + 'px');
+		$('.card-list').find('ul').css('max-height', window.innerHeight * 0.66);
 	}
 	window.addEventListener('resize', resizeViewport, false);
 	resizeViewport();
@@ -332,7 +366,6 @@ $(document).ready(function() {
 	});
 	
 	$('.viewport-container > div').css('transform-origin', '0px 0px');
-
 	$('.viewport-container').bind('mousewheel', function(event, delta) {
         //viewport.scale = viewport.scale + (delta / 50);
         //if (viewport.scale < 0.02) viewport.scale = 0.02;
@@ -346,6 +379,7 @@ $(document).ready(function() {
     var infinitedrag = jQuery.infinitedrag(".viewport", {}, {
 		width: window.innerHeight,
 		height: window.innerWidth,
-		class_name: 'viewport-background'
+		class_name: 'viewport-background',
+		oncreate: function($element, col, row) { $element.text(''); }
 	});
 }); 

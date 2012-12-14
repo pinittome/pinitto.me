@@ -24,6 +24,10 @@ body.board {
 	cursor: pointer;
 }
 
+.highlight { 
+	box-shadow: 0 0 15px rgba(0, 0, 255, 1);
+}
+
 .nav { overflow: none; }
 
 .viewport {
@@ -36,6 +40,11 @@ body.board {
 	background-size: 512px 384px;
 	background-origin: content-box;
 	background-position: 50% 50%;
+}
+
+li.card-list ul {
+    overflow-x: hidden;
+    overflow-y: scroll;	
 }
 
 .card {
