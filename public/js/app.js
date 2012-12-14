@@ -9,6 +9,9 @@ $(document).ready(function() {
 	var viewport = {
 		scale: 1,
 		offset: { x: $('.viewport-container').offset().left, y: $('.viewport-container').offset().top },
+		background: { width: 1024, height: 768 },
+		header: { height: 43 },
+		size: { width: window.innerWidth, height: window.innerHeight }
 	};
 	
 	var hasSetName = false;
@@ -34,6 +37,7 @@ $(document).ready(function() {
 				zIndex : $(element).css('z-index')
 			});
 		}
+		event.stopPropagation();
 	}
 	socket.on('card.zIndex', function(data) {
 		$('#' + data.cardId).css('z-index', data.zIndex);
@@ -47,6 +51,7 @@ $(document).ready(function() {
 			cardId : $(this).attr('id'),
 			position : position			
 		});
+		event.stopPropagation();
 	}
 	updateCardPosition = function(event, ui) {
 		var position = { 
@@ -57,6 +62,7 @@ $(document).ready(function() {
 			cardId : $(this).attr('id'),
 			position : position
 		});
+		event.stopPropagation();
 	}
 	setCardPosition = function(id, position) {
 		element = $('#' + id);
@@ -93,7 +99,7 @@ $(document).ready(function() {
 	
 	socket.on('connect_failed', function(reason) {
 		console.log("Not authorised to see this board. Redirect to login.");
-		//document.location.href = "/login/" + boardId;
+		document.location.href = "/login/" + boardId;
 	});
 
 	$("div#leave").click(function() {
@@ -103,10 +109,12 @@ $(document).ready(function() {
 
 	$("div.viewport-container").click(function(e) {
 		lastClick = e;
+		var x = e.pageX - parseFloat($('.viewport').css('left').replace('px', ''));		
+		var y = e.pageY - viewport.header.height - parseFloat($('.viewport').css('top').replace('px', ''));
 		socket.emit('card.create', {
 			position : {
-				x : e.pageX,
-				y : e.pageY
+				x : x,
+				y : y
 			}
 		});
 	});
@@ -142,6 +150,7 @@ $(document).ready(function() {
 		
 		card = $(div).attr('class', 'card draggable')
 		    .attr('id', data.cardId)
+		    .attr('draggable', 'true')
 		    .css('z-index', stackOrder)
 		    .css('width', data.size.width + 'px')
 		    .css('height', data.size.height + 'px')
@@ -168,15 +177,12 @@ $(document).ready(function() {
 
 		card.draggable({
 			cursor : "move",
-			/*cursorAt : { top: 0, left: 0 },*/
 			keyboard : true,
-			containment : "parent",
 			delay : 0,
-			opacity : 0.65,
+		    opacity : 0.65,
 			start : bringToFront,
 			stop : saveCardPosition,
 			drag : updateCardPosition,
-			/*handle: ".card-move",*/
 			scroll: true
 		});
 		if (data.size) {
@@ -282,7 +288,7 @@ $(document).ready(function() {
     socket.on('card.text-change', function(data) {
     	$('#' + data.cardId).find('textarea').val(data.content);
     });
-	$('.viewport').on('click', '.card', function(event) {
+	$('.viewport-container').on('click', '.card', function(event) {
 		bringToFront(event, $(this));
 		event.stopPropagation();
 	});
@@ -307,16 +313,12 @@ $(document).ready(function() {
 		$('.userlist').append(newUser);
 		updateUserCount();
 	}
-	// Hijack scrolling
-	scroll = function() {
-		console.log('Scrolling', $(this));
-	}
 	resizeViewport = function() {
 		console.log("Resizing viewport");
 		$('.viewport-container').css('width', window.width);
 		$('.viewport-container').css('height', window.innerHeight - 43);
+		$('body').css('background-position', (0.5 * window.width) + 'px ' + (0.5 * window.innerHeight) + 'px');
 	}
-	window.addEventListener('scroll', scroll, false);
 	window.addEventListener('resize', resizeViewport, false);
 	resizeViewport();
 
@@ -332,25 +334,18 @@ $(document).ready(function() {
 	$('.viewport-container > div').css('transform-origin', '0px 0px');
 
 	$('.viewport-container').bind('mousewheel', function(event, delta) {
-		var x = (window.innerWidth / 2);
-        var y = (window.innerHeight / 2);
-        viewport.scale = viewport.scale + (delta / 50);
-
-	    $('.viewport-container').children().each(function() {
-	    	if (viewport.scale <= 0) return;
-	    	$(this).css(
-	    		'transform-origin',
-	    		$('.viewport-container').offset().left + 'px ' 
-	    		    + $('.viewport-container').offset().top + 'px'
-	    	);
-	    	$(this).css(
-	    		'transform',
-	    		'scale(' + viewport.scale + ')'
-	    	);
-	    	$(this).css(
-	    		'transform-origin', x + 'px ' + y + 'px'
-	    	);
-	    });
+        //viewport.scale = viewport.scale + (delta / 50);
+        //if (viewport.scale < 0.02) viewport.scale = 0.02;
+        //scaleViewport();
 	});
+    
+    $('.pan').click(function() {
+    	infinitedrag.center(0, 0);
+    });
 
+    var infinitedrag = jQuery.infinitedrag(".viewport", {}, {
+		width: window.innerHeight,
+		height: window.innerWidth,
+		class_name: 'viewport-background'
+	});
 }); 

@@ -8,38 +8,34 @@ body {
 }
 
 body.board {
-	/*background-image: url('/img/backgrounds/cork.jpg'); */
+
 }
 
 .viewport-container {
 	width: 100%; height: 100%;
-	/*background-image: url('/img/backgrounds/cork.jpg');*/
-	background-repeat: repeat-x, repeat-y;
 	display:block;
-    /*set the div in the top-left corner of the screen*/
     position:absolute;
     top:43px;
     left:0;
     overflow:hidden;    
 }
 
-.background {
-	width: 100%; height: 100%;
-	background-image: url('/img/backgrounds/cork.jpg');
-	background-repeat: repeat;
-	float: left;
-	z-index: -1;
-	position: fixed;
-	top: 43px;
-	left: 0;
+.scale, .pan { 
+	cursor: pointer;
 }
 
 .nav { overflow: none; }
 
 .viewport {
-    width:500em;
-    height:500em;
-    float: left;
+    width:100%;
+    height:100%;
+}
+.viewport-background {
+    background-image: url('/img/backgrounds/cork.jpg'); 
+	background-repeat: repeat;
+	background-size: 512px 384px;
+	background-origin: content-box;
+	background-position: 50% 50%;
 }
 
 .card {

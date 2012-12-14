@@ -489,7 +489,7 @@ io.sockets.on('connection', function (socket) {
 		sendTotals();
 	}
 	sendTotals = function() {
-		io.sockets.in('').emit('totals', totals);
+		io.sockets.in('/').emit('totals', totals);
 	}
 	getTotalCardCount = function() {
 		try {
