@@ -252,8 +252,9 @@ io.configure(function (){
 
 io.sockets.on('connection', function (socket) {
 
-    socket.on('board.join', function(board) {
+    socket.on('board.join', function(details) {
 
+        board     = details.id;
 		boardName = '/' + board;
 		sessionStore.get(socket.handshake.sessionID, function(err, session) {
 
@@ -270,13 +271,17 @@ io.sockets.on('connection', function (socket) {
 				
 					userNameIndex = 1;
 					clients = io.sockets.clients(boardName);
-					
-					clients.forEach(function(socketId) {
-						if (socketId.store.data.index && (socketId.store.data.index >= userNameIndex)) {
-							userNameIndex = parseInt(socketId.store.data.index) + 1;
-						}
-					});
-				    name = 'User ' + userNameIndex;
+
+					if (details.user) {
+						name = details.user;
+					} else {
+						clients.forEach(function(socketId) {
+							if (socketId.store.data.index && (socketId.store.data.index >= userNameIndex)) {
+								userNameIndex = parseInt(socketId.store.data.index) + 1;
+							}
+						});
+					    name = 'User ' + userNameIndex;
+					}
 					socket.set('name', name, function() {
 						socket.set('index', userNameIndex, function() {
 							clients.forEach(function(socketId) {

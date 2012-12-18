@@ -4,7 +4,7 @@ $(document).ready(function() {
 	var zIndex = 100;
 	var user   = {
 		id : '',
-		name : ''
+		name : localStorage.getItem('user.name')
 	};
 	var viewport = {
 		scale: 1,
@@ -93,7 +93,8 @@ $(document).ready(function() {
 	});
 
 	socket.on('connect', function(data) {
-		socket.emit('board.join', boardId);
+		socket.emit('board.join', {id: boardId, user: user.name} );
+		if (user.name) hasSetName = true;
 		user.id = socket.socket.sessionid;
 	});
 	
@@ -234,6 +235,9 @@ $(document).ready(function() {
 	});
 	$('#update-name').click(function() {
 		name = $('#set-name-modal').find('input').val();
+		// Put user's name into storage
+        localStorage.setItem('user.name', name);
+
 		socket.emit('user.name.set', {
 			name : name
 		});
