@@ -138,7 +138,22 @@ $(document).ready(function() {
 	});
 
     scrollToCard = function(id) {
-        console.log($('#' + id));	
+        console.log($('#' + id));
+        var viewport = $('.viewport');
+        var element = $('#' + id);
+        
+        //viewport.css('top', element.css('top')).css('left', element.css('left'));
+        
+        //objectMiddleX = element.css('left') + viewport.css('left') + (element.css('width') / 2);
+        newOffsetX = (window.innerWidth / 2) 
+            - (parseFloat(viewport.css('left').replace('px', '')) + parseFloat(element.css('left').replace('px', '')))
+            - (parseFloat(element.css('width').replace('px', '')) / 2);
+        newOffsetY = (window.innerHeight / 2) 
+            - (parseFloat(viewport.css('top').replace('px', '')) + parseFloat(element.css('top').replace('px', '')))
+            - (parseFloat(element.css('height').replace('px', '')) / 2);
+        if (newOffsetX != 0) viewport.css('left', parseFloat(viewport.css('left').replace('px', '')) + newOffsetX);
+        if (newOffsetY != 0) viewport.css('top', parseFloat(viewport.css('top').replace('px', '')) + newOffsetY);
+        console.log(newOffsetX, newOffsetY);
     }
     
 	createCard = function(data) {
@@ -312,6 +327,7 @@ $(document).ready(function() {
 	});
 	socket.on('card.delete', function(data) {
 		$('#' + data.cardId).remove();
+		$('#entry-' + data.cardId).remove();
 		addNotification(data.name + " deleted a card", 'info');
 	});
 	$('.viewport').on('click', '.card-colour', function(event){
