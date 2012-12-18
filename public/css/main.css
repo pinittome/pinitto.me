@@ -54,8 +54,8 @@ li.card-list ul {
 	border: 1px #000000 solid;
 }
 .card textarea {
-	width: 95%;
-	height: 95%;
+	width: 100%;
+	height: 99%;
 	resize: none;
 	background-color: transparent;
 	border: 0;
@@ -78,7 +78,7 @@ li.card-list ul {
 	border-top-left-radius:  0.3em;
 	border-top-right-radius:  0.3em;
 	opacity: 0.65;
-        z-index: 20;
+    z-index: 20;
 }
 div.card:hover .controls {
 	display: block;

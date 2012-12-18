@@ -260,6 +260,30 @@ $(document).ready(function() {
 		    addNotification('"' + oldName + '" has changed their name to "' + data.name + '"', 'info');
 		}
 	});
+	$('body').on('click', '.open-set-board-name-modal', function() {
+		$('#set-board-name-modal').modal({
+			backdrop : true
+		});
+	});
+	$('#close-set-baord-name-modal').click(function() {
+		$('#set-board-name-modal').modal('hide');
+	});
+	$('#update-board-name').click(function() {
+		name = $('#set-board-name-modal').find('input').val();
+
+		socket.emit('board.name.set', {
+			name : name
+		});
+		$('#set-board-name-modal').modal('hide');
+	});
+	socket.on('board.name.set', function(data) {
+		var oldName;
+		hasSetName = true;
+		$('.board-name').each(function(index, element) {
+			$(element).html(data.name);
+		});
+		addNotification('The board name has been changed to "' + data.name + '"');
+	});
 	socket.on('user.join', function(data) {
 		addToUserList(data);
 		addNotification('User "' + data.name + '" has joined the board', 'info');
@@ -380,10 +404,13 @@ $(document).ready(function() {
     	infinitedrag.center(0, 0);
     });
 
-    var infinitedrag = jQuery.infinitedrag(".viewport", {}, {
+    infinitedrag = jQuery.infinitedrag(".viewport", {}, {
 		width: window.innerHeight,
 		height: window.innerWidth,
 		class_name: 'viewport-background',
-		oncreate: function($element, col, row) { $element.text(''); }
+		oncreate: function($element, col, row) { $element.text(''); },
+		start_col: 0,
+		start_row: 0
 	});
+	//infinitedrag.center(0, 0);
 }); 

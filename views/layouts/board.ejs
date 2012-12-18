@@ -36,7 +36,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="#" title="<%=boardName %>"><%=boardName %></a>
+                    <a class="brand board-name" href="#"><%=boardName %></a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active"><a href="#">Home</a></li>
@@ -62,8 +62,8 @@
                                     <li><a href="#" class="open-set-name-modal">Set name</a></li>
                                     <li class="divider"></li>
                                     <li class="nav-header">Board Admin</li>
-                                    <li><a href="#">General</a></li>
-                                    <li><a href="#">Access</a></li>
+                                    <li><a href="#" class="open-set-board-name-modal admin">Set name</a></li>
+                                    <li><a href="#" class="open-set-board-access-modal admin">Access</a></li>
                                 </ul>
                             </li>
                             <li class="leave"><a href="/"><i class="icon-off icon-white" title="Logout"></i></a></li>
@@ -106,3 +106,4 @@
 </html>
 
 <% include ../partials/name-modal %>
+<% include ../partials/board-name-modal %>

@@ -474,7 +474,27 @@ io.sockets.on('connection', function (socket) {
     		});
     	});
     });
-    
+    socket.on('board.name.set', function(data) {
+    	socket.get('board', function(err, board) {
+    		if (err) throw Error('Could not get board ID for user', err);
+    		name = sanitize(data.name).xss();
+    		socket.set('name', name, function() {
+    			io.sockets.in(board).emit('board.name.set', {name: name, userId: socket.id});
+    		});
+
+	        db.collection('boards', function(err, boards) {
+    			if (err) throw Error('Could not update board details', err); 
+	    		boards.update(
+	    			{_id: new ObjectId(board.replace('/', ''))},
+	    			{$set:{name:name}},
+	    			{w:1},
+	    			function(err, numberOfResults) {
+		    			if (err) throw Error('Could not save new board details', err);
+		    		}
+    		    );
+        	});
+    	});
+    });
 
 	/** User statistics */
 	newBoardCreated = function() {
