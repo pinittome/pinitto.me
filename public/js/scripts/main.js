@@ -20,6 +20,16 @@ $(document).ready(function() {
 	    	input.after('<span class="help-inline">' + error.msg + '</span>');
 	    };
     }
+
+    if (typeof(config.twitter) != 'undefined' && config.twitter) {
+	    $(".tweet").tweet({
+	        join_text: "auto",
+	        username: config.twitter,
+	        avatar_size: 48,
+	        count: 4,
+	        loading_text: "Loading tweets..."
+	    });
+	}
 });
 
 

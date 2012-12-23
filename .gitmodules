@@ -10,3 +10,6 @@
 [submodule "public/js/vendor/jquery.scrollTo"]
 	path = public/js/vendor/jquery.scrollTo
 	url = git@github.com:flesler/jquery.scrollTo.git
+[submodule "public/js/vendor/jquery-twitter-display"]
+	path = public/js/vendor/jquery-twitter-display
+	url = git@github.com:seaofclouds/tweet.git

@@ -123,7 +123,15 @@ div.card:hover .controls {
 	background-color: #FFFFFF;
 }
 
-a.brand { width: 225px; }
+a.brand { 
+	width: 225px;
+	overflow: hidden;
+	height: 40px;
+}
+
+div.tweet { 
+	margin-bottom: 10px;
+}
 
 img.captcha {
 	margin: 5px 0 15px 150px;

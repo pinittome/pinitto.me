@@ -36,6 +36,10 @@
   "author": "Steven Lloyd Watkin <lloyd@evilprofessor.co.uk>",
   "license": "BSD",
   "subdomain": "pinittome",
+  "domains": [
+      "www.pinitto.me",
+      "pinitto.me"
+  ]
   "engines": {
     "node": "0.8.x"
   }
