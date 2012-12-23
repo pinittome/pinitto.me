@@ -61,6 +61,14 @@ var access = {
 
 server.listen(config.server.port);
 
+forceSsl = function(req, res, next) {
+    onlySecure = config.project.secure || false;
+    if ((onlySecure == true) && (req.headers['x-forwarded-proto'] != 'https')) {
+    	return res.redirect('https://' + req.host + req.originalUrl);
+    }
+    next();
+}
+
 app.configure(function(){
 	app.use(express.cookieParser(config.cookie.secret)); 
     app.use(express.session({
@@ -69,7 +77,8 @@ app.configure(function(){
 	    store: sessionStore
 	}));
 	app.use(express.static(__dirname + '/public'));
-	app.use(require('connect').cookieParser(config.cookie.secret))
+	app.use(require('connect').cookieParser(config.cookie.secret));
+	app.use(forceSsl);
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'ejs');
 	app.use(express.bodyParser());
