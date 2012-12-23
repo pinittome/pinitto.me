@@ -1,6 +1,6 @@
 {
   "name": "pinitto.me",
-  "version": "0.1.0",
+  "version": "0.1.0-10",
   "description": "Open source corkboard-type application",
   "main": "index.js",
   "dependencies": {
@@ -18,7 +18,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "index.js"
   },
   "repository": {
     "type": "git",
@@ -33,5 +34,9 @@
     "socket.io"
   ],
   "author": "Steven Lloyd Watkin <lloyd@evilprofessor.co.uk>",
-  "license": "BSD"
+  "license": "BSD",
+  "subdomain": "pinittome",
+  "engines": {
+    "node": "0.8.x"
+  }
 }

@@ -11,8 +11,10 @@ var express = require('express')
   , sanitize = require('validator').sanitize
   , MongoStore = require('connect-mongo')(express)  
   , connect = require('connect')
-  , Session = connect.middleware.session.Session
-  , config = require('./config.js');
+  , Session = connect.middleware.session.Session;
+  
+environment = process.env.NODE_ENV || 'production';
+config = require('./config.' + environment + '.js');
   
   
 config.cookie.key = 'connect.sid';
@@ -22,18 +24,29 @@ var db     = new require('mongodb').Db(
 	config.database.name, 
 	new require('mongodb').Server(
 		config.database.host,
-		config.database.port
+		config.database.port,
+		{}
 	),
 	{auto_reconnect: true, safe: true},
 	{strict: false}
 );
 db.open(function(err, pClient) {
     if (err) throw err;
+    if (config.database.username) {
+    	db.authenticate(config.database.username, config.database.password, function (err, replies) {
+    		if (err) throw err;
+    		console.log("Successfully connected to database");
+    	});
+    } else {
+    	console.log("Successfully connected to database (no auth requested)");
+    }
 });
 var sessionStore = new MongoStore({
     db: config.database.name,
     port: config.database.port,
     host: config.database.host,
+    username: config.database.username,
+    password: config.database.password,
     collection: config.cookie.table,
     clear_interval: config.cookie.clearAfter,
     auto_reconnect: true
