@@ -17,7 +17,7 @@
     "connect": "2.7.0"
   },
   "devDependencies": {},
-  "scripts": {
+  "smripts": {
     "test": "test",
     "start": "index.js"
   },

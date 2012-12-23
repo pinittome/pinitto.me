@@ -1,21 +1,21 @@
-$(document).ready(function() {
-	var socket = io.connect('//' + window.document.location.host);
+require.config({
+	paths: {
+		'jquery': '//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min',
+		'tweet': 'vendor/jquery-twitter-display/tweet/jquery.tweet',
+		'socket.io': '/socket.io/socket.io',
+		'modernizer': 'vendor/modernizr-2.6.2-respond-1.1.0.min',
+		'config': '../config',
+		'bootstrap': 'vendor/bootstrap.min'
+	}
+});
 
-	socket.on('totals', function(data) {
-		if ($('.totals-cards')) {
-			$('.totals-cards').html(data.cards);
-		}
-		if ($('.totals-boards')) {
-			$('.totals-boards').html(data.boards);
-		}
-	});
-
+require(['jquery', 'config', 'analytics', 'totals', 'tweet'], function($, config) {
 
     if (typeof(errors) != 'undefined') {
 	    for (var i = 0; i < errors.length; i++) {
-	    	console.log("Adding error for " + errors[i].param);
 	    	error = errors[i];
 	    	var input = $('input[name=' + error.param + ']');
+	    	input.val(error.value);
 	    	input.parents('div.control-group').addClass('error');
 	    	input.after('<span class="help-inline">' + error.msg + '</span>');
 	    };
@@ -31,5 +31,3 @@ $(document).ready(function() {
 	    });
 	}
 });
-
-
