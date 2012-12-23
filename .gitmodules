@@ -6,7 +6,7 @@
 	url = git@github.com:brandonaaron/jquery-mousewheel.git
 [submodule "public/js/vendor/jquery-infinite-drag"]
 	path = public/js/vendor/jquery-infinite-drag
-	url = git@github.com:ianli/jquery-infinite-drag.git
+	url = git@github.com:pinittome/jquery-infinite-drag.git
 [submodule "public/js/vendor/jquery.scrollTo"]
 	path = public/js/vendor/jquery.scrollTo
 	url = git@github.com:flesler/jquery.scrollTo.git

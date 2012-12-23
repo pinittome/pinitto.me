@@ -1,5 +1,5 @@
 define(['jquery', 'ui', 'infinite'], function($) {
-	return jQuery.infinitedrag(".viewport", {}, {
+	return $.infinitedrag(".viewport", {}, {
 		width: window.innerHeight,
 		height: window.innerWidth,
 		class_name: 'viewport-background',

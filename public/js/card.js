@@ -1,9 +1,12 @@
-define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notification'], 
-    function($, socket, determineCssClass, board, notification) {
+define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notification', 'board/infinite-drag'], 
+    function($, socket, determineCssClass, board, notification, infiniteDrag) {
 	
-	Card = function(socket) {
+	Card = function(socket, infinite) {
 		this.socket = socket;
+		this.infinite = infinite;
 	}
+	Card.prototype.infinite = null;
+	Card.prototype.socket = null;
 	
 	Card.prototype.bringToFront = function(event, element) {
 		if (this.constructor.name == 'HTMLDivElement') {
@@ -58,12 +61,33 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
         newOffsetY = (window.innerHeight / 2) 
             - (parseFloat(viewport.css('top').replace('px', '')) + parseFloat(element.css('top').replace('px', '')))
             - (parseFloat(element.css('height').replace('px', '')) / 2);
-    
+        self = this;
+        counter = 0;
         viewport.animate({
-            top: parseFloat(viewport.css('top').replace('px', '')) + newOffsetY,
-            left: parseFloat(viewport.css('left').replace('px', '')) + newOffsetX
-        }, 300);
-
+	            top: parseFloat(viewport.css('top').replace('px', '')) + newOffsetY,
+	            left: parseFloat(viewport.css('left').replace('px', '')) + newOffsetX,
+	        }, 
+	        {
+	        	step: function() {
+	        		if (counter > 20) {
+		        		$(window).resize();
+		            	var evt = document.createEvent('UIEvents');
+						evt.initUIEvent('resize', true, true, window, 1);
+						window.dispatchEvent(evt);
+						counter = 0;
+					} else {
+						counter++;
+					}
+	        	},
+	        	complete: function() {
+	        	    $(window).resize();
+	            	var evt = document.createEvent('UIEvents');
+					evt.initUIEvent('resize', true, true, window, 1);
+					window.dispatchEvent(evt);
+				}
+	        },
+	        300);
+        
     }
     
 	Card.prototype.create = function(data) {
@@ -149,7 +173,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 	    ul = $('.card-list').find('ul');
 	    cardListEntry.appendTo($(ul));
 	}
-	cardEntity = new Card(socket);
+	cardEntity = new Card(socket, infiniteDrag);
 	
 	
 	socket.on('card.zIndex', function(data) {

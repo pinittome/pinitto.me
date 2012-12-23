@@ -17,13 +17,12 @@
     "connect": "2.7.0"
   },
   "devDependencies": {},
-  "smripts": {
-    "test": "test",
+  "scripts": {
     "start": "index.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/lloydwatkin/pin-it-to-me"
+    "url": "https://github.com/pinittome/pin-it-to-me"
   },
   "keywords": [
     "corkboard",
