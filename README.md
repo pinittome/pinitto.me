@@ -9,3 +9,14 @@
 # Run
 
   node index.js
+
+
+# Todo
+
+* Error checking on input data
+* Catch errors - exceptions
+* Make it look purdy
+* Put some useful information on the site
+* Get SSL on node jitsu along with custom domain
+* Realtime statistics
+

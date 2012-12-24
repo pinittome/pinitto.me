@@ -14,8 +14,8 @@ io.configure(function (){
         data.sessionID    = data.cookies['connect.sid'].split('.')[0].split(':')[1];
         data.sessionStore = require('./session').store;
 
-        require('./session').store.get(data.sessionID, function(err, session) {
-	        if (err || !session) {
+        require('./session').store.get(data.sessionID, function(error, session) {
+	        if (error || !session) {
 	            console.log("ERROR", err);
 	            console.log("session:", session);
 	        }
