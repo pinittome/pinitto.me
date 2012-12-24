@@ -1,4 +1,5 @@
 io = require('../io').io;
+statistics = require('../statistics');
 
 function Card(socket, db) {
 	
