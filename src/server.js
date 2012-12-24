@@ -3,7 +3,7 @@ var express = require('express')
   , engine = require('ejs-locals')
   , sessionStore = require('./session').store
   , totals = require('./util').totals
-  , db = require('./database')
+  , boardsDb = require('./database/boards').db
   , sanitize = require('validator').sanitize  
   , connect = require('connect')
   , Session = connect.middleware.session.Session
@@ -99,7 +99,7 @@ app.post('/login/*', function(req, res) {
     req.session.captcha = null;
 
         var id = req.param('board');
-        db.boards.findOne({_id: db.ObjectId(id)}, function(err, board) {
+        boardsDb.findOne({_id: utils.ObjectId(id)}, function(err, board) {
         	if (err || (typeof(board) == 'undefined')) {
         		throw Error('Board not found');
         	}
@@ -142,14 +142,13 @@ app.post('/create', function(req, res) {
             return;
        }
     }
-    console.log(db);
-    
+ 
     	parameters = { owner: req.param('owner'), 'access': {}};
 		if (req.param('board-name') != '') parameters['name'] = req.param('board-name');
 		if (req.param('password-admin') != '') {    			
 			parameters['access']['admin'] = utils.hashPassword(req.param('password-admin'));
 		}
-    	db.boards.insert(parameters, function(err, newBoard) {
+    	boardsDb.insert(parameters, function(err, newBoard) {
     		req.session.access = require('./access').ADMIN;
 		    req.session.board  = newBoard[0]._id;
     		if (err) throw err;
@@ -157,7 +156,8 @@ app.post('/create', function(req, res) {
     		    res.send({id: newBoard[0]._id}, 200);
     		} else {
     			res.redirect('/' + newBoard[0]._id);
-    		}    		
+    		}  
+    		require('./statistics').boardCreated();  		
     	});
 });
 
@@ -170,38 +170,35 @@ app.get('/*', function(req, res) {
 	board = {};
     options =  JSON.parse(JSON.stringify(config.project));
    
-    	console.log("Trying to load board " + id);
-    	if (id.length != 24) {
-    		res.send(404);
-    		return;
-    	}
-    	db.boards.findOne({_id: db.ObjectId(id)}, function(err, board) {
-    		if (err) throw Error('Oh crap! Something is really wrong, we\'re on it!', err);
-    		if (!board) return res.send(404);
-    		
-    		allowedAccess = false;
-    		console.log(req.session.access);
-    		
-    		if (req.session.access 
-    			&& req.session.board 
-    			&& (id == req.session.board)
-    			&& utils.inArray(req.session.access, [require('./access').ADMIN, require('./access').READ, require('./access').WRITE])
-    		) {
-    			allowedAccess = true;		
-    		} else if (typeof(req.session.access) == 'undefined') {
-    			allowedAccess = true;
-    		}
-    		console.log(allowedAccess);
-    		if (false == allowedAccess) {
-    			return res.redirect('/login/' + id);
-    		}
-    		name = board.name ? board.name : id
-			options._layoutFile = 'layouts/board';
-			options.boardId = id;
-			options.boardName = name;
-			req.session.access = req.session.access ? req.session.access : require('./access').ADMIN;
-			req.session.board = id;
-			res.render('board', options);
-    	});
-
+	console.log("Trying to load board " + id);
+	if (id.length != 24) {
+		res.send(404);
+		return;
+	}
+	boardsDb.findOne({_id: utils.ObjectId(id)}, function(err, board) {
+		if (err) throw Error('Oh crap! Something is really wrong, we\'re on it!', err);
+		if (!board) return res.send(404);
+		
+		allowedAccess = false;
+		
+		if (req.session.access 
+			&& req.session.board 
+			&& (id == req.session.board)
+			&& utils.inArray(req.session.access, [require('./access').ADMIN, require('./access').READ, require('./access').WRITE])
+		) {
+			allowedAccess = true;		
+		} else if (typeof(req.session.access) == 'undefined') {
+			allowedAccess = true;
+		}
+		if (false == allowedAccess) {
+			return res.redirect('/login/' + id);
+		}
+		name = board.name ? board.name : id
+		options._layoutFile = 'layouts/board';
+		options.boardId = id;
+		options.boardName = name;
+		req.session.access = req.session.access ? req.session.access : require('./access').ADMIN;
+		req.session.board = id;
+		res.render('board', options);
+	});
 });

@@ -5,7 +5,7 @@ define(['socket', 'user'], function(socket, user) {
 		user.id = socket.socket.sessionid;
 	});
 	
-	socket.on('connect_failed', function(reason) {
+	socket.on('connect.fail', function(reason) {
 		console.log("Not authorised to see this board. Redirect to login.");
 		document.location.href = "/login/" + boardId;
 	});

@@ -137,8 +137,8 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 
 		textarea = document.createElement('textarea');
 		$(textarea).appendTo($(div));
-		$(textarea).css('width', parseFloat(data.size.width - 5))
-		    .css('height', parseFloat(data.size.height - 5));
+		$(textarea).css('width', parseFloat(data.size.width - 10))
+		    .css('height', parseFloat(data.size.height - 10));
 
 		card.draggable({
 			cursor : "move",

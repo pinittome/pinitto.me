@@ -1,7 +1,6 @@
-var mongo = require('mongodb')
-  , ObjectId = mongo.ObjectID
+var mongo = require('mongodb');
 
-var db = new require('mongodb').Db(
+var db = new mongo.Db(
 	config.database.name, 
 	new require('mongodb').Server(
 		config.database.host,
@@ -23,14 +22,4 @@ database = db.open(function(err, pClient) {
     }
 });
 
-db.collection('cards', function(error, cards) {
-	if (error) throw Error(error);
-    exports.cards = cards;
-});
-
-db.collection('boards', function(error, boards) {
-	if (error) throw Error(error);
-    exports.boards = boards;
-});
-
-exports.ObjectId = ObjectId;
+exports.connection = db;

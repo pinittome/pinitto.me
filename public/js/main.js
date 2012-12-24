@@ -9,8 +9,12 @@ require.config({
 	}
 });
 
-require(['jquery', 'config', 'analytics', 'totals', 'tweet', 'bootstrap'], function($, config) {
+require(['jquery', 'config',  'socket', 'analytics', 'totals', 'tweet', 'bootstrap'], function($, config, socket) {
 
+	socket.on('connect', function(data) {
+        socket.emit('statistics.join');
+	});
+	
     if (typeof(errors) != 'undefined') {
 	    for (var i = 0; i < errors.length; i++) {
 	    	error = errors[i];

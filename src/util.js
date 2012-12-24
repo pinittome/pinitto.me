@@ -17,3 +17,5 @@ exports.hashPassword = function(password) {
 }
 
 exports.totals = { cards: 0, boards: 0 };
+
+exports.ObjectId = require('mongodb').ObjectID;
