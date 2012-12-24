@@ -1,6 +1,6 @@
 {
   "name": "pinitto.me",
-  "version": "0.1.0-12",
+  "version": "0.1.0-13",
   "description": "Open source corkboard-type application",
   "main": "index.js",
   "dependencies": {
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pinittome/pin-it-to-me"
+    "url": "https://github.com/pinittome/pinitto.me"
   },
   "keywords": [
     "corkboard",
@@ -36,9 +36,9 @@
   "license": "BSD",
   "subdomain": "pinittome",
   "domains": [
-      "www.pinitto.me",
-      "pinitto.me"
-  ]
+    "www.pinitto.me",
+    "pinitto.me"
+  ],
   "engines": {
     "node": "0.8.x"
   }

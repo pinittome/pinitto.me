@@ -137,16 +137,20 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 
 		textarea = document.createElement('textarea');
 		$(textarea).appendTo($(div));
+		$(textarea).css('width', parseFloat(data.size.width - 5))
+		    .css('height', parseFloat(data.size.height - 5));
 
 		card.draggable({
 			cursor : "move",
 			keyboard : true,
 			delay : 0,
 		    opacity : 0.65,
+		    create: function(event, ui) { event.stopPropagation(); }, 
 			start : this.bringToFront,
 			stop : this.savePosition,
 			drag : this.updatePosition,
-			scroll: true
+			scroll: true,
+			iframeFix: true
 		});
 		if (data.size) {
 			$(card).width(data.size.width).height(data.size.height);
@@ -158,6 +162,10 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 		this.setPosition(data.cardId, data.position);
 		$(card).resizable({
 			handles: 'se',
+			resize: function(event, ui) {
+				$(this).find('textarea').css('width', parseFloat($(this).css('width')) - 10)
+		            .css('height', parseFloat($(this).css('height'))- 10);
+			},
 			stop: function(event, ui) {
 				socket.emit('card.resize', {
 					cardId : $(this).attr('id'),
@@ -194,7 +202,11 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 	socket.on('card.created', function(data) {
 		cardEntity.create(data);
 	});
-	socket.on('card.resize', function(data) {	
+	socket.on('card.resize', function(data) {
+		$('#' + data.cardId).find('textarea').animate({
+        	width: parseFloat(data.size.width - 10) + 'px',
+		    height: parseFloat(data.size.height - 10) + 'px'
+		});	
         $('#' + data.cardId).animate({
             width: data.size.width,
             height: data.size.height

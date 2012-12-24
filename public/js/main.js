@@ -9,7 +9,7 @@ require.config({
 	}
 });
 
-require(['jquery', 'config', 'analytics', 'totals', 'tweet'], function($, config) {
+require(['jquery', 'config', 'analytics', 'totals', 'tweet', 'bootstrap'], function($, config) {
 
     if (typeof(errors) != 'undefined') {
 	    for (var i = 0; i < errors.length; i++) {

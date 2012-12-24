@@ -40,12 +40,9 @@ define(['jquery', 'socket', 'util/notification', 'viewport'], function($, socket
 			}
 		});
 	});
-	$("div#leave").click(function() {
-		socket.emit('board.leave');
-		$(this).remove();
-	});
+
 	$('.leave').click(function() {
-		document.location.href = '/';
+		document.location.href = '/logout';
 	});
 	
     return board;
