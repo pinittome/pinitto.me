@@ -1,10 +1,12 @@
 define(['jquery', 'socket', 'util/notification', 'viewport'], function($, socket, notification, viewport) { 
 	
-    function Board(socket) { this.socket = socket; }
+    
     Board.prototype.setName = function(name) {
-    	socket.emit('board.name.set', { name : name });
+    	this.socket.emit('board.name.set', { name : name });
     }
     Board.prototype.zIndex = 100;
+    function Board(socket) { this.socket = socket; }
+    
     board = new Board(socket);
     
     $('body').on('click', '.open-set-board-name-modal', function() {

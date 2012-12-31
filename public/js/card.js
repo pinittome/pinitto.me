@@ -1,21 +1,15 @@
 define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notification', 'board/infinite-drag'], 
     function($, socket, determineCssClass, board, notification, infiniteDrag) {
 	
-	Card = function(socket, infinite) {
-		this.socket = socket;
-		this.infinite = infinite;
-	}
-	Card.prototype.infinite = null;
-	Card.prototype.socket = null;
-	
 	Card.prototype.bringToFront = function(event, element) {
 
-		if (this instanceof HTMLDivElement) {
-			element = this;
-		}
+		//if (this instanceof HTMLDivElement) {
+		//	element = this;
+		//}
+		if (element.helper) element = element.helper
 
-		if ($(element).css('z-index') != board.zIndex) {
-			$(element).css('z-index', ++board.zIndex);
+		if ($(element).css('z-index') != this.board.zIndex) {
+			$(element).css('z-index', ++this.board.zIndex);
 			socket.emit('card.zIndex', {
 				cardId : $(element).attr('id'),
 				zIndex : $(element).css('z-index')
@@ -95,11 +89,11 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 	Card.prototype.create = function(data) {
         if (data.zIndex) {
         	stackOrder = data.zIndex;
-        	if (data.zIndex >= board.zIndex) {
-        		board.zIndex = parseInt(data.zIndex) + 1;
+        	if (data.zIndex >= this.board.zIndex) {
+        		this.board.zIndex = parseInt(data.zIndex) + 1;
         	}
         } else {
-        	stackOrder = board.zIndex++;
+        	stackOrder = this.board.zIndex++;
         	socket.emit('card.zIndex', {cardId: data.cardId, zIndex: stackOrder});
         }
 		div = document.createElement('div');
@@ -141,14 +135,16 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 		$(textarea).appendTo($(div));
 		$(textarea).css('width', parseFloat(data.size.width - 10))
 		    .css('height', parseFloat(data.size.height - 10));
-
+        var self = this
 		card.draggable({
 			cursor : "move",
 			keyboard : true,
 			delay : 0,
 		    opacity : 0.65,
 		    create: function(event, ui) { event.stopPropagation(); }, 
-			start : this.bringToFront,
+			start : function(event, element) {
+				self.bringToFront(event, element);
+			},
 			stop : this.savePosition,
 			drag : this.updatePosition,
 			scroll: true,
@@ -183,11 +179,18 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 	    ul = $('.card-list').find('ul');
 	    cardListEntry.appendTo($(ul));
 	}
-	cardEntity = new Card(socket, infiniteDrag);
+	function Card(socket, infinite, board) {
+		this.socket = socket;
+		this.infinite = infinite;
+		this.board = board;
+	}
+	
+	var cardEntity = new Card(socket, infiniteDrag, board);
 	
 	
 	socket.on('card.zIndex', function(data) {
 		$('#' + data.cardId).css('z-index', data.zIndex);
+		board.zIndex = data.zIndex;
 	});
 	socket.on('card.moving', function(data) {
 		cardEntity.setPosition(data.cardId, data.position);
