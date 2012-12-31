@@ -79,7 +79,7 @@ app.get('/about', function(req, res) {
 	options = JSON.parse(JSON.stringify(config.project));
 	console.log(options);
 	options.pageName = 'About ' + options.name;
-	res.render('contact', options);
+	res.render('about', options);
 });
 
 app.post('/login/*', function(req, res) {

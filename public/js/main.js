@@ -5,11 +5,12 @@ require.config({
 		'socket.io': '/socket.io/socket.io',
 		'modernizer': 'vendor/modernizr-2.6.2-respond-1.1.0.min',
 		'config': '../config',
-		'bootstrap': 'vendor/bootstrap.min'
+		'bootstrap': 'vendor/bootstrap.min',
+		'ui': '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min'
 	}
 });
 
-require(['jquery', 'config',  'socket', 'analytics', 'totals', 'tweet', 'bootstrap'], function($, config, socket) {
+require(['jquery', 'config',  'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'modernizer', 'ui'], function($, config, socket) {
 
 	socket.on('connect', function(data) {
         socket.emit('statistics.join');
