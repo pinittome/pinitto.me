@@ -9,9 +9,11 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 	Card.prototype.socket = null;
 	
 	Card.prototype.bringToFront = function(event, element) {
-		if (this.constructor.name == 'HTMLDivElement') {
+
+		if (this instanceof HTMLDivElement) {
 			element = this;
 		}
+
 		if ($(element).css('z-index') != board.zIndex) {
 			$(element).css('z-index', ++board.zIndex);
 			socket.emit('card.zIndex', {
