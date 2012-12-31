@@ -1,22 +1,22 @@
-io = require('../io').io;
+var io       = require('../io').io,
+    sanitize = require('validator').sanitize;
 
-function User(socket, db) {
-	
+User.prototype.setName = function(data) {
+	var self = this
+	this.socket.get('board', function(err, board) {
+		if (err) throw Error('Could not get board ID for user', err);
+		var name = sanitize(data.name).xss();
+		self.socket.set('name', name, function() {
+			io.sockets.in(board).emit('user.name.set', {name: name, userId: self.socket.id});
+		});
+	});
+};
+
+User.prototype.setSocketContext = function(socket) {
 	this.socket = socket;
-	this.db     = db;
-	self        = this;
-	
-	this.setName = function(data) {
-    	self.socket.get('board', function(err, board) {
-    		if (err) throw Error('Could not get board ID for user', err);
-    		name = sanitize(data.name).xss();
-    		self.socket.set('name', name, function() {
-    			io.sockets.in(board).emit('user.name.set', {name: name, userId: socket.id});
-    		});
-    	});
-    };
-    
-	return this;
 }
 
-module.exports = User;
+function User() {}
+user = new User();
+
+module.exports = user;

@@ -1,5 +1,6 @@
-db = require('../database').connection;
-sanitize = require('validator').sanitize;
+var db       = require('../database').connection,
+    sanitize = require('validator').sanitize,
+    utils    = require('../util.js');
 
 db.collection('cards', function(error, cards) {
 	if (error) throw Error(error);
@@ -40,17 +41,8 @@ db.collection('cards', function(error, cards) {
 			{_id: new utils.ObjectId(data.cardId), board: board},
 			{w:1},
 			function(error, numberOfResults) {
-    			if (error) throw Error('Could not save new card size', error);
-    			data.name = socket.get('name', function(error, name) {
-    				if (error) {
-    					name = 'A user';
-    				}
-    				data.name = name;
-    			    if (numberOfResults != 1) {
-    			    	throw Error('Card not deleted');
-    			    }
-    			    callback();
-    			});
+    			if (error || (numberOfResults != 1)) throw new Error('Card not deleted');
+    			callback();
     		}
     	);
     }

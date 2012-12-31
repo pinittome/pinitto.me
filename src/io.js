@@ -1,7 +1,7 @@
 httpServer = require('./server');
 exports.io = io = require('socket.io').listen(httpServer.server);
 Session    = require('connect').middleware.session.Session;
-boardsDb   = require('./database/boards');
+boards     = require('./database/boards');
 cardsDb    = require('./database/cards');
 
 io.configure(function (){
@@ -27,7 +27,14 @@ io.configure(function (){
 });
 
 io.sockets.on('connection', function (socket) {
-    
+
+    user  = require('./classes/user');
+    board = require('./classes/board');
+
+    board.setParams(boards, require('./session').store, cardsDb);
+    card  = require('./classes/card');
+    card.setDatabase(cardsDb);
+        
     socket.on('statistics.join', function() {
     	socket.join('/');
     });
@@ -39,22 +46,53 @@ io.sockets.on('connection', function (socket) {
 	    });
     });
     
-    user  = require('./classes/user')(socket, cardsDb);
-    board = require('./classes/board')(socket, boardsDb, require('./session').store, cardsDb);
-    card  = require('./classes/card')(socket, cardsDb);
-    
-    socket.on('card.create', card.create);
-    socket.on('card.moved', card.moved);
-    socket.on('card.resize', card.resize);
-    socket.on('card.delete', card.remove);
-    socket.on('card.colour', card.changeColour);    
-    socket.on('card.zIndex', card.stackOrder);
-    socket.on('card.moving', card.moving);
-    socket.on('card.text-change', card.textChange);
+    socket.on('card.create', function(data) {
+    	card.setSocketContext(this);
+    	card.create(data);
+    });
+    socket.on('card.moved', function(data) {
+    	card.setSocketContext(this);
+    	card.moved(data)
+    });
+    socket.on('card.resize', function(data) {
+    	card.setSocketContext(this);
+    	card.resize(data)
+    });
+    socket.on('card.delete', function(data) {
+    	card.setSocketContext(this);
+    	card.remove(data)
+    });
+    socket.on('card.colour', function(data) {
+    	card.setSocketContext(this);
+    	card.changeColour(data);
+    });    
+    socket.on('card.zIndex', function(data) {
+    	card.setSocketContext(this);
+    	card.stackOrder(data)
+    });
+    socket.on('card.moving', function(data) {
+    	card.setSocketContext(this);
+    	card.moving(data)
+    });
+    socket.on('card.text-change', function(data) {
+    	card.textChange(data)
+    });
 
-	socket.on('user.name.set', user.setName);
-	
-    socket.on('board.name.set', board.setName);
-    socket.on('board.join', board.join);
-    socket.on('board.leave', board.leave);
+	socket.on('user.name.set', function(data) {
+		user.setSocketContext(this)
+    	user.setName(data)
+    });
+
+    socket.on('board.name.set', function(data) {
+    	board.setSocketContext(this);
+    	board.setName(data)
+    });
+    socket.on('board.join', function(data) {
+    	board.setSocketContext(this);
+    	board.join(data);
+    });
+    socket.on('board.leave', function(data) {
+    	board.setSocketContext(this);
+    	board.leave(data)
+    });
 });

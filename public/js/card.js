@@ -250,6 +250,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 	
 	socket.on('card.colour', function(data){
 		$('#' + data.cardId).removeClass().addClass('card').addClass('card-' + data.cssClass);
+		$('#entry-' + data.cardId).removeClass().addClass('card-' + data.cssClass);
 	});
     $('.viewport').on('input propertychange', '.card textarea', function(event) {
     	socket.emit('card.text-change', {cardId: $(this).parent().attr('id'), content: $(this).val()});

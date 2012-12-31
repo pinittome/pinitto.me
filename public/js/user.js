@@ -51,7 +51,7 @@ define(['jquery', 'socket', 'util/notification', 'util/update-user-count', 'boot
 	$('#close-set-name-modal').click(function() {
 		$('#set-name-modal').modal('hide');
 	});
-	$('#update-name').click(function() {
+	$('#set-name-modal .update-name').click(function() {
 		name = $('#set-name-modal').find('input').val();
 		// Put user's name into storage
 		user.setName(name);

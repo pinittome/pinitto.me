@@ -7,7 +7,8 @@ var express = require('express')
   , sanitize = require('validator').sanitize  
   , connect = require('connect')
   , Session = connect.middleware.session.Session
-  , utils = require('./util');
+  , utils = require('./util')
+  , access = require('./access');
   
 exports.server = server = require('http').createServer(app);
 
@@ -109,7 +110,6 @@ app.post('/login/*', function(req, res) {
 	        	res.redirect('/' + id);
 	        	return;
 	        }
-	        console.log(req.session);
 	        options.errors = { 'error': 'Incorrect password for this board' };
 	        res.redirect('/login/' + id);
 	    });
@@ -167,16 +167,16 @@ app.get('/*', function(req, res) {
 	if (!req.params[0]) throw err;
 	id = req.params[0];
 
-	board = {};
-    options =  JSON.parse(JSON.stringify(config.project));
+	var board = {};
+    var options =  JSON.parse(JSON.stringify(config.project));
    
 	console.log("Trying to load board " + id);
 	if (id.length != 24) {
 		res.send(404);
 		return;
 	}
-	boardsDb.findOne({_id: utils.ObjectId(id)}, function(err, board) {
-		if (err) throw Error('Oh crap! Something is really wrong, we\'re on it!', err);
+	boardsDb.findOne({_id: utils.ObjectId(id)}, function(error, board) {
+		if (error) throw Error('Oh crap! Something is really wrong, we\'re on it!', error);
 		if (!board) return res.send(404);
 		
 		allowedAccess = false;
@@ -187,9 +187,11 @@ app.get('/*', function(req, res) {
 			&& utils.inArray(req.session.access, [require('./access').ADMIN, require('./access').READ, require('./access').WRITE])
 		) {
 			allowedAccess = true;		
-		} else if (typeof(req.session.access) == 'undefined') {
+		} else if (access.NONE != access.getLevel(board, "")) {
 			allowedAccess = true;
 		}
+		console.log(board)
+		console.log("User is allowed access: " + allowedAccess, req.session, id);
 		if (false == allowedAccess) {
 			return res.redirect('/login/' + id);
 		}

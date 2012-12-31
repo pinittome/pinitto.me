@@ -1,8 +1,8 @@
-db      = require('../database').connection;
-utils   = require('../util');
-sanitize = require('validator').sanitize;
+var database = require('../database').connection,
+    utils    = require('../util'),
+    sanitize = require('validator').sanitize;
 
-db.collection('boards', function(error, boards) {
+database.collection('boards', function(error, boards) {
 	if (error) throw Error(error);
     exports.db = boards;
 
