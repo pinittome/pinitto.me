@@ -50,19 +50,21 @@ app.engine('ejs', engine);
 
 app.get('/', function (req, res) { 
    // So ugly must fix!
-   options =  JSON.parse(JSON.stringify(config.project));
-   options.totals = totals;
-   options.pageName = 'Index';
-   res.render('index', options);
+   options          =  JSON.parse(JSON.stringify(config.project))
+   options.totals   = totals
+   options.pageName = 'Welcome to pinitto.me'
+   options.app      = config.app
+   res.render('index', options)
 });
 
 app.get('/login/*', function(req, res) {
-	options = JSON.parse(JSON.stringify(config.project));
-	options.pageName = 'Authorisation for board access';
-	options.totals = totals;
-	if (!req.params[0]) throw err;
-	options.boardId = req.params[0];
-	res.render('login', options);
+	if (!req.params[0]) throw err
+	options          = JSON.parse(JSON.stringify(config.project))
+	options.pageName = 'Authorisation for board access'
+	options.totals   = totals
+	options.app      = config.app
+	options.boardId  = req.params[0]
+	res.render('login', options)
 });
 
 app.get('/logout', function(req, res) {
@@ -71,13 +73,14 @@ app.get('/logout', function(req, res) {
 });
 
 app.get('/contact', function(req, res) {
-    options = JSON.parse(JSON.stringify(config.project));
+    options          = JSON.parse(JSON.stringify(config.project));
+    options.app      = config.app
 	options.pageName = 'Contact Us';
 	res.render('contact', options);
 });
 app.get('/about', function(req, res) {
-	options = JSON.parse(JSON.stringify(config.project));
-	console.log(options);
+	options          = JSON.parse(JSON.stringify(config.project));
+	options.app      = config.app
 	options.pageName = 'About ' + options.name;
 	res.render('about', options);
 });
@@ -87,9 +90,10 @@ app.post('/login/*', function(req, res) {
 	req.sanitize('board');
 	req.sanitize('password');
 	
-	options = JSON.parse(JSON.stringify(config.project));
+	options          = JSON.parse(JSON.stringify(config.project));
+	options.app      = config.app
 	options.pageName = 'Authorisation for board access';
-	options.totals = totals;
+	options.totals   = totals;
 	
 	var errors = req.validationErrors();
     if (errors) {
@@ -99,32 +103,34 @@ app.post('/login/*', function(req, res) {
     }
     req.session.captcha = null;
 
-        var id = req.param('board');
-        boardsDb.findOne({_id: utils.ObjectId(id)}, function(err, board) {
-        	if (err || (typeof(board) == 'undefined')) {
-        		throw Error('Board not found');
-        	}
-	        req.session.access = require('./access').getLevel(board, utils.hashPassword(req.param('password')));
-	        req.session.board  = id;
-	        if (req.session.access != access.NONE) {
-	        	res.redirect('/' + id);
-	        	return;
-	        }
-	        options.errors = { 'error': 'Incorrect password for this board' };
-	        res.redirect('/login/' + id);
-	    });
+    var id = req.param('board');
+    boardsDb.findOne({_id: utils.ObjectId(id)}, function(err, board) {
+    	if (err || (typeof(board) == undefined)) {
+    		throw Error('Board not found');
+    	}
+        req.session.access = require('./access').getLevel(board, utils.hashPassword(req.param('password')));
+        req.session.board  = id;
+        if (req.session.access != access.NONE) {
+        	res.redirect('/' + id);
+        	return;
+        }
+        options.errors = { 'error': 'Incorrect password for this board' };
+        res.redirect('/login/' + id);
+    });
 });
 
 app.get('/create', function(req, res) {
-	options =  JSON.parse(JSON.stringify(config.project));
+	options          =  JSON.parse(JSON.stringify(config.project));
 	options.pageName = 'Create a new board';
-	options.totals = totals;
+	options.totals   = totals;
+	options.app      = config.app
 	res.render('create', options);
 });
 app.post('/create', function(req, res) {
 	options          =  JSON.parse(JSON.stringify(config.project));
 	options.pageName = 'Error creating board';
 	options.totals   = totals;
+	options.app      = config.app
 	
 	req.assert('owner', 'Valid email address required').isEmail();
 	req.sanitize('board-name');
@@ -167,8 +173,9 @@ app.get('/*', function(req, res) {
 	if (!req.params[0]) throw err;
 	id = req.params[0];
 
-	var board = {};
+	var board   = {};
     var options =  JSON.parse(JSON.stringify(config.project));
+    options.app = config.app
    
 	console.log("Trying to load board " + id);
 	if (id.length != 24) {

@@ -14,13 +14,12 @@ require.config({
 });
 
 require([
-	'jquery', 'config', 'viewport', 'user', 'card', 'util/notification', 
+	'jquery', 'viewport', 'user', 'card', 'util/notification', 
 	    'board/connection', 'analytics', 'board/infinite-drag', 'board', 'modernizer'], 
-	function($, config, viewport, user, card, notification) {
+	function($, viewport, user, card, notification) {
 	
 	setTimeout(function() {
-		if (user.hasSetName == true)
-			return;
+		if (user.hasSetName == true) return;
 		notification.add('Hey! Did you know you can set your name ' 
 		    + 'by clicking "set name" in the settings ' 
 		    + 'menu, or <a href="#" class="open-set-name-modal">click here... quick!</a>', 'success', {

@@ -10,7 +10,7 @@ require.config({
 	}
 });
 
-require(['jquery', 'config',  'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'modernizer', 'ui'], function($, config, socket) {
+require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'modernizer', 'ui'], function($, socket) {
 
 	socket.on('connect', function(data) {
         socket.emit('statistics.join');
@@ -25,7 +25,6 @@ require(['jquery', 'config',  'socket', 'analytics', 'totals', 'tweet', 'bootstr
 	    	input.after('<span class="help-inline">' + error.msg + '</span>');
 	    };
     }
-
     if (typeof(config.twitter) != 'undefined' && config.twitter) {
 	    $(".tweet").tweet({
 	        join_text: "auto",

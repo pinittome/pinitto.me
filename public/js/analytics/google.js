@@ -1,4 +1,4 @@
-define(['config'], function(config) {
+define([], function() {
 	
     if (typeof(config.analytics) == 'undefined' 
         || typeof(config.analytics.google) == 'undefined' 
