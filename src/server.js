@@ -68,7 +68,8 @@ app.get('/login/*', function(req, res) {
 });
 
 app.get('/logout', function(req, res) {
-	req.session = {};
+	res.clearCookie(config.cookie.key);
+    req.session.destroy(function() {});
 	res.redirect('/');
 });
 

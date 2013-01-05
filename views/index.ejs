@@ -29,11 +29,11 @@
         </ul>
         <p><a class="btn disabled" href="#">Realtime statistics &raquo;</a></p>
     </div>
-    <% if (typeof(twitter) !== 'undefined') { %>
+    <% if (typeof(app.twitter) !== 'undefined') { %>
     <div class="span4">
         <h2>Twitter</h2>
         <div class="tweet"></div>
-        <p><a class="btn" href="https://twitter.com/<%=twitter %>" target="_blank">Follow us &raquo;</a></p>
+        <p><a class="btn" href="https://twitter.com/<%=app.twitter %>" target="_blank">Follow us &raquo;</a></p>
     </div>
     <% } %>
 </div>
