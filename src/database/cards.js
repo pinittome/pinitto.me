@@ -1,5 +1,4 @@
 var db       = require('../database').connection,
-    sanitize = require('validator').sanitize,
     utils    = require('../util.js');
 
 db.collection('cards', function(error, cards) {
@@ -18,7 +17,7 @@ db.collection('cards', function(error, cards) {
 			{_id: new utils.ObjectId(data.cardId), board: board},
 			{$set:{position:data.position}},
 			{w:1},
-			function(err, numberOfResults) {
+			function(error, numberOfResults) {
     			if (error || (numberOfResults != 1)) throw Error('Could not save new card position', error);
     			callback();
     	    }
@@ -73,7 +72,7 @@ db.collection('cards', function(error, cards) {
 	exports.updateContent = function(data, board) {
 		cards.update(
 			{_id: new utils.ObjectId(data.cardId), board: board},
-			{$set:{content:sanitize(data.content).xss()}},
+			{$set:{content:data.content}},
 			{w:1},
 			function(error, numberOfResults) {
 				if (error) throw Error('Could not save new card content', error);
@@ -81,10 +80,10 @@ db.collection('cards', function(error, cards) {
 	    );
 	}
 	
-	exports.fetch = function(boardName, callback) {
-		cards.find({board: boardName}).batchSize(10).toArray(function(error, docs) {
+	exports.fetch = function(boardId, callback) {
+		cards.find({board: boardId}).batchSize(10).toArray(function(error, cards) {
 		    if (error) throw Error('Can not load cards');
-		    callback(docs);
+		    callback(cards);
 		});
 	}
 });

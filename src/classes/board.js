@@ -1,9 +1,11 @@
-var io     = require('../io').io,
-    access = require('../access'),
-    utils  = require('../util');
+var io        = require('../io').io,
+    access    = require('../access'),
+    utils     = require('../util'),
+    sanitizer = require('./sanitize/board');
 
 Board.prototype.setName = function(data) {
 	var self = this
+	var data = this.sanitizer.rename(data)
 	this.socket.get('board', function(error, board) {
 		if (error) throw Error('Could not get board ID for user', err);    		
 		self.socket.set('name', data.name, function() {
@@ -15,6 +17,7 @@ Board.prototype.setName = function(data) {
   
 Board.prototype.leave = function() {
 	var self = this
+	this.sanitizer.checkBoardId(board)
 	this.socket.get('board', function(error, board) {
 		if (error) throw Error('Error on user disconnect', err); 
     	self.socket.leave(board);
@@ -94,8 +97,12 @@ Board.prototype.setParams = function(db, session, cardsDb) {
 Board.prototype.setSocketContext = function(socket) {
 	this.socket = socket
 }
+Board.prototype.setSanitizer = function(sanitizer) {
+	this.sanitizer = sanitizer
+}
 
 function Board() {}
 board = new Board();
+board.setSanitizer(sanitizer)
 
 module.exports = board;

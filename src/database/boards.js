@@ -7,7 +7,6 @@ database.collection('boards', function(error, boards) {
     exports.db = boards;
 
     exports.setName = function(id, name) {
-    	name = sanitize(name).xss();
     	boards.update(
 			{_id: new utils.ObjectId(id.replace('/', ''))},
 			{$set:{name:name}},

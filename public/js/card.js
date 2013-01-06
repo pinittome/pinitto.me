@@ -159,6 +159,8 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 				
 		this.setPosition(data.cardId, data.position);
 		$(card).resizable({
+			minHeight: 10,
+			minWidth: 10,
 			handles: 'se',
 			resize: function(event, ui) {
 				$(this).find('textarea').css('width', parseFloat($(this).css('width')) - 10)
