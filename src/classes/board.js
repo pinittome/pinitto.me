@@ -1,7 +1,9 @@
 var io        = require('../io').io,
     access    = require('../access'),
     utils     = require('../util'),
-    sanitizer = require('./sanitize/board');
+    sanitizer = require('./sanitize/board'),
+    util      = require('util'),
+    events    = require('events');
 
 Board.prototype.setName = function(data) {
 	var self = this
@@ -101,7 +103,10 @@ Board.prototype.setSanitizer = function(sanitizer) {
 	this.sanitizer = sanitizer
 }
 
-function Board() {}
+function Board() {
+	events.EventEmitter.call(this)
+}
+
 board = new Board();
 board.setSanitizer(sanitizer)
 

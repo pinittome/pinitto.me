@@ -1,6 +1,8 @@
 var database = require('../database').connection,
     utils    = require('../util'),
-    sanitize = require('validator').sanitize;
+    sanitize = require('validator').sanitize,
+    util     = require('util'),
+    events   = require('events');
 
 database.collection('boards', function(error, boards) {
 	if (error) throw Error(error);

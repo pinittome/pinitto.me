@@ -1,6 +1,8 @@
 var io         = require('../io').io,
     statistics = require('../statistics'),
-    sanitizer  = require('./sanitize/card');
+    sanitizer  = require('./sanitize/card'),
+    util       = require('util'),
+    events     = require('events');
 
 Card.prototype.create = function(data) {
 	var self = this
@@ -111,7 +113,9 @@ Card.prototype.setIo = function(io) {
 Card.prototype.setSanitizer = function(sanitizer) {
 	this.sanitizer = sanitizer
 }
-function Card() {}
+function Card() {
+	events.EventEmitter.call(this)
+}
 
 card = new Card();
 card.setStatistics(statistics)

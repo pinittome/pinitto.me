@@ -34,26 +34,22 @@ sendTotals = function() {
 
 exports.getTotalCardCount = getTotalCardCount = function() {
 	try {
-        
-        	cardsDb.count(function(err, count) {
-        		if (err) throw err;
-        		totals.cards = count;
-        		sendTotals();
-        	});
-        
+    	cardsDb.count(function(err, count) {
+    		if (err) throw err;
+    		totals.cards = count;
+    		sendTotals();
+    	});
 	} catch (e) {
 	  	console.log(e);
 	}	
 }
 exports.getTotalBoardCount = getTotalBoardCount = function() {
 	try {
-        
-        	boardsDb.count(function(err, count) {
-        		if (err) throw err;
-        		totals.boards = count;
-        		sendTotals();
-        	});
-        
+    	boardsDb.count(function(err, count) {
+    		if (err) throw err;
+    		totals.boards = count;
+    		sendTotals();
+    	});
 	} catch (e) {
 	  	console.log(e);
 	}	
