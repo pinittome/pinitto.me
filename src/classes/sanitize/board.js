@@ -1,7 +1,4 @@
 var validator = require('validator');
-validator.error = function(message) {
-    throw Error(message)
-}
 
 BoardSanitize = function(validator) {
     this.sanitize = validator.sanitize

@@ -1,9 +1,7 @@
 var io         = require('../io').io,
     statistics = require('../statistics'),
-    sanitizer  = require('./sanitize/card'),
-    util       = require('util'),
-    events     = require('events');
-
+    sanitizer  = require('./sanitize/card');
+    
 Card.prototype.create = function(data) {
 	var self = this
 	this.getBoard(function(board) {

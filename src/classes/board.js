@@ -1,31 +1,39 @@
 var io        = require('../io').io,
     access    = require('../access'),
     utils     = require('../util'),
-    sanitizer = require('./sanitize/board'),
-    util      = require('util'),
-    events    = require('events');
+    sanitizer = require('./sanitize/board');
 
-Board.prototype.setName = function(data) {
+Board.prototype.setName = function(data, callback) {
 	var self = this
-	var data = this.sanitizer.rename(data)
+	try {
+	    var data = this.sanitizer.rename(data)
+	} catch (e) {
+		return this.socket.emit('error', {message: 'Illegal board ID provided'});
+	}
 	this.socket.get('board', function(error, board) {
-		if (error) return events.EventEmitter.emit('socket-error', 'Could not get board ID for user', err);    		
+		if (error) return callback('Could not get board ID for user')
 		self.socket.set('name', data.name, function() {
 			io.sockets.in(board).emit('board.name.set', {name: data.name, userId: self.socket.id});
 		});
 		self.db.setName(board, data.name, function(error) {
 			if (error) self.socket.emit('error', {message: "Board name not saved to database"})
 		});
+		callback()
 	});
 }
   
 Board.prototype.leave = function() {
 	var self = this
-	this.sanitizer.checkBoardId(board)
+	try {
+	    this.sanitizer.checkBoardId(board)
+	} catch (e) {
+		return this.socket.emit('error', {message: 'Illegal board ID provided'});
+	}	
 	this.socket.get('board', function(error, board) {
-		if (error) return events.EventEmitter.emit('storage-error', 'Error on user disconnect') 
+		if (error) return callback('Error on user disconnect'); 
     	self.socket.leave(board);
     	self.socket.broadcast.to(board).emit('user.leave', {userId: self.socket.id});
+    	callback()
 	});
 }
 
@@ -106,9 +114,7 @@ Board.prototype.setSanitizer = function(sanitizer) {
 	this.sanitizer = sanitizer
 }
 
-function Board() {
-	events.EventEmitter.call(this)
-}
+function Board() {}
 
 board = new Board();
 board.setSanitizer(sanitizer)
