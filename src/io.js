@@ -1,8 +1,9 @@
-httpServer = require('./server');
+var httpServer = require('./server');
 exports.io = io = require('socket.io').listen(httpServer.server);
-Session    = require('connect').middleware.session.Session;
-boards     = require('./database/boards');
-cardsDb    = require('./database/cards');
+var Session    = require('connect').middleware.session.Session;
+var boards     = require('./database/boards');
+var cardsDb    = require('./database/cards');
+var statistics = require('./statistics');
 
 io.configure(function (){
     io.set('authorization', function(data, accept) {
@@ -42,6 +43,8 @@ if (environment == 'production') {
 
 io.sockets.on('connection', function (socket) {
 
+    statistics.socketOpened()
+    
     user  = require('./classes/user');
     board = require('./classes/board');
 
@@ -55,8 +58,9 @@ io.sockets.on('connection', function (socket) {
      
     socket.on('disconnect', function() {
     	socket.get('board', function(error, board) {
-    		if (error) throw Error('Error on user disconnect', error); 
+    		if (error) return;
 	        socket.broadcast.to(board).emit('user.leave', {userId: socket.id});
+	        statistics.socketClosed()
 	    });
     });
     

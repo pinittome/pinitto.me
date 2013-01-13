@@ -10,13 +10,30 @@ require.config({
 		'growl': '/js/vendor/bootstrap-growl/jquery.bootstrap-growl',
 		'mousewheel': '/js/vendor/jquery-mousewheel/jquery.mousewheel',
 		'infinite': '/js/vendor/jquery-infinite-drag/javascripts/jquery.infinitedrag'
+	},
+	shim: {
+		'growl': {
+			deps: ['jquery', 'ui']
+		},
+		'infinite': {
+			deps: ['jquery', 'ui']
+		},
+		'bootstrap': {
+			deps: ['jquery', 'ui']
+		},
+		'ui': {
+			deps: ['jquery']
+		},
+		'socket': {
+			deps: ['socket.io']
+		}
 	}
 });
 
 require([
-	'jquery', 'viewport', 'user', 'card', 'util/notification', 
+	'jquery', 'viewport', 'user', 'card', 'util/notification', 'socket',
 	    'board/connection', 'analytics', 'board/infinite-drag', 'board', 'modernizer'], 
-	function($, viewport, user, card, notification) {
+	function($, viewport, user, card, notification, socket) {
 	
 	setTimeout(function() {
 		if (user.hasSetName == true) return;
@@ -26,6 +43,10 @@ require([
 			'delay' : 15000
 		});
 	}, 8000);
+	
+	socket.on('error', function(data) {
+		notification.add('ERROR: ' + data.message, 'error')
+	});
 	
 	/*
 	 * $('.viewport-container > div').css('transform-origin', '0px 0px');

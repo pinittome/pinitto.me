@@ -58,11 +58,12 @@ app.get('/', function (req, res) {
 });
 
 app.get('/login/*', function(req, res) {
-	if (!req.params[0]) throw err
+	if (!req.params[0]) res.redirect('/')
 	options          = JSON.parse(JSON.stringify(config.project))
 	options.pageName = 'Authorisation for board access'
 	options.totals   = totals
 	options.app      = config.app
+	options.referrer = req.header('Referer')
 	options.boardId  = req.params[0]
 	res.render('login', options)
 });
@@ -105,9 +106,9 @@ app.post('/login/*', function(req, res) {
     req.session.captcha = null;
 
     var id = req.param('board');
-    boardsDb.findOne({_id: utils.ObjectId(id)}, function(err, board) {
-    	if (err || (typeof(board) == undefined)) {
-    		throw Error('Board not found');
+    boardsDb.findOne({_id: utils.ObjectId(id)}, function(error, board) {
+    	if (error || (typeof(board) == undefined)) {
+    		res.render(404, {title: 'Board not found'})
     	}
         req.session.access = require('./access').getLevel(board, utils.hashPassword(req.param('password')));
         req.session.board  = id;
@@ -155,10 +156,10 @@ app.post('/create', function(req, res) {
 		if (req.param('password-admin') != '') {    			
 			parameters['access']['admin'] = utils.hashPassword(req.param('password-admin'));
 		}
-    	boardsDb.insert(parameters, function(err, newBoard) {
+    	boardsDb.insert(parameters, function(error, newBoard) {
     		req.session.access = require('./access').ADMIN;
 		    req.session.board  = newBoard[0]._id;
-    		if (err) throw err;
+    		if (error) throw Error(error);
     		if (req.xhr) {
     		    res.send({id: newBoard[0]._id}, 200);
     		} else {

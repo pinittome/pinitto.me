@@ -1,5 +1,4 @@
 define([], function() {
-	
     if (typeof(config.analytics) == 'undefined' 
         || typeof(config.analytics.google) == 'undefined' 
         || !config.analytics.google) return;

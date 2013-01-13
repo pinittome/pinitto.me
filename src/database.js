@@ -10,11 +10,11 @@ var db = new mongo.Db(
 	{auto_reconnect: true, safe: true},
 	{strict: false}
 );
-database = db.open(function(err, pClient) {
-    if (err) throw err;
+database = db.open(function(error, pClient) {
+    if (error) throw Error(error)
     if (config.database.username) {
     	db.authenticate(config.database.username, config.database.password, function (err, replies) {
-    		if (err) throw err;
+    		if (error) throw Error(error)
     		console.log("Successfully connected to database");
     	});
     } else {

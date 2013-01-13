@@ -7,6 +7,14 @@ require.config({
 		'config': '../config',
 		'bootstrap': 'vendor/bootstrap.min',
 		'ui': '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min'
+	},
+	shim: {
+		'bootstrap': {
+			deps: ['jquery', 'ui']
+		},
+		'ui': {
+			deps: ['jquery']
+		}
 	}
 });
 

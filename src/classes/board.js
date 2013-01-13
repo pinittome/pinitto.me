@@ -9,11 +9,13 @@ Board.prototype.setName = function(data) {
 	var self = this
 	var data = this.sanitizer.rename(data)
 	this.socket.get('board', function(error, board) {
-		if (error) throw Error('Could not get board ID for user', err);    		
+		if (error) return events.EventEmitter.emit('socket-error', 'Could not get board ID for user', err);    		
 		self.socket.set('name', data.name, function() {
 			io.sockets.in(board).emit('board.name.set', {name: data.name, userId: self.socket.id});
 		});
-		self.db.setName(board, data.name);
+		self.db.setName(board, data.name, function(error) {
+			if (error) self.socket.emit('error', {message: "Board name not saved to database"})
+		});
 	});
 }
   
@@ -21,7 +23,7 @@ Board.prototype.leave = function() {
 	var self = this
 	this.sanitizer.checkBoardId(board)
 	this.socket.get('board', function(error, board) {
-		if (error) throw Error('Error on user disconnect', err); 
+		if (error) return events.EventEmitter.emit('storage-error', 'Error on user disconnect') 
     	self.socket.leave(board);
     	self.socket.broadcast.to(board).emit('user.leave', {userId: self.socket.id});
 	});
@@ -49,7 +51,8 @@ Board.prototype.join = function(details) {
 			
 				userNameIndex = 1;
 				self.sendUserList(details);			
-				self.cardsDb.fetch(self.boardName, function(docs) {
+				self.cardsDb.fetch(self.boardName, function(error, docs) {
+					if (error) return self.socket.emit('error', {message: error})
 					self.socket.emit('card.list', docs);
 				});
 			});

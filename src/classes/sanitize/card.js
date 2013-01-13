@@ -10,8 +10,8 @@ CardSanitize = function(validator) {
 
 CardSanitize.prototype.move = function(data) {
 	this.checkCardId(data.cardId)
-	this.check(data.position.x, 'Illegal position sent').isInt()
-	this.check(data.position.y, 'Illegal position sent').isInt()
+	this.check(data.position.x, 'Illegal card position sent').isInt()
+	this.check(data.position.y, 'Illegal card position sent').isInt()
 	return data
 }
 

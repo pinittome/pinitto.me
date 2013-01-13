@@ -18,19 +18,20 @@ db.collection('cards', function(error, cards) {
 			{$set:{position:data.position}},
 			{w:1},
 			function(error, numberOfResults) {
-    			if (error || (numberOfResults != 1)) throw Error('Could not save new card position', error);
-    			callback();
+    			if (error || (numberOfResults != 1)) error ='Could not save new card position'
+    			callback(error);
     	    }
     	);
     }
     
-    exports.updateSize = function(data, board) {
+    exports.updateSize = function(data, board, callback) {
     	cards.update(
 			{_id: new utils.ObjectId(data.cardId), board: board},
 			{$set:{size:data.size}},
 			{w:1},
 			function(error, numberOfResults) {
-				if (error || (numberOfResults != 1)) throw Error('Could not save new card size', error);
+				if (error || (numberOfResults != 1)) error = 'Count not save new card size'
+				callback(error)
 			}
 	    );
     }
@@ -40,19 +41,20 @@ db.collection('cards', function(error, cards) {
 			{_id: new utils.ObjectId(data.cardId), board: board},
 			{w:1},
 			function(error, numberOfResults) {
-    			if (error || (numberOfResults != 1)) throw new Error('Card not deleted');
-    			callback();
+    			if (error || (numberOfResults != 1)) error = 'Deletion not saved to datastore'
+    			callback(error);
     		}
     	);
     }
     
-    exports.updateColour = function(data, board) {
+    exports.updateColour = function(data, board, callback) {
     	cards.update(
 			{_id: new utils.ObjectId(data.cardId), board: board},
 			{$set:{cssClass:data.cssClass}},
 			{w:1},
 			function(error, numberOfResults) {
-    			if (error) throw Error('Could not update card colour', error);
+    			if (error) error = 'Could not update card colour'
+    			callback(error)
     		}
 	    );
     }
@@ -63,27 +65,28 @@ db.collection('cards', function(error, cards) {
 			{$set:{zIndex:data.zIndex}},
 			{w:1},
 			function(error, numberOfResults) {
-    			if (error) throw Error('Could not save new card zIndex', error);
-    			callback();
+    			if (error) error = 'Could not save new card zIndex'
+    			callback(error);
     		}
 	    );
 	}
 	
-	exports.updateContent = function(data, board) {
+	exports.updateContent = function(data, board, callback) {
 		cards.update(
 			{_id: new utils.ObjectId(data.cardId), board: board},
 			{$set:{content:data.content}},
 			{w:1},
 			function(error, numberOfResults) {
-				if (error) throw Error('Could not save new card content', error);
+				if (error) error = 'Could not save new card content';
+				callback(error)
 			}
 	    );
 	}
 	
 	exports.fetch = function(boardId, callback) {
 		cards.find({board: boardId}).batchSize(10).toArray(function(error, cards) {
-		    if (error) throw Error('Can not load cards');
-		    callback(cards);
+		    if (error) callback('Can not load cards', null)
+		    callback(null, cards)
 		});
 	}
 });

@@ -22,12 +22,17 @@ Card.prototype.create = function(data) {
 
 Card.prototype.moved = function(data) {
 	var self = this
-	var data = this.sanitizer.move(data) 
+	try { 
+		var data = this.sanitizer.move(data)
+	} catch (e) { 
+		return this.socket.emit('error', {message: 'Illegal card position sent'})
+	} 
 	this.getBoard(function(board) { 
 		  	
     	self.socket.broadcast.to(board).emit('card.moving', data)
 
-		self.db.updatePosition(data, board, function(result) {
+		self.db.updatePosition(data, board, function(error) {
+			if (error) return self.socket.emit('error', {message: error})
             self.io.sockets.in(board).emit('card.moved', data);
 	    });
 	});
@@ -35,7 +40,11 @@ Card.prototype.moved = function(data) {
 
 Card.prototype.moving = function(data) {
 	var self = this
-	var data = this.sanitizer.move(data) 
+	try { 
+		var data = this.sanitizer.move(data)
+	} catch (e) { 
+		return this.socket.emit('error', {message: 'Illegal card position sent'})
+	}
 	this.getBoard(function(board) {        	
     	self.socket.broadcast.to(board).emit('card.moving', data);
     });
@@ -43,16 +52,26 @@ Card.prototype.moving = function(data) {
 
 Card.prototype.resize = function(data) {
 	var self = this
-	var data = this.sanitizer.resize(data)
+	try { 
+		var data = this.sanitizer.resize(data)
+	} catch (e) { 
+		return this.socket.emit('error', {message: 'Card size too small'})
+	}
 	this.getBoard(function(board) {     	
     	self.socket.broadcast.to(board).emit('card.resize', data);
-    	self.db.updateSize(data, board);
+    	self.db.updateSize(data, board, function(error) {
+    		if (error) self.socket.emit('error', {message:error})
+    	});
 	});
 };
 
 Card.prototype.remove = function(data) {
 	var self = this
-	this.sanitizer.checkCardId(data.cardId)
+	try { 
+		this.sanitizer.checkCardId(data.cardId)
+	} catch (e) { 
+		return this.socket.emit('error', {message: 'Illegal card ID'})
+	}
 	this.getBoard(function(board) {    	
         self.db.remove(data, board, function() {
         	data.name = self.socket.get('name', function(error, name) {
@@ -69,9 +88,16 @@ Card.prototype.remove = function(data) {
 
 Card.prototype.changeColour = function(data) {
 	var self = this
+	try { 
+		var data = this.sanitizer.changeColour(data)
+	} catch (e) { 
+		return this.socket.emit('error', {message: 'Illegal card colour data provided'})
+	}
 	this.getBoard(function(board) {   	
 		self.socket.broadcast.to(board).emit('card.colour', data); 
-		self.db.updateColour(data, board);        
+		self.db.updateColour(data, board, function(error) {
+			self.socket.emit('error', {message:error})
+		});        
 	});
 }
 
@@ -79,7 +105,8 @@ Card.prototype.stackOrder = function(data) {
 	var self = this
 	this.getBoard(function(board) {
 		self.socket.broadcast.to(board).emit('card.zIndex', data);
-		self.db.updateOrder(data, board, function() {
+		self.db.updateOrder(data, board, function(error) {
+			if (error) return self.socket.emit('error', {message:error})
 			self.io.sockets.in(board).emit('card.zIndex', data);
 		});
 	});
@@ -87,14 +114,22 @@ Card.prototype.stackOrder = function(data) {
 
 Card.prototype.textChange = function(data) {
 	var self = this
+	try { 
+		var data = this.sanitizer.content(data)
+	} catch (e) { 
+		return this.socket.emit('error', {message: 'Illegal card content sent'})
+	}
 	this.getBoard(function(board) {       	
     	self.socket.broadcast.to(board).emit('card.text-change', data);
-    	self.db.updateContent(data, board);
+    	self.db.updateContent(data, board, function(error) {
+    		if (error) self.socket.emit('error', {message:error})
+    	});
 	});
 }
 Card.prototype.getBoard = function(callback) {
+	var self = this;
     this.socket.get('board', function(error, board) {
-        if (error) throw Error('Could not get board ID for user', error);
+        if (error) return self.socket.emit('error', {message:'Could not get board ID for user', action: 'reload'});
         callback(board);
     });
 }
