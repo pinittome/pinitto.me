@@ -10,7 +10,8 @@ Card.prototype.create = function(data) {
 		console.log("TODO: Get default card details from config");
 	    console.log("TODO: Check card create data is valid");
 
-		self.db.add(data, function(result) {
+		self.db.add(data, function(error, result) {
+			if (error) return self.socket.emit('error', {message: 'New card could not be created'})
 			data.cardId = result[0]._id;
 			self.io.sockets.in(board).emit('card.created', data);
 			statistics.cardAdded();
