@@ -48,6 +48,10 @@ require([
 		notification.add('ERROR: ' + data.message, 'error')
 	});
 	
+	setTimeout(function() {
+		if (window.location.hash) card.scrollTo(window.location.hash.replace('#', '')) 
+	}, 500)
+
 	/*
 	 * $('.viewport-container > div').css('transform-origin', '0px 0px');
 	   $('.viewport-container').bind('mousewheel', function(event, delta) {

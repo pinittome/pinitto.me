@@ -3,9 +3,6 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 	
 	Card.prototype.bringToFront = function(event, element) {
 
-		//if (this instanceof HTMLDivElement) {
-		//	element = this;
-		//}
 		if (element.helper) element = element.helper
 
 		if ($(element).css('z-index') != this.board.zIndex) {
@@ -118,7 +115,11 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 			css = 'card-' + data.cssClass;
 		}
 		cardListEntry.addClass(css);
-		card.addClass(css)
+		card.addClass(css);
+		
+		anchor = document.createElement('a');
+		$(anchor).attr('name', data.cardId);
+		$(anchor).appendTo($(div));
 		
 		controls = document.createElement('div');
 		$(controls).attr('class', 'controls');
@@ -127,8 +128,8 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 			+ '&nbsp;&nbsp;<i class="icon-remove card-delete" title="Delete card">&nbsp;</i> '
 		    + '<i class="icon-eye-open card-colour" title="Change card colour">&nbsp;</i> '
 			+ '<i class="icon-move card-move">&nbsp;</i> '
-			+ '<i>drag to move...</i>'
-		);
+			+ '<i>drag to move...</i>')
+		
 		$(controls).appendTo($(div));
 
 		textarea = document.createElement('textarea');
@@ -252,7 +253,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 	     $('#' + $(this).attr('id').replace('entry-', '')).removeClass('highlight');	
 	});
 	$('li.card-list').on('click', 'li', function(event) {
-	     cardEntity.scrollTo($(this).attr('id').replace('entry-', ''));	
+	     cardEntity.scrollTo($(this).attr('id').replace('entry-', ''));
 	});
 	
 	socket.on('card.colour', function(data){
