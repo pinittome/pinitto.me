@@ -38,16 +38,17 @@ Board.prototype.leave = function() {
 }
 
 Board.prototype.join = function(details) {
+
     this.board     = details.id
 	this.boardName = '/' + this.board
-    var self      = this
-    
+    var self       = this
+    console.log(this.socket.handshake.sessionID, this.session);
 	this.session.get(this.socket.handshake.sessionID, function(error, session) {
-    
 		if (error 
 			|| (session.board != self.board) 
 		    || !utils.inArray(session.access, [access.ADMIN, access.WRITE, access.READ])
-		) {		
+		) {
+			console.log("User is not allowed to view this board", session);
 			self.socket.emit('connect.fail', 'You are not authorised to view this board');
 			self.socket.disconnect();
 			return;
@@ -59,12 +60,18 @@ Board.prototype.join = function(details) {
 			
 				userNameIndex = 1;
 				self.sendUserList(details);			
-				self.cardsDb.fetch(self.boardName, function(error, docs) {
-					if (error) return self.socket.emit('error', {message: error})
-					self.socket.emit('card.list', docs);
-				});
+				self.sendCardList()
 			});
 		});
+	});
+}
+
+Board.prototype.sendCardList = function() {
+	var self = this;
+	console.log("--------- Trying to send cards");
+	this.cardsDb.fetch(this.boardName, function(error, docs) {
+	    if (error) return this.socket.emit('error', {message: error})
+		self.socket.emit('card.list', docs);
 	});
 }
 

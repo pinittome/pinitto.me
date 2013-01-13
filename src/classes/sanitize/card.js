@@ -25,15 +25,15 @@ CardSanitize.prototype.create = function(data) {
 
 CardSanitize.prototype.changeColour = function(data) {
 	this.checkCardId(data.cardId)
-	data.cssClass = this.santize(data.cssClass).trim()
+	data.cssClass = this.sanitizer(data.cssClass).trim()
 	this.check(data.cssClass, ' ').isAlpha().notEmpty()
 	return data
 }
 
 CardSanitize.prototype.content = function(data) {
 	this.checkCardId(data.cardId)
-	data.content = this.sanitize(data.content).entityEncode()
-	data.content = this.sanitize(data.content).xss()
+	data.content = this.sanitizer(data.content).entityEncode()
+	data.content = this.sanitizer(data.content).xss()
 	return data
 }
 

@@ -8,17 +8,17 @@ var statistics = require('./statistics');
 io.configure(function (){
     io.set('authorization', function(data, accept) {
 	    if (!data.headers.cookie) {
-	    	accept(null, true);
+	    	return accept('No cookie received', true);
 	    }
         data.cookies      = require('cookie').parse(data.headers.cookie);
         data.cookies      = require('cookie').parse(data.headers.cookie, config.cookie.secret);
         data.sessionID    = data.cookies['connect.sid'].split('.')[0].split(':')[1];
         data.sessionStore = require('./session').store;
-
         require('./session').store.get(data.sessionID, function(error, session) {
 	        if (error || !session) {
 	            console.log("ERROR", err);
 	            console.log("session:", session);
+	            return accept('No session', false);
 	        }
 	        data.session = new Session(data, session);
 	        data.session.save();

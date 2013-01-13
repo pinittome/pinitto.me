@@ -92,12 +92,13 @@ Card.prototype.changeColour = function(data) {
 	try { 
 		var data = this.sanitizer.changeColour(data)
 	} catch (e) { 
+		console.log(e)
 		return this.socket.emit('error', {message: 'Illegal card colour data provided'})
 	}
 	this.getBoard(function(board) {   	
 		self.socket.broadcast.to(board).emit('card.colour', data); 
 		self.db.updateColour(data, board, function(error) {
-			self.socket.emit('error', {message:error})
+			if (error) self.socket.emit('error', {message:error})
 		});        
 	});
 }

@@ -151,38 +151,38 @@ app.post('/create', function(req, res) {
        }
     }
  
-    	parameters = { owner: req.param('owner'), 'access': {}};
-		if (req.param('board-name') != '') parameters['name'] = req.param('board-name');
-		if (req.param('password-admin') != '') {    			
-			parameters['access']['admin'] = utils.hashPassword(req.param('password-admin'));
-		}
-    	boardsDb.insert(parameters, function(error, newBoard) {
-    		req.session.access = require('./access').ADMIN;
-		    req.session.board  = newBoard[0]._id;
-    		if (error) throw Error(error);
-    		if (req.xhr) {
-    		    res.send({id: newBoard[0]._id}, 200);
-    		} else {
-    			res.redirect('/' + newBoard[0]._id);
-    		}  
-    		require('./statistics').boardCreated();  		
-    	});
+	parameters = { owner: req.param('owner'), 'access': {}};
+	if (req.param('board-name') != '') parameters['name'] = req.param('board-name');
+	if (req.param('password-admin') != '') {    			
+		parameters['access']['admin'] = utils.hashPassword(req.param('password-admin'));
+	}
+	boardsDb.insert(parameters, function(error, newBoard) {
+		req.session.access = require('./access').ADMIN;
+	    req.session.board  = newBoard[0]._id;
+		if (error) throw Error(error);
+		if (req.xhr) {
+		    res.send({id: newBoard[0]._id}, 200);
+		} else {
+			res.redirect('/' + newBoard[0]._id);
+		}  
+		require('./statistics').boardCreated();  		
+	});
 });
 
 
 // Anything else must be a board link
 app.get('/*', function(req, res) {
 	
-	id = req.params[0];
+	var id      = req.params[0];
 	var board   = {};
     var options =  JSON.parse(JSON.stringify(config.project));
     options.app = config.app
    
 	console.log("Trying to load board " + id);
 	if (id.length != 24) {
-		options.title = 'Page not found'
+		options.title   = 'Page not found'
 		options.message = 'This page doesn\'t exist'
-		options.type = 'page'
+		options.type    = 'page'
 		res.render(404, options)
 		return;
 	}
@@ -202,7 +202,6 @@ app.get('/*', function(req, res) {
 		}
 		
 		allowedAccess = false;
-		
 		if (req.session.access 
 			&& req.session.board 
 			&& (id == req.session.board)
@@ -212,17 +211,16 @@ app.get('/*', function(req, res) {
 		} else if (access.NONE != access.getLevel(board, "")) {
 			allowedAccess = true;
 		}
-		console.log(board)
-		console.log("User is allowed access: " + allowedAccess, req.session, id);
+		console.log("User is allowed access: " + allowedAccess, board, req.session, id);
 		if (false == allowedAccess) {
 			return res.redirect('/login/' + id);
 		}
-		name = board.name ? board.name : id
+		name                = board.name ? board.name : id
 		options._layoutFile = 'layouts/board';
-		options.boardId = id;
-		options.boardName = name;
-		req.session.access = req.session.access ? req.session.access : require('./access').ADMIN;
-		req.session.board = id;
+		options.boardId     = id;
+		options.boardName   = name;
+		req.session.access  = req.session.access ? req.session.access : require('./access').ADMIN;
+		req.session.board   = id;
 		res.render('board', options);
 	});
 });
