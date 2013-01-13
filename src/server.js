@@ -188,16 +188,17 @@ app.get('/*', function(req, res) {
 	}
 	boardsDb.findOne({_id: utils.ObjectId(id)}, function(error, board) {
 		if (error) {
-			options.title = "Something is up with our datastore"
+			options.title   = "Something is up with our datastore"
 			options.message = "Something has gone around somewhere. Will have beat the sys admin again"
-			options.type = 'datastore'
-			res.render(500);
+			options.type    = 'datastore'
+			return res.render(500, options);
 		}
+		
 		if (!board) {
-			options.title = "Board not found"
+			options.title   = "Board not found"
 			options.message = "Can't find your board anywhere, are you sure you've got the ID right?"
-			options.type = 'board'
-			res.render(404);
+			options.type    = 'board'
+			return res.render(404, options);
 		}
 		
 		allowedAccess = false;
