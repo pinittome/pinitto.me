@@ -16,6 +16,6 @@ exports.hashPassword = function(password) {
     return sha1.digest('hex');
 }
 
-exports.totals = { cards: 0, boards: 0 };
+exports.totals = { cards: 0, boards: 0, sockets: 0 };
 
 exports.ObjectId = require('mongodb').ObjectID;

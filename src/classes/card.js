@@ -79,7 +79,9 @@ Card.prototype.remove = function(data) {
 				}
 				data.name = name;
 	        	self.io.sockets.in(board).emit('card.delete', data);	
-	    		self.statistics.cardRemoved();
+	    		self.statistics.cardRemoved(function(error) {
+	    			if (error) self.socket.emit('error', {message:error})
+	    		});
 	    	});
         });
 	});
@@ -147,9 +149,7 @@ Card.prototype.setIo = function(io) {
 Card.prototype.setSanitizer = function(sanitizer) {
 	this.sanitizer = sanitizer
 }
-function Card() {
-	events.EventEmitter.call(this)
-}
+function Card() {}
 
 card = new Card();
 card.setStatistics(statistics)

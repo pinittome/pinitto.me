@@ -1,7 +1,4 @@
 var validator = require('validator');
-validator.error = function(message) {
-    throw Error(message)
-}
 
 CardSanitize = function(validator) {
     this.sanitizer = validator.sanitize

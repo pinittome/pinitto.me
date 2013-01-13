@@ -6,5 +6,8 @@ define(['socket'], function(socket) {
 		if ($('.totals-boards')) {
 			$('.totals-boards').html(data.boards);
 		}
+		if ($('.totals-sockets')) {
+			$('.totals-sockets').html(data.sockets);
+		}
 	});
 })
