@@ -68,7 +68,6 @@ Board.prototype.join = function(details) {
 
 Board.prototype.sendCardList = function() {
 	var self = this;
-	console.log("--------- Trying to send cards");
 	this.cardsDb.fetch(this.boardName, function(error, docs) {
 	    if (error) return this.socket.emit('error', {message: error})
 		self.socket.emit('card.list', docs);
