@@ -31,9 +31,16 @@ require.config({
 });
 
 require([
-	'jquery', 'viewport', 'user', 'card', 'util/notification', 'socket',
-	    'board/connection', 'analytics', 'board/infinite-drag', 'board', 'modernizer'], 
-	function($, viewport, user, card, notification, socket) {
+	'jquery', 'viewport', 'user', 'card', 'util/notification', 'socket', 'board',
+	    'board/connection', 'analytics', 'board/infinite-drag', 'modernizer'], 
+	function($, viewport, user, card, notification, socket, board) {
+	
+	$('.card').each(function(entry) {
+		console.log(this)
+		if ($(this).css('z-index') > board.zIndex) board.zIndex = $(this).css('z-index')
+		card.dynamify($(this).attr('id'));
+		card.addControls($(this).attr('id'))
+	});
 	
 	setTimeout(function() {
 		if (user.hasSetName == true) return;
@@ -47,10 +54,8 @@ require([
 	socket.on('error', function(data) {
 		notification.add('ERROR: ' + data.message, 'error')
 	});
-	
-	setTimeout(function() {
-		if (window.location.hash) card.scrollTo(window.location.hash.replace('#', '')) 
-	}, 500)
+
+	if (window.location.hash) card.scrollTo(window.location.hash.replace('#', ''));
 
 	/*
 	 * $('.viewport-container > div').css('transform-origin', '0px 0px');

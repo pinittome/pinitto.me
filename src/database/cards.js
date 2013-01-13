@@ -1,10 +1,9 @@
 var db       = require('../database').connection,
-    utils    = require('../util.js'),
-    util     = require('util'),
-    events   = require('events');
+    utils    = require('../util.js');
 
 db.collection('cards', function(error, cards) {
 	if (error) throw Error('Can not load cards collection')
+
     exports.db = cards;
     
     exports.add = function(data, callback) {

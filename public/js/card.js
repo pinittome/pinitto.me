@@ -47,7 +47,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 	Card.prototype.scrollTo = function(id) {
         var viewport = $('.viewport');
         var element = $('#' + id);
-        
+        if (element.length == 0) return;
         newOffsetX = (window.innerWidth / 2) 
             - (parseFloat(viewport.css('left').replace('px', '')) + parseFloat(element.css('left').replace('px', '')))
             - (parseFloat(element.css('width').replace('px', '')) / 2);
@@ -117,16 +117,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 		$(anchor).attr('name', data.cardId);
 		$(anchor).appendTo($(div));
 		
-		controls = document.createElement('div');
-		$(controls).attr('class', 'controls');
-		$(controls).append(''
-			+ '<i class="icon-resize-full card-resize" title="Resize card">&nbsp;</i>'
-			+ '&nbsp;&nbsp;<i class="icon-remove card-delete" title="Delete card">&nbsp;</i> '
-		    + '<i class="icon-eye-open card-colour" title="Change card colour">&nbsp;</i> '
-			+ '<i class="icon-move card-move">&nbsp;</i> '
-			+ '<i>drag to move...</i>')
 		
-		$(controls).appendTo($(div));
 
 		textarea = document.createElement('textarea');
 		$(textarea).appendTo($(div));
@@ -140,9 +131,11 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 		if (data.content) {
 			$(card).find('textarea').val(data.content);
 		}	
+		this.addControls(data.cardId);
 		this.setPosition(data.cardId, data.position);
 	}
 	Card.prototype.dynamify = function(id) {
+		var self = this;
 		$('#' + id).draggable({
 			cursor : "move",
 			keyboard : true,
@@ -176,6 +169,18 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 			}
 	    });
 	}
+	Card.prototype.addControls = function(id) {
+		controls = document.createElement('div');
+		$(controls).attr('class', 'controls');
+		$(controls).append(''
+			+ '<i class="icon-resize-full card-resize" title="Resize card">&nbsp;</i>'
+			+ '&nbsp;&nbsp;<i class="icon-remove card-delete" title="Delete card">&nbsp;</i> '
+		    + '<i class="icon-eye-open card-colour" title="Change card colour">&nbsp;</i> '
+			+ '<i class="icon-move card-move">&nbsp;</i> '
+			+ '<i>drag to move...</i>')
+		
+		$(controls).appendTo($("#" + id));
+	}
 	Card.prototype.addCardListEntry = function(data) {
 		content = "<i>No content</i>";
 		if (data.content && data.content != '') {
@@ -184,7 +189,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 		cardListEntry = $(document.createElement('li'));
 		cardListEntry.attr('id', 'entry-' + data.cardId);
 		cardListEntry.addClass(css);
-		cardListEntry.append('<a href="#">' + content + '</a>');
+		cardListEntry.append('<a href="#' + data.cardId + '" onclick="return false;">' + content + '</a>');
 		$('.card-list').find('li.no-cards').addClass('hidden');
 	    ul = $('.card-list').find('ul');
 	    cardListEntry.appendTo($(ul));
@@ -207,11 +212,10 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 	});
 	socket.on('card.list', function(data) {
 		data.forEach(function(d) {
-			if ($('#' + d._id)) {
-				$('#' + d._id).remove();
+			if ($('#' + d._id).length == 0) {
+				d.cardId = d._id;
+				cardEntity.create(d);
 			}
-			d.cardId = d._id;
-			cardEntity.create(d);
 		});
 	});
 	socket.on('card.created', function(data) {

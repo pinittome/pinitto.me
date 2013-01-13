@@ -13,8 +13,8 @@ io.configure(function (){
         data.cookies      = require('cookie').parse(data.headers.cookie);
         data.cookies      = require('cookie').parse(data.headers.cookie, config.cookie.secret);
         data.sessionID    = data.cookies['connect.sid'].split('.')[0].split(':')[1];
-        data.sessionStore = require('./session').store;
-        require('./session').store.get(data.sessionID, function(error, session) {
+        data.sessionStore = require('./database/session').store;
+        require('./database/session').store.get(data.sessionID, function(error, session) {
 	        if (error || !session) {
 	            console.log("ERROR", err);
 	            console.log("session:", session);
@@ -48,7 +48,7 @@ io.sockets.on('connection', function (socket) {
     user  = require('./classes/user');
     board = require('./classes/board');
 
-    board.setParams(boards, require('./session').store, cardsDb);
+    board.setParams(boards, require('./database/session').store, cardsDb);
     card  = require('./classes/card');
     card.setDatabase(cardsDb);
  

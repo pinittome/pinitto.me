@@ -1,9 +1,9 @@
 var express = require('express')
   , app = express()
   , engine = require('ejs-locals')
-  , sessionStore = require('./session').store
-  , totals = require('./util').totals
   , boardsDb = require('./database/boards').db
+  , sessionStore = require('./database/session').store
+  , totals = require('./util').totals
   , sanitize = require('validator').sanitize  
   , connect = require('connect')
   , Session = connect.middleware.session.Session
@@ -215,12 +215,23 @@ app.get('/*', function(req, res) {
 		if (false == allowedAccess) {
 			return res.redirect('/login/' + id);
 		}
-		name                = board.name ? board.name : id
-		options._layoutFile = 'layouts/board';
-		options.boardId     = id;
-		options.boardName   = name;
-		req.session.access  = req.session.access ? req.session.access : require('./access').ADMIN;
-		req.session.board   = id;
-		res.render('board', options);
+		var cardsDb = require('./database/cards')
+		cardsDb.fetch('/'+id, function(error, cards) {
+			if (error) {
+				options.title   = "Something is up with our datastore"
+				options.message = "Something has gone around somewhere. Will have beat the sys admin again"
+				options.type    = 'datastore'
+				return res.render(500, options);
+			}
+			console.log('******', cards);
+			name                = board.name || id
+			options._layoutFile = 'layouts/board';
+			options.boardId     = id;
+			options.boardName   = name;
+			options.cards       = cards;
+			req.session.access  = req.session.access ? req.session.access : require('./access').ADMIN;
+			req.session.board   = id;
+			res.render('board', options);
+		});
 	});
 });
