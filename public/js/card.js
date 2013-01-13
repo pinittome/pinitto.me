@@ -93,17 +93,13 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
         	stackOrder = this.board.zIndex++;
         	socket.emit('card.zIndex', {cardId: data.cardId, zIndex: stackOrder});
         }
-		div = document.createElement('div');
-		
-		cardListEntry = $(document.createElement('li'));
-		cardListEntry.attr('id', 'entry-' + data.cardId);
-		content = "<i>No content</i>";
-		if (data.content && data.content != '') {
-			content = data.content.substring(0, 30) + '...';
-		}
-		cardListEntry.append('<a href="#">' + content + '</a>');
-	        
-		card = $(div).attr('class', 'card draggable')
+		this.draw(data)		
+	    this.addCardListEntry(data)
+	    this.dynamify(data.cardId)
+	}
+	Card.prototype.draw = function(data) {
+		div     = document.createElement('div');        
+		card    = $(div).attr('class', 'card draggable')
 		    .attr('id', data.cardId)
 		    .attr('draggable', 'true')
 		    .css('z-index', stackOrder)
@@ -114,7 +110,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 		if (data.cssClass) {
 			css = 'card-' + data.cssClass;
 		}
-		cardListEntry.addClass(css);
+			    
 		card.addClass(css);
 		
 		anchor = document.createElement('a');
@@ -137,7 +133,17 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 		$(textarea).css('width', parseFloat(data.size.width - 10))
 		    .css('height', parseFloat(data.size.height - 10));
         var self = this
-		card.draggable({
+		
+		if (data.size) {
+			$(card).width(data.size.width).height(data.size.height);
+		}
+		if (data.content) {
+			$(card).find('textarea').val(data.content);
+		}	
+		this.setPosition(data.cardId, data.position);
+	}
+	Card.prototype.dynamify = function(id) {
+		$('#' + id).draggable({
 			cursor : "move",
 			keyboard : true,
 			delay : 0,
@@ -151,15 +157,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 			scroll: true,
 			iframeFix: true
 		});
-		if (data.size) {
-			$(card).width(data.size.width).height(data.size.height);
-		}
-		if (data.content) {
-			$(card).find('textarea').val(data.content);
-		}
-				
-		this.setPosition(data.cardId, data.position);
-		$(card).resizable({
+		$('#' + id).resizable({
 			minHeight: 15,
 			minWidth: 15,
 			handles: 'se',
@@ -177,8 +175,17 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 				});
 			}
 	    });
-	    
-	    $('.card-list').find('li.no-cards').addClass('hidden');
+	}
+	Card.prototype.addCardListEntry = function(data) {
+		content = "<i>No content</i>";
+		if (data.content && data.content != '') {
+			content = data.content.substring(0, 30) + '...';
+		}
+		cardListEntry = $(document.createElement('li'));
+		cardListEntry.attr('id', 'entry-' + data.cardId);
+		cardListEntry.addClass(css);
+		cardListEntry.append('<a href="#">' + content + '</a>');
+		$('.card-list').find('li.no-cards').addClass('hidden');
 	    ul = $('.card-list').find('ul');
 	    cardListEntry.appendTo($(ul));
 	}

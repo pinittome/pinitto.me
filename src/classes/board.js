@@ -57,7 +57,6 @@ Board.prototype.join = function(details) {
 		self.socket.set('access', session.access, function() {
 			self.socket.set('board', '/' + self.board, function() {
 				self.socket.join(self.boardName);
-			
 				userNameIndex = 1;
 				self.sendUserList(details);			
 				self.sendCardList()
