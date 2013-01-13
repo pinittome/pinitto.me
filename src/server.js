@@ -117,7 +117,7 @@ app.post('/login/*', function(req, res) {
         	return;
         }
         options.errors = { 'error': 'Incorrect password for this board' };
-        res.redirect('/login/' + id);
+        res.redirect('/login/' + id)
     });
 });
 
@@ -172,21 +172,33 @@ app.post('/create', function(req, res) {
 
 // Anything else must be a board link
 app.get('/*', function(req, res) {
-	if (!req.params[0]) throw err;
+	
 	id = req.params[0];
-
 	var board   = {};
     var options =  JSON.parse(JSON.stringify(config.project));
     options.app = config.app
    
 	console.log("Trying to load board " + id);
 	if (id.length != 24) {
-		res.send(404);
+		options.title = 'Page not found'
+		options.message = 'This page doesn\'t exist'
+		options.type = 'page'
+		res.render(404, options)
 		return;
 	}
 	boardsDb.findOne({_id: utils.ObjectId(id)}, function(error, board) {
-		if (error) throw Error('Oh crap! Something is really wrong, we\'re on it!', error);
-		if (!board) return res.send(404);
+		if (error) {
+			options.title = "Something is up with our datastore"
+			options.message = "Something has gone around somewhere. Will have beat the sys admin again"
+			options.type = 'datastore'
+			res.render(500);
+		}
+		if (!board) {
+			options.title = "Board not found"
+			options.message = "Can't find your board anywhere, are you sure you've got the ID right?"
+			options.type = 'board'
+			res.render(404);
+		}
 		
 		allowedAccess = false;
 		
