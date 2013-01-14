@@ -42,7 +42,7 @@ Board.prototype.join = function(details) {
     this.board     = details.id
 	this.boardName = '/' + this.board
     var self       = this
-    console.log(this.socket.handshake.sessionID, this.session);
+    
 	this.session.get(this.socket.handshake.sessionID, function(error, session) {
 		if (error 
 			|| (session.board != self.board) 
@@ -67,6 +67,7 @@ Board.prototype.join = function(details) {
 
 Board.prototype.sendCardList = function() {
 	var self = this;
+	console.log("Sending card list for board " + this.boardName)
 	this.cardsDb.fetch(this.boardName, function(error, docs) {
 	    if (error) return this.socket.emit('error', {message: error})
 		self.socket.emit('card.list', docs);
@@ -75,6 +76,7 @@ Board.prototype.sendCardList = function() {
 
 Board.prototype.sendUserList = function(details) {
 	var name;
+	console.log("Sending user list for board " + this.boardName)
 	var clients = io.sockets.clients(this.boardName);
 	var self = this;
 	
