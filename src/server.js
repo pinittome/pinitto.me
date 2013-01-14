@@ -209,9 +209,9 @@ app.get('/*', function(req, res) {
 		) {
 			allowedAccess = true;		
 		} else if (access.NONE != access.getLevel(board, "")) {
-			allowedAccess = true;
+			allowedAccess = true; 
 		}
-		console.log("User is allowed access: " + allowedAccess, board, req.session, id);
+
 		if (false == allowedAccess) {
 			return res.redirect('/login/' + id);
 		}
@@ -223,7 +223,6 @@ app.get('/*', function(req, res) {
 				options.type    = 'datastore'
 				return res.render(500, options);
 			}
-			console.log('******', cards);
 			name                = board.name || id
 			options._layoutFile = 'layouts/board';
 			options.boardId     = id;
