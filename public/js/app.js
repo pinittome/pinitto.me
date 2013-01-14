@@ -35,8 +35,7 @@ require([
 	    'board/connection', 'analytics', 'board/infinite-drag', 'modernizer'], 
 	function($, viewport, user, card, notification, socket, board) {
 	
-	$('.card').each(function(entry) {
-		console.log(this)
+	$('.card').each(function() {
 		if ($(this).css('z-index') > board.zIndex) board.zIndex = $(this).css('z-index')
 		card.dynamify($(this).attr('id'));
 		card.addControls($(this).attr('id'))

@@ -16,7 +16,7 @@ io.configure(function (){
         data.sessionStore = require('./database/session').store;
         require('./database/session').store.get(data.sessionID, function(error, session) {
 	        if (error || !session) {
-	            console.log("ERROR", err);
+	            console.log("ERROR", error);
 	            console.log("session:", session);
 	            return accept('No session', false);
 	        }
@@ -51,6 +51,7 @@ io.sockets.on('connection', function (socket) {
     board.setParams(boards, require('./database/session').store, cardsDb);
     card  = require('./classes/card');
     card.setDatabase(cardsDb);
+    card.setSocketContext(socket);
  
     socket.on('statistics.join', function() {
     	socket.join('/');

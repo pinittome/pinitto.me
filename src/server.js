@@ -57,17 +57,6 @@ app.get('/', function (req, res) {
    res.render('index', options)
 });
 
-app.get('/login/*', function(req, res) {
-	if (!req.params[0]) res.redirect('/')
-	options          = JSON.parse(JSON.stringify(config.project))
-	options.pageName = 'Authorisation for board access'
-	options.totals   = totals
-	options.app      = config.app
-	options.referrer = req.header('Referer')
-	options.boardId  = req.params[0]
-	res.render('login', options)
-});
-
 app.get('/logout', function(req, res) {
 	res.clearCookie(config.cookie.key);
     req.session.destroy(function() {});
@@ -85,6 +74,17 @@ app.get('/about', function(req, res) {
 	options.app      = config.app
 	options.pageName = 'About ' + options.name;
 	res.render('about', options);
+});
+
+app.get('/login/*', function(req, res) {
+	if (!req.params[0]) res.redirect('/')
+	options          = JSON.parse(JSON.stringify(config.project))
+	options.pageName = 'Authorisation for board access'
+	options.totals   = totals
+	options.app      = config.app
+	options.referrer = req.header('Referer')
+	options.boardId  = req.params[0]
+	res.render('login', options)
 });
 
 app.post('/login/*', function(req, res) {

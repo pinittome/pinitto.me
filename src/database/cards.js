@@ -84,6 +84,7 @@ db.collection('cards', function(error, cards) {
 	}
 	
 	exports.fetch = function(boardId, callback) {
+        if (boardId.length != 25) return callback("Invalid board ID provided", []);
 		cards.find({board: boardId}).batchSize(10).toArray(function(error, cards) {
 		    if (error) callback('Can not load cards', null)
 		    callback(null, cards)

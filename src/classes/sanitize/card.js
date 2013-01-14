@@ -7,15 +7,15 @@ CardSanitize = function(validator) {
 
 CardSanitize.prototype.move = function(data) {
 	this.checkCardId(data.cardId)
-	this.check(data.position.x, 'Illegal card position sent').isInt()
-	this.check(data.position.y, 'Illegal card position sent').isInt()
+	this.check(data.position.x, 'Illegal card position sent').isNumeric()
+	this.check(data.position.y, 'Illegal card position sent').isNumeric()
 	return data
 }
 
 CardSanitize.prototype.resize = function(data) {
 	this.checkCardId(data.cardId)
-	this.check(data.size.width, 'Illegal card size sent').isInt().min(5)
-	this.check(data.size.height, 'Illegal card size sent').isInt().min(5)
+	this.check(data.size.width, 'Illegal card size sent').isNumeric().min(5)
+	this.check(data.size.height, 'Illegal card size sent').isNumeric().min(5)
 	return data
 }
 
@@ -39,7 +39,7 @@ CardSanitize.prototype.content = function(data) {
 
 CardSanitize.prototype.stackOrder = function(data) {
 	this.checkCardId(data.cardId)
-	this.check(data.zIndex).isInt().min(100)
+	this.check(data.zIndex).isNumeric().min(100)
 	return data
 }
 
