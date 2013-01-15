@@ -4,6 +4,10 @@ var Session    = require('connect').middleware.session.Session;
 var boards     = require('./database/boards');
 var cardsDb    = require('./database/cards');
 var statistics = require('./statistics');
+var sanitizer = require('./classes/sanitize/board');
+
+Board = require('./classes/board');
+Card  = require('./classes/card');
 
 io.configure(function (){
     io.set('authorization', function(data, accept) {
@@ -45,13 +49,15 @@ io.sockets.on('connection', function (socket) {
 
     statistics.socketOpened()
     
-    user  = require('./classes/user');
-    board = require('./classes/board');
-
+    var user  = require('./classes/user');
+       
+    var board = new Board()    
+    board.setSanitizer(sanitizer)
     board.setParams(boards, require('./database/session').store, cardsDb);
-    card  = require('./classes/card');
-    card.setDatabase(cardsDb);
+    
+    var card = new Card()
     card.setSocketContext(socket);
+    card.setIo(io);
  
     socket.on('statistics.join', function() {
     	socket.join('/');

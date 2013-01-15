@@ -1,7 +1,9 @@
-var io         = require('../io').io,
+var santizier  = require('./sanitize/card'),
     statistics = require('../statistics'),
-    sanitizer  = require('./sanitize/card');
-    
+    db         = require('../database/cards')
+
+module.exports = Card = function Card(){};
+
 Card.prototype.create = function(data) {
 	var self = this
 	this.getBoard(function(board) {
@@ -10,7 +12,7 @@ Card.prototype.create = function(data) {
 		console.log("TODO: Get default card details from config");
 	    console.log("TODO: Check card create data is valid");
 
-		self.db.add(data, function(error, result) {
+		db.add(data, function(error, result) {
 			if (error) return self.socket.emit('error', {message: 'New card could not be created'})
 			data.cardId = result[0]._id;
 			self.io.sockets.in(board).emit('card.created', data);
@@ -22,15 +24,16 @@ Card.prototype.create = function(data) {
 Card.prototype.moved = function(data) {
 	var self = this
 	try { 
-		var data = this.sanitizer.move(data)
-	} catch (e) { 
+		var data = santizier.move(data)
+	} catch (e) {
+		console.log(e, data)
 		return this.socket.emit('error', {message: 'Illegal card position sent'})
 	} 
 	this.getBoard(function(board) { 
 		  	
     	self.socket.broadcast.to(board).emit('card.moving', data)
 
-		self.db.updatePosition(data, board, function(error) {
+		db.updatePosition(data, board, function(error) {
 			if (error) return self.socket.emit('error', {message: error})
             self.io.sockets.in(board).emit('card.moved', data);
 	    });
@@ -40,8 +43,9 @@ Card.prototype.moved = function(data) {
 Card.prototype.moving = function(data) {
 	var self = this
 	try { 
-		var data = this.sanitizer.move(data)
-	} catch (e) { 
+		var data = santizier.move(data)
+	} catch (e) {
+		console.log(e, data)
 		return this.socket.emit('error', {message: 'Illegal card position sent'})
 	}
 	this.getBoard(function(board) {        	
@@ -52,13 +56,13 @@ Card.prototype.moving = function(data) {
 Card.prototype.resize = function(data) {
 	var self = this
 	try { 
-		var data = this.sanitizer.resize(data)
+		var data = santizier.resize(data)
 	} catch (e) { 
 		return this.socket.emit('error', {message: 'Card size too small'})
 	}
 	this.getBoard(function(board) {     	
     	self.socket.broadcast.to(board).emit('card.resize', data);
-    	self.db.updateSize(data, board, function(error) {
+    	db.updateSize(data, board, function(error) {
     		if (error) self.socket.emit('error', {message:error})
     	});
 	});
@@ -67,12 +71,12 @@ Card.prototype.resize = function(data) {
 Card.prototype.remove = function(data) {
 	var self = this
 	try { 
-		this.sanitizer.checkCardId(data.cardId)
+		santizier.checkCardId(data.cardId)
 	} catch (e) { 
 		return this.socket.emit('error', {message: 'Illegal card ID'})
 	}
 	this.getBoard(function(board) {    	
-        self.db.remove(data, board, function() {
+        db.remove(data, board, function() {
         	data.name = self.socket.get('name', function(error, name) {
 				if (error) {
 					name = 'A user';
@@ -90,14 +94,14 @@ Card.prototype.remove = function(data) {
 Card.prototype.changeColour = function(data) {
 	var self = this
 	try { 
-		var data = this.sanitizer.changeColour(data)
+		var data = santizier.changeColour(data)
 	} catch (e) { 
 		console.log(e)
 		return this.socket.emit('error', {message: 'Illegal card colour data provided'})
 	}
 	this.getBoard(function(board) {   	
 		self.socket.broadcast.to(board).emit('card.colour', data); 
-		self.db.updateColour(data, board, function(error) {
+		db.updateColour(data, board, function(error) {
 			if (error) self.socket.emit('error', {message:error})
 		});        
 	});
@@ -107,7 +111,7 @@ Card.prototype.stackOrder = function(data) {
 	var self = this
 	this.getBoard(function(board) {
 		self.socket.broadcast.to(board).emit('card.zIndex', data);
-		self.db.updateOrder(data, board, function(error) {
+		db.updateOrder(data, board, function(error) {
 			if (error) return self.socket.emit('error', {message:error})
 			self.io.sockets.in(board).emit('card.zIndex', data);
 		});
@@ -117,13 +121,13 @@ Card.prototype.stackOrder = function(data) {
 Card.prototype.textChange = function(data) {
 	var self = this
 	try { 
-		var data = this.sanitizer.content(data)
+		var data = santizier.content(data)
 	} catch (e) { 
 		return this.socket.emit('error', {message: 'Illegal card content sent'})
 	}
 	this.getBoard(function(board) {       	
     	self.socket.broadcast.to(board).emit('card.text-change', data);
-    	self.db.updateContent(data, board, function(error) {
+    	db.updateContent(data, board, function(error) {
     		if (error) self.socket.emit('error', {message:error})
     	});
 	});
@@ -135,25 +139,9 @@ Card.prototype.getBoard = function(callback) {
         callback(board);
     });
 }
-Card.prototype.setDatabase = function(db) {
-	this.db     = db;
-}
 Card.prototype.setSocketContext = function(socket) {
 	this.socket = socket;
 }
-Card.prototype.setStatistics = function(statistics) {
-	this.statistics = statistics
-}
 Card.prototype.setIo = function(io) {
-	this.io = io
+	this.io = io;
 }
-Card.prototype.setSanitizer = function(sanitizer) {
-	this.sanitizer = sanitizer
-}
-function Card() {}
-
-card = new Card();
-card.setStatistics(statistics)
-card.setIo(io)
-card.setSanitizer(sanitizer)
-module.exports = card;

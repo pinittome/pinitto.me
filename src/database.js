@@ -1,4 +1,5 @@
 var mongo = require('mongodb');
+
 exports.connection = db = new mongo.Db(
 	config.database.name, 
 	new require('mongodb').Server(
@@ -9,6 +10,7 @@ exports.connection = db = new mongo.Db(
 	{auto_reconnect: true, safe: true},
 	{strict: false}
 );
+
 database = db.open(function(error, pClient) {
     if (error) throw Error(error)
     if (config.database.username) {
