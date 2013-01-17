@@ -84,6 +84,9 @@ div.card:hover .controls {
 	display: block;
 }
 
+div.card p {
+	margin: 5px;
+}
 
 .controls .card-delete, .controls .card-colour { 
 	cursor: pointer;

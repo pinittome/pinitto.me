@@ -116,27 +116,32 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 		$(anchor).attr('name', data.cardId);
 		$(anchor).appendTo($(div));
 
-		textarea = document.createElement('textarea');
-		$(textarea).appendTo($(div));
-		$(textarea).css('width', parseFloat(data.size.width - 10))
-		    .css('height', parseFloat(data.size.height - 10));
-        var self = this
-		
-		if (data.size) {
-			$(card).width(data.size.width).height(data.size.height);
-		}
-		if (data.content) {
-			$(card).find('textarea').val(data.content);
-		}	
+        $(div).html('<p>' + (data.content || "").split(/\r\n|\r|\n/).join('</p><p>') + '</p>')
+
+		if (data.size) $(card).width(data.size.width).height(data.size.height);
+
 		this.addControls(data.cardId);
 		this.setPosition(data.cardId, data.position);
 	}
 	Card.prototype.dynamify = function(id) {
-		if ($('#' + id).css('z-index') > board.zIndex) {
-			board.zIndex = parseInt($('#' + id).css('z-index'));
+		var card = $('#' + id);
+		if (card.css('z-index') > board.zIndex) {
+			board.zIndex = parseInt(card.css('z-index'));
 		}
+		var paragraphs = card.find('p');
+	    textarea = document.createElement('textarea');
+		$(textarea).appendTo(card);
+		$(textarea).css('width', parseFloat(card.css('width') - 10))
+		    .css('height', parseFloat(card.css('height') - 10));
+		content = ""
+		paragraphs.each(function() {
+			console.log($(this).html())
+			content += ($(this).html() || "") + "\n";
+		})
+		$(card).find('textarea').val($('<div/>').html(content).text());
+		paragraphs.remove();
 		var self = this;
-		$('#' + id).draggable({
+		card.draggable({
 			cursor : "move",
 			keyboard : true,
 			delay : 0,
@@ -150,7 +155,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 			scroll: true,
 			iframeFix: true
 		});
-		$('#' + id).resizable({
+		card.resizable({
 			minHeight: 15,
 			minWidth: 15,
 			handles: 'se',
