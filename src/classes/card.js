@@ -81,9 +81,10 @@ Card.prototype.remove = function(data) {
 				if (error) {
 					name = 'A user';
 				}
-				data.name = name;
+				data.name   = name;
+				data.userId = self.socket.id
 	        	self.io.sockets.in(board).emit('card.delete', data);	
-	    		self.statistics.cardRemoved(function(error) {
+	    		statistics.cardRemoved(function(error) {
 	    			if (error) self.socket.emit('error', {message:error})
 	    		});
 	    	});

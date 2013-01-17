@@ -1,10 +1,9 @@
-define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notification', 'board/infinite-drag'], 
-    function($, socket, determineCssClass, board, notification, infiniteDrag) {
+define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notification', 'board/infinite-drag', 'user'], 
+    function($, socket, determineCssClass, board, notification, infiniteDrag, user) {
 	
 	Card.prototype.bringToFront = function(event, element) {
 
 		if (element.helper) element = element.helper
-
 		if ($(element).css('z-index') != this.board.zIndex) {
 			$(element).css('z-index', ++this.board.zIndex);
 			socket.emit('card.zIndex', {
@@ -116,8 +115,6 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 		anchor = document.createElement('a');
 		$(anchor).attr('name', data.cardId);
 		$(anchor).appendTo($(div));
-		
-		
 
 		textarea = document.createElement('textarea');
 		$(textarea).appendTo($(div));
