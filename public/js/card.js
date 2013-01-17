@@ -85,11 +85,11 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 	Card.prototype.create = function(data) {
         if (data.zIndex) {
         	stackOrder = data.zIndex;
-        	if (data.zIndex >= this.board.zIndex) {
-        		this.board.zIndex = parseInt(data.zIndex) + 1;
+        	if (data.zIndex >= board.zIndex) {
+        		board.zIndex = parseInt(data.zIndex) + 1;
         	}
         } else {
-        	stackOrder = this.board.zIndex++;
+        	stackOrder = ++board.zIndex;
         	socket.emit('card.zIndex', {cardId: data.cardId, zIndex: stackOrder});
         }
 		this.draw(data)		
@@ -132,6 +132,9 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 		this.setPosition(data.cardId, data.position);
 	}
 	Card.prototype.dynamify = function(id) {
+		if ($('#' + id).css('z-index') > board.zIndex) {
+			board.zIndex = parseInt($('#' + id).css('z-index'));
+		}
 		var self = this;
 		$('#' + id).draggable({
 			cursor : "move",
