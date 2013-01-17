@@ -186,6 +186,8 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 		if (data.content && data.content != '') {
 			content = data.content.substring(0, 30) + '...';
 		}
+                css = 'card-yellow';
+                if (data.cssClass) css = 'card-' + data.cssClass;
 		cardListEntry = $(document.createElement('li'));
 		cardListEntry.attr('id', 'entry-' + data.cardId);
 		cardListEntry.addClass(css);
@@ -259,10 +261,10 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 	});
 	
 	$('li.card-list').on('mouseover', 'li', function(event) {
-	     $('#' + $(this).attr('id').replace('entry-', '')).addClass('highlight');	
+	     if ($(this).attr('id')) $('#' + $(this).attr('id').replace('entry-', '')).addClass('highlight');	
 	});
 	$('li.card-list').on('mouseout', 'li', function(event) {
-	     $('#' + $(this).attr('id').replace('entry-', '')).removeClass('highlight');	
+	     if ($(this).attr('id')) $('#' + $(this).attr('id').replace('entry-', '')).removeClass('highlight');	
 	});
 	$('li.card-list').on('click', 'li', function(event) {
 	     cardEntity.scrollTo($(this).attr('id').replace('entry-', ''));

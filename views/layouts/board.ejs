@@ -45,7 +45,23 @@
                             <li class="card-list dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Card List</a>
                                 <ul class="dropdown-menu">
-                                    <li class="no-cards"><a href="#">No cards at present</a></li>
+                                <% if (cards.length > 0) { %>
+                                    <li class="no-cards hidden"><a href="#">No cards at present</a></li>
+                                    <% for (var i=0; i<cards.length; i++) { %>
+                                    <li id="entry-<%= cards[i]._id %>" class="card-<%= cards[i].cssClass || 'yellow' %>">
+                                    <a href="#<%= cards[i]._id %>" onclick="return false;">
+                                    <% if (cards[i].length && cards[i].content.length > 0) { %>
+                                        <%= cards[i].content.substr(0, 30) %>...
+                                    <% } else { %>
+                                        <i>No content</i>
+                                    <% } %>
+                                    </a>
+                                    </li>
+                                    <% } %>
+                                <% } else { %>
+                                <li class="no-cards"><a href="#">No cards at present</a></li>
+                                <% } %>
+
                                 </ul>
                             </li>
                             <li class="dropdown">
