@@ -1,4 +1,5 @@
-define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notification', 'board/infinite-drag', 'user'], 
+define(['jquery', 'socket', 'util/determine-css-class', 'board', 
+         'util/notification', 'board/infinite-drag', 'user'], 
     function($, socket, determineCssClass, board, notification, infiniteDrag, user) {
 	
 	Card.prototype.bringToFront = function(event, element) {
@@ -135,7 +136,6 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 		    .css('height', parseFloat(card.css('height') - 10));
 		content = ""
 		paragraphs.each(function() {
-			console.log($(this).html())
 			content += ($(this).html() || "") + "\n";
 		})
 		$(card).find('textarea').val($('<div/>').html(content).text());
@@ -172,7 +172,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 					}
 				});
 			}
-	    });
+	    }); 
 	}
 	Card.prototype.addControls = function(id) {
 		controls = document.createElement('div');
@@ -181,6 +181,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 			+ '<i class="icon-resize-full card-resize" title="Resize card">&nbsp;</i>'
 			+ '&nbsp;&nbsp;<i class="icon-remove card-delete" title="Delete card">&nbsp;</i> '
 		    + '<i class="icon-eye-open card-colour" title="Change card colour">&nbsp;</i> '
+		    + '<i class="icon-magnet card-link" title="' + window.location.href + '#' + id + '">&nbsp;</i>'
 			+ '<i class="icon-move card-move">&nbsp;</i> '
 			+ '<i>drag to move...</i>')
 		
@@ -248,6 +249,9 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 		$('#entry-' + data.cardId).remove();
         if ($('li.card-list ul li').length < 2) $('.no-cards').removeClass('hidden')
         if (data.userId != user.id) notification.add(data.name + " deleted a card", 'info');
+	});
+	$('.viewport').on('click', '.card-link', function(event) {
+		alert("You can link to this card directly using:\n\n" + $(this).attr('title'));
 	});
 	$('.viewport').on('click', '.card-colour', function(event){
 		card = $(this).parents('.card');
