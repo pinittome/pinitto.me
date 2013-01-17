@@ -236,7 +236,8 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board', 'util/notificat
 	socket.on('card.delete', function(data) {
 		$('#' + data.cardId).remove();
 		$('#entry-' + data.cardId).remove();
-		notification.add(data.name + " deleted a card", 'info');
+        if ($('li.card-list ul li').length < 2) $('.no-cards').removeClass('hidden')
+        if (data.userId != user.id) notification.add(data.name + " deleted a card", 'info');
 	});
 	$('.viewport').on('click', '.card-colour', function(event){
 		card = $(this).parents('.card');
