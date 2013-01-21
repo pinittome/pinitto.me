@@ -112,6 +112,10 @@ io.sockets.on('connection', function (socket) {
     	board.setSocketContext(this);
     	board.setName(data)
     });
+    socket.on('board.access.set', function(data) {
+    	board.setSocketContext(this);
+    	board.setAccess(data)
+    })
     socket.on('board.join', function(data) {
     	board.setSocketContext(this);
     	board.join(data);

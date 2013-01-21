@@ -306,6 +306,16 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
 		cardEntity.bringToFront(event, $(this));
 		event.stopPropagation();
 	});
-
+	$("div.viewport-container").click(function(e) {
+		lastClick = e;
+		var x = e.pageX - parseFloat($('.viewport').css('left').replace('px', ''));		
+		var y = e.pageY - viewport.header.height - parseFloat($('.viewport').css('top').replace('px', ''));
+		socket.emit('card.create', {
+			position : {
+				x : x,
+				y : y
+			}
+		});
+	});
     return cardEntity;
 });

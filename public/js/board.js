@@ -1,10 +1,13 @@
-define(['jquery', 'socket', 'util/notification', 'viewport'], function($, socket, notification, viewport) { 
-	
-    
+define(['jquery', 'socket', 'util/notification', 'viewport', 'user'],
+    function($, socket, notification, viewport, user) { 
+
     Board.prototype.setName = function(name) {
     	this.socket.emit('board.name.set', { name : name });
     }
     Board.prototype.zIndex = 100;
+    Board.prototype.setAccess = function(access) {
+    	this.socket.emit('board.access.set', access)
+    }
     function Board(socket) { this.socket = socket; }
     
     board = new Board(socket);
@@ -23,6 +26,59 @@ define(['jquery', 'socket', 'util/notification', 'viewport'], function($, socket
 
 		$('#set-board-name-modal').modal('hide');
 	});
+	
+	$('body').on('click', '.open-board-access-modal', function() {
+		$('#board-access-modal').modal({
+			backdrop : true
+		});
+	});
+	$('#close-board-access-modal').click(function() {
+		$('#board-access-modal').modal('hide');
+	});
+	$('input[name=password-admin-require]').click(function() {
+		if ($(this).attr('checked')) return $('input[name=password-admin-value]').removeAttr('disabled');
+		$('input[name=password-admin-value]').attr('disabled', 'disabled')
+		
+	})
+	$('.update-board-access').click(function() {
+		$('#board-access-modal .modal-body .error').remove();
+        var access = {
+        	admin: {
+        		require: Boolean($('input[name=password-admin-require]').attr('checked')),
+        		password: $('#board-access-modal').find('input[name=password-admin-value]').val()
+        	},
+        	write: {
+        		require: false,
+        		password: null
+        	},
+        	read: { 
+        		require: false,
+        		password: null
+        	}
+        }
+    	var error  = $(document.createElement('div'));
+    	var button = $(document.createElement('button'))
+    	error.attr('class', 'alert alert-error');            
+        button.attr('class', 'close').attr('data-dismiss', 'alert').html('&times;')
+        button.appendTo(error);
+               
+        if (access.admin.require && access.admin.password.length == 0) {
+            $(document.createElement('div'))
+                .html('<strong>Whoa!</strong> Password is *required*, yet you\'ve left it blank!')
+                .appendTo(error)
+        	$('#board-access-modal .modal-body').prepend(error);
+        	return;
+        }
+        board.setAccess(access);
+		$('#board-access-modal').modal('hide');
+	});
+	socket.on('board.access.set', function(data) {
+		if (data.userId != user.id) {
+			notification.add($('#user-' + data.userId).find('span').text() + " updated board access details", 'info');
+		} else {
+			notification.add("Board access details successfully updated!", "success");
+		}
+	});
 	socket.on('board.name.set', function(data) {
 		var oldName;
 		$('.board-name').each(function(index, element) {
@@ -31,18 +87,6 @@ define(['jquery', 'socket', 'util/notification', 'viewport'], function($, socket
 		});
 		notification.add('The board name has been changed to "' + data.name + '"');
 	});
-	$("div.viewport-container").click(function(e) {
-		lastClick = e;
-		var x = e.pageX - parseFloat($('.viewport').css('left').replace('px', ''));		
-		var y = e.pageY - viewport.header.height - parseFloat($('.viewport').css('top').replace('px', ''));
-		socket.emit('card.create', {
-			position : {
-				x : x,
-				y : y
-			}
-		});
-	});
-
 	$('.leave').click(function() {
 		document.location.href = '/logout';
 	});

@@ -9,9 +9,6 @@ Card.prototype.create = function(data) {
 	this.getBoard(function(board) {
 		data.board = board;
 		data.size  = { width: 150, height: 150 };
-		console.log("TODO: Get default card details from config");
-	    console.log("TODO: Check card create data is valid");
-
 		db.add(data, function(error, result) {
 			if (error) return self.socket.emit('error', {message: 'New card could not be created'})
 			data.cardId = result[0]._id;
@@ -45,11 +42,10 @@ Card.prototype.moving = function(data) {
 	try { 
 		var data = santizier.move(data)
 	} catch (e) {
-		console.log(e, data)
 		return this.socket.emit('error', {message: 'Illegal card position sent'})
 	}
 	this.getBoard(function(board) {        	
-    	self.socket.broadcast.to(board).emit('card.moving', data);
+    	self.socket.volatile.broadcast.to(board).emit('card.moving', data);
     });
 }
 

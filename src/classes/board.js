@@ -4,7 +4,7 @@ var io        = require('../io').io,
 
 module.exports = Board = function Board(){};
 
-Board.prototype.setName = function(data, callback) {
+Board.prototype.setName = function(data) {
 	var self = this
 	try {
 	    var data = this.sanitizer.rename(data)
@@ -12,14 +12,36 @@ Board.prototype.setName = function(data, callback) {
 		return this.socket.emit('error', {message: 'Illegal board ID provided'});
 	}
 	this.socket.get('board', function(error, board) {
-		if (error) return callback('Could not get board ID for user')
+		if (error) return self.socket.emit('error', {message: "Board name not saved to database"})
 		self.socket.set('name', data.name, function() {
 			io.sockets.in(board).emit('board.name.set', {name: data.name, userId: self.socket.id});
 		});
 		self.db.setName(board, data.name, function(error) {
 			if (error) self.socket.emit('error', {message: "Board name not saved to database"})
 		});
-		callback()
+	});
+}
+
+Board.prototype.setAccess = function(data) {
+	var self = this
+	this.socket.get('board', function(error, boardId) {
+		if (error) return self.socket.emit('error', {message: "Access details not changed"})
+	    self.db.load(boardId, function(error, board) {
+	    	if (error) return self.socket.emit('error', {message: 'Not able to load board'})
+	    	console.log(data, board)
+	        if (data.admin && data.admin.require != undefined) {
+		        if (false === data.admin.require) {
+			        delete board.access.admin
+				} else {
+					if (!data.admin.password) return self.socket.emit('error', {message: 'Password not provided'})
+					board.access.admin = utils.hashPassword(data.admin.password)
+				}
+			}
+			self.db.setAccess(boardId, board.access, function(error) {
+				if (error) return self.socket.emit('error', {message: 'Access details could not be updated'})
+				io.sockets.in(boardId).emit('board.access.set', {userId: self.socket.id});
+			})
+	    });
 	});
 }
   
@@ -77,9 +99,8 @@ Board.prototype.sendCardList = function() {
 
 Board.prototype.sendUserList = function(details) {
 	var name;
-	console.log("Sending user list for board " + this.boardName)
 	var clients = io.sockets.clients(this.boardName);
-	var self = this;
+	var self    = this;
 	
 	if (details.user) {
 		name = details.user;
