@@ -1,6 +1,6 @@
 define(['jquery', 'socket', 'util/determine-css-class', 'board', 
-         'util/notification', 'board/infinite-drag', 'user'], 
-    function($, socket, determineCssClass, board, notification, infiniteDrag, user) {
+         'util/notification', 'board/infinite-drag', 'user', 'viewport'], 
+    function($, socket, determineCssClass, board, notification, infiniteDrag, user, viewport) {
 	
 	Card.prototype.bringToFront = function(event, element) {
 
