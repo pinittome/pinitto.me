@@ -7,7 +7,9 @@
                      id="<%= cards[i]._id %>" 
                      style=" top: <%= cards[i].position.y %>px; left: <%= cards[i].position.x %>px; position: absolute; z-index: <%= cards[i].zIndex %>; width: <%= cards[i].size.width %>px; height: <%= cards[i].size.height %>px;">
                 <a name="<%= cards[i]._id %>"></a>
-                <p><%- (cards[i].content || "").split(/\r\n|\r|\n/).join('</p><p>') %></p>
+                <% if ((cards[i].content || "").length > 0) { %>
+                <p><%- cards[i].content.split(/\r\n|\r|\n/).join('</p><p>') %></p>
+                <% } %>
                 </div>
             <% } %>
         <% } %>

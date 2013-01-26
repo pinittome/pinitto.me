@@ -116,8 +116,8 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
 		anchor = document.createElement('a');
 		$(anchor).attr('name', data.cardId);
 		$(anchor).appendTo($(div));
-
-        $(div).html('<p>' + (data.content || "").split(/\r\n|\r|\n/).join('</p><p>') + '</p>')
+        if ((data.content || "").length > 0) 
+            $(div).html('<p>' + (data.content || "").split(/\r\n|\r|\n/).join('</p><p>') + '</p>')
 
 		if (data.size) $(card).width(data.size.width).height(data.size.height);
 
@@ -130,10 +130,10 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
 			board.zIndex = parseInt(card.css('z-index'));
 		}
 		var paragraphs = card.find('p');
-	    textarea = document.createElement('textarea');
-		$(textarea).appendTo(card);
-		$(textarea).css('width', parseFloat(card.css('width') - 10))
-		    .css('height', parseFloat(card.css('height') - 10));
+	    textarea = $(document.createElement('textarea'));
+	    textarea.css('width', parseFloat(card.css('width').replace('px', '') - 10))
+		    .css('height', parseFloat(card.css('height').replace('px', '') - 10));
+		textarea.appendTo(card);
 		content = ""
 		paragraphs.each(function() {
 			content += ($(this).html() || "") + "\n";
