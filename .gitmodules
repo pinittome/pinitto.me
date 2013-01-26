@@ -1,15 +1,15 @@
 [submodule "public/js/vendor/bootstrap-growl"]
 	path = public/js/vendor/bootstrap-growl
-	url = git@github.com:ifightcrime/bootstrap-growl.git
+	url = https://github.com:ifightcrime/bootstrap-growl
 [submodule "public/js/vendor/jquery-mousewheel"]
 	path = public/js/vendor/jquery-mousewheel
-	url = git@github.com:brandonaaron/jquery-mousewheel.git
+	url = https://github.com:brandonaaron/jquery-mousewheel
 [submodule "public/js/vendor/jquery-infinite-drag"]
 	path = public/js/vendor/jquery-infinite-drag
-	url = git@github.com:pinittome/jquery-infinite-drag.git
+	url = https://github.com:pinittome/jquery-infinite-drag
 [submodule "public/js/vendor/jquery.scrollTo"]
 	path = public/js/vendor/jquery.scrollTo
-	url = git@github.com:flesler/jquery.scrollTo.git
+	url = https://github.com:flesler/jquery.scrollTo
 [submodule "public/js/vendor/jquery-twitter-display"]
 	path = public/js/vendor/jquery-twitter-display
-	url = git@github.com:seaofclouds/tweet.git
+	url = https://github.com:seaofclouds/tweet
