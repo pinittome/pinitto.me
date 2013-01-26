@@ -19,7 +19,10 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "index.js"
+    "start": "forever start -a -p . -l logs/forever.log -o logs/pinitto.me.out.log -e logs/pinitto.me.err.log index.js",
+    "stop": "forever stop index.js",
+    "clean": "forever cleanlogs index.js",
+    "restart": "forever restart index.js"
   },
   "repository": {
     "type": "git",
