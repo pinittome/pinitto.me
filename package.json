@@ -14,7 +14,8 @@
     "mongodb": "1.2.2",
     "connect-mongo": "0.2.0",
     "cookie": "0.0.5",
-    "connect": "2.7.0"
+    "connect": "2.7.0",
+    "forever": "~0.10.0"
   },
   "devDependencies": {},
   "scripts": {
@@ -33,7 +34,7 @@
     "socket.io"
   ],
   "author": "Steven Lloyd Watkin <lloyd@evilprofessor.co.uk>",
-  "license": "BSD",
+  "license": "Apache 2.0",
   "subdomain": "pinittome",
   "domains": [
     "www.pinitto.me",
