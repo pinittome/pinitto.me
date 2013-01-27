@@ -8,7 +8,10 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user'],
     Board.prototype.setAccess = function(access) {
     	this.socket.emit('board.access.set', access)
     }
-    function Board(socket) { this.socket = socket; }
+    function Board(socket) {
+        this.socket = socket;
+        this.preventCardCreation = false;
+    }
     
     board = new Board(socket);
     
