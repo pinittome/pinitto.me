@@ -88,7 +88,7 @@ div.card p {
 	margin: 5px;
 }
 
-.controls .card-delete, .controls .card-colour .card-link { 
+.controls .card-delete, .controls .card-colour, .controls .card-link { 
 	cursor: pointer;
 }
 .controls .card-resize {
