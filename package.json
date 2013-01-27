@@ -14,11 +14,15 @@
     "mongodb": "1.2.2",
     "connect-mongo": "0.2.0",
     "cookie": "0.0.5",
-    "connect": "2.7.0"
+    "connect": "2.7.0",
+    "forever": "~0.10.0"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "index.js"
+    "start": "forever start -a -p . -l logs/forever.log -o logs/pinitto.me.out.log -e logs/pinitto.me.err.log index.js",
+    "stop": "forever stop index.js",
+    "clean": "forever cleanlogs index.js",
+    "restart": "forever restart index.js"
   },
   "repository": {
     "type": "git",
@@ -33,7 +37,7 @@
     "socket.io"
   ],
   "author": "Steven Lloyd Watkin <lloyd@evilprofessor.co.uk>",
-  "license": "BSD",
+  "license": "Apache 2.0",
   "subdomain": "pinittome",
   "domains": [
     "www.pinitto.me",
