@@ -308,7 +308,6 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
 	});
 	$("div.viewport-container").click(function(e) {
 		lastClick = e;
-                console.log(board.preventCardCreation);
                 if (board.preventCardCreation)
                     return notification.add(
                         "You can only create a card once every " 
