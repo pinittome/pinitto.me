@@ -1,17 +1,23 @@
 # Install
 
-  npm i .
-  git submodule update --init
-  cp config.js.example config.(production|development).js
-  vim config.(production|development).js
+```bash
+npm i .
+git submodule update --init
+cp config.js.example config.(production|development).js
+vim config.(production|development).js
+```
 
 # Run
 
-  node index
+```bash
+node index
+```
 
 Or to run with ```forver```:
 
+```bash
   npm start 
+```
 
 # Build status
 
