@@ -1,46 +1,56 @@
-<!-- Main hero unit for a primary marketing message or call to action -->
-<div class="hero-unit">
-    <h1><%= title %></h1>
-    <p><%= name %> is an infinite virtual corkboard.  Collaborate with friends, family, or colleagues in real time 
-    in any way you want. Make plans, share ideas, play games...</p>
-    <p>This is a free service (please donate to help cover costs) and the code will be open sourced very soon. Please feel 
-    free to make suggestions for improvements and let us know about any of those nasty bugs.</p>
-    <p><a href="/create" class="btn btn-primary btn-large">Get started &raquo;</a> Click this bad boy to create your first board</p>
+<div class="masthead">
+	<div class="container">
+		<div class="carousel-caption">
+			<h1>Welcome to <%= name %></h1>
+			<p class="lead visible-desktop"><%= name %> is an infinite virtual corkboard. Collaborate with friends, family, or colleagues in real time in any way you want. Make plans, share ideas, play games...</p>
+			<a class="btn btn-large btn-primary" href="/create">Create New Board</a>
+		</div>
+	</div>
 </div>
 
-<!-- Example row of columns -->
-<div class="row">
-    <div class="span4">
-        <h2>About</h2>
-        <p><%= name %> is an infinite virtual corkboard which can be put to use in many different ways!</p>
-        <p>Best of all <%= name %> is open source so you are welcome to make improvements to the system or run your 
-        own instance. </p>
-        <p>We're currently still in <strong>alpha</strong> but hope to improve the system over the coming weeks and get 
-        a stable product out there. In the meantime please feel free to use and 
-        <a href="https://github.com/pinittome/pinitto.me/issues" target="_blank">let us know about any problems</a>.</p>
-        <p><a class="btn" href="/about">About &raquo;</a></p>
-    </div>
-    <div class="span4">
-        <h2>Statistics</h2>
-        <p>Some real time stats about what is going on with the system:</p>
-        <ul>
-            <li>Number of boards: <span class="totals-boards"><%=totals.boards %></span></li>
-            <li>Number of cards: <span class="totals-cards"><%=totals.cards %></span></li>
-            <li>Active socket connections: <span class="totals-sockets"><%=totals.sockets %></span></li>
-        </ul>
-        <p><a class="btn disabled" href="#">Realtime statistics &raquo;</a></p>
-    </div>
-    <% if (typeof(app.twitter) !== 'undefined') { %>
-    <div class="span4">
-        <h2>Twitter</h2>
-        <div class="tweet"></div>
-        <p><a class="btn" href="https://twitter.com/<%=app.twitter %>" target="_blank">Follow us &raquo;</a></p>
-    </div>
-    <% } %>
+<div class="middle-bar">
+	<div class="container">
+		<div class="row">
+			<div class="span12">
+				<h2>It's easy to get started. Just click this button <a href="/create" class="btn btn-large">Create New Board <i class="icon-circle-arrow-right"></i></a></h2>
+			</div>
+		</div>
+	</div>
 </div>
 
-<hr>
+<div class="container">
 
-<footer>
-    <p>&copy; Company 2013</p>
-</footer>
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="span4">
+            <h2>Features</h2>
+            <ul>
+                <li><i class="icon-pushpin"></i> Realtime collaboration</li>
+                <li><i class="icon-pushpin"></i> Safe and secure</li>                
+                <li><i class="icon-pushpin"></i> Board access controls</li>
+                <li><i class="icon-pushpin"></i> Free to use</li>
+                <li><i class="icon-pushpin"></i> Open source, run your own instance</li>
+            </ul>
+            <p><a class="btn" href="/features">Find out more &raquo;</a></p>
+        </div>
+        <div class="span4">
+            <h2>Statistics</h2>
+            <p>Some real time stats about what is going on with the system:</p>
+            <ul>
+                <li>Number of boards: <span class="totals-boards"><%=totals.boards %></span></li>
+                <li>Number of cards: <span class="totals-cards"><%=totals.cards %></span></li>
+                <li>Active socket connections: <span class="totals-sockets"><%=totals.sockets %></span></li>
+            </ul>
+            <p><a class="btn disabled" href="#">Realtime statistics &raquo;</a></p>
+        </div>
+        <div class="span4">
+            <h2>Donate</h2>
+            <p><%= name %> is currently a free service. If you like our application please donate to help keep the service online and ad-free.</p>
+            <p><a class="btn" href="/about">Donate &raquo;</a></p>
+            <h2>Contribute</h2>
+            <p><%= name %> is an Open Source project. The application source code is freely available on GitHub.</p>
+            <p><a class="btn" href="/about">GitHub Repo &raquo;</a></p>
+        </div>
+    </div>
+
+</div> <!-- /container -->

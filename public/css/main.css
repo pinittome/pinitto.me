@@ -156,7 +156,32 @@ img.captcha {
 .ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
 .ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}
 
+/* Custom website styles */
 
+.masthead {
+  height: 500px;
+  background-image: url('../img/slide-01.jpg');
+}
+
+.page-header-banner {
+  height: 200px;
+  margin-bottom: 30px;
+  background-image: url('../img/slide-01.jpg') !important;
+  border-bottom: 5px solid #212325;
+}
+
+.masthead, .page-header-banner {
+
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+}
+
+.page-header-banner h1 {
+  margin-top: 120px;
+  color: #fff;
+  text-shadow: 0 0 5px #000;
+}
 
 
 

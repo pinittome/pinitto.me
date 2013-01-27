@@ -1,75 +1,85 @@
-<div class="page-header">
-    <h1>Create a new board</h1>
+<div class="page-header-banner">
+	<div class="container">
+		<div class="row">
+			<div class="span12">
+				<h1><%= pageName %></h1>
+			</div>
+		</div>
+	</div>
 </div>
-<% if (typeof(errors) != 'undefined') { %>
-<script type="text/javascript">
-var errors = <%- errors %>
-</script>
-<% } %>
-<div class="row">
-    <div class="span7">
-        <h2>A few details...</h2>
-        <form class="form-horizontal" method="post">
-            <fieldset>
-                <legend>Administrator</legend>
-                <div class="control-group">
-	                <label class="control-label" for="owner">Email address</label>
-	                <div class="controls">
-	                	<input type="email" name="owner" placeholder="Email goes here..." />
+
+<div class="container">
+    <% if (typeof(errors) != 'undefined') { %>
+    <script type="text/javascript">
+    var errors = <%- errors %>
+    </script>
+    <% } %>
+    <div class="row">
+        <div class="span7">
+            <h2>A few details...</h2>
+            <form class="form-horizontal" method="post">
+                <fieldset>
+                    <legend>Administrator</legend>
+                    <div class="control-group">
+    	                <label class="control-label" for="owner">Email address</label>
+    	                <div class="controls">
+    	                	<input type="email" name="owner" placeholder="Email goes here..." />
 	                	
-	                </div>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Board properties</legend>
-                <div class="control-group">
-	                <label class="control-label" for="board-name">Board name</label>
-	                <div class="controls">
-	                	<input type="text" name="board-name" placeholder="Board name (optional)" />
-	                </div>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Access</legend>
-                <div class="control-group">
-	                <label class="control-label" for="password-admin">Password</label>
-	                <div class="controls">
-	                	<input type="password" onmouseover="this.title=this.value" name="password-admin" placeholder="" />
-	                </div>
-                </div>
-                <img src="/img/captcha.jpg" class="captcha" />
-                <div class="control-group">
-	                <label class="control-label" for="pdigits">Captcha</label>
-	                <div class="controls">
-	                	<input type="text" name="digits"/>
-	                </div>
-                </div>
-            </fieldset> 
+    	                </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Board properties</legend>
+                    <div class="control-group">
+    	                <label class="control-label" for="board-name">Board name</label>
+    	                <div class="controls">
+    	                	<input type="text" name="board-name" placeholder="Board name (optional)" />
+    	                </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Access</legend>
+                    <div class="control-group">
+    	                <label class="control-label" for="password-admin">Password</label>
+    	                <div class="controls">
+    	                	<input type="password" onmouseover="this.title=this.value" name="password-admin" placeholder="" />
+    	                </div>
+                    </div>
+                    <img src="/img/captcha.jpg" class="captcha" />
+                    <div class="control-group">
+    	                <label class="control-label" for="pdigits">Captcha</label>
+    	                <div class="controls">
+    	                	<input type="text" name="digits"/>
+    	                </div>
+                    </div>
+                </fieldset> 
          
-            <div class="control-group" >  
-	            <div class="form-actions">
-				    <button type="submit" class="btn btn-primary">Create board</button>
-				    <button type="button" class="btn leave">Cancel</button>
-				</div>
-		    </div>                    
-        </form>
+                <div class="control-group" >  
+    	            <div class="form-actions">
+    				    <button type="submit" class="btn btn-primary">Create board</button>
+    				    <button type="button" class="btn leave">Cancel</button>
+    				</div>
+    		    </div>                    
+            </form>
+        </div>
+        <div class="span5">
+            <h2>Help</h2>
+            <p class="lead">The best bit about this that almost all of these fields are optional!</p>
+            <h3>Email <span class="text-error">- required</span> </h3>
+            <p>Your email is used to remind you of your board 
+            password<% if (typeof(board) !== 'undefined' && typeof(board.expiry) !== 'undefined') { %>
+            , and to inform you when your board is about to expire (currently after <%=board.expiry %> days of inactivity)</p>
+            <% } %>. No selling this or spamming you.
+            <h3>Board name <span class="text-success">- optional</span></h3>
+            <p>Completely optional, but hey it makes it all a bit more personal!</p>
+            <h3>Password <span class="text-success">- optional</span></h3>
+            <p>If you want to prevent access to your board enter a password here.</p>
+            <p>Hover over the password box to see what you've entered already.</p>        
+            <p class="text-warning">Warning: not setting a password leaves your board open to abuse by those wishing to do bad.</p>
+            <p class="text-muted">We're adding more fine-grained access controls soon e.g. read-only, edit but no admin, etc.</p>
+            <h3>Captcha <span class="text-error">- required</span></h3>
+            <p>Your not a 'bot are you? Are you? Check things can change very quickly these days.
+       </div>
     </div>
-    <div class="span5">
-        <h2>Help</h2>
-        <p class="lead">The best bit about this that almost all of these fields are optional!</p>
-        <h3>Email <span class="text-error">- required</span> </h3>
-        <p>Your email is used to remind you of your board 
-        password<% if (typeof(board) !== 'undefined' && typeof(board.expiry) !== 'undefined') { %>
-        , and to inform you when your board is about to expire (currently after <%=board.expiry %> days of inactivity)</p>
-        <% } %>. No selling this or spamming you.
-        <h3>Board name <span class="text-success">- optional</span></h3>
-        <p>Completely optional, but hey it makes it all a bit more personal!</p>
-        <h3>Password <span class="text-success">- optional</span></h3>
-        <p>If you want to prevent access to your board enter a password here.</p>
-        <p>Hover over the password box to see what you've entered already.</p>        
-        <p class="text-warning">Warning: not setting a password leaves your board open to abuse by those wishing to do bad.</p>
-        <p class="text-muted">We're adding more fine-grained access controls soon e.g. read-only, edit but no admin, etc.</p>
-        <h3>Captcha <span class="text-error">- required</span></h3>
-        <p>Your not a 'bot are you? Are you? Check things can change very quickly these days.
-   </div>
-</div>
+
+</div> <!-- /container -->

@@ -37,8 +37,8 @@ require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'moder
 	    $(".tweet").tweet({
 	        join_text: "auto",
 	        username: config.twitter,
-	        avatar_size: 48,
-	        count: 4,
+	        avatar_size: 32,
+	        count: 3,
 	        loading_text: "Loading tweets..."
 	    });
 	}
