@@ -88,11 +88,15 @@
         				<h5>Misc</h5>
         				<p>Contact us on one of the following services:</p>
         				<ul>
-        					<li><i class="icon-facebook"></i> <a href="#">Friend us</a></li>
+        				    <% if (typeof(app.facebook) !== 'undefined') { %>
+        					<li><i class="icon-facebook"></i> <a href="http://facebook.com/<%=app.facebook %>">Friend us</a></li>
+        					<% } %>
         					<% if (typeof(app.twitter) !== 'undefined') { %>
                             <li><i class="icon-twitter"></i> <a href="https://twitter.com/<%=app.twitter %>">Follow us</a></li>
                             <% } %>
-        					<li><i class="icon-github"></i> <a href="#">Fork us</a></li>
+                            <% if (typeof(app.github) !== 'undefined') { %>                            
+        					<li><i class="icon-github"></i> <a href="https://github.com/<%=app.github %>">Fork us</a></li>
+        					<% } %>
         					<!--<li><i class="icon-google-plus"></i> <a href="#">Donate</a></li>-->
         				</ul>
         			</div>
