@@ -9,7 +9,7 @@ var express = require('express')
   , connect = require('connect')
   , Session = connect.middleware.session.Session
   , utils = require('./util')
-  , access = require('./access');
+  , a = require('./access');
   
 exports.server = server = require('http').createServer(app);
 
@@ -111,9 +111,9 @@ app.post('/login/*', function(req, res) {
     	if (error || (typeof(board) == undefined)) {
     		res.render(404, {title: 'Board not found'})
     	}
-        req.session.access = require('./access').getLevel(board, utils.hashPassword(req.param('password')));
+        req.session.access = a.getLevel(board, utils.hashPassword(req.param('password')));
         req.session.board  = id;
-        if (req.session.access != access.NONE) {
+        if (req.session.access != a.NONE) {
         	res.redirect('/' + id);
         	return;
         }
@@ -157,8 +157,9 @@ app.post('/create', function(req, res) {
 	if (req.param('password-admin') != '') {    			
 		parameters['access']['admin'] = utils.hashPassword(req.param('password-admin'));
 	}
+	parameters['createdOn'] = parameters['lastLoaded'] = new Date();
 	boardsDb.insert(parameters, function(error, newBoard) {
-		req.session.access = require('./access').ADMIN;
+		req.session.access = a.ADMIN;
 	    req.session.board  = newBoard[0]._id;
 		if (error) throw Error(error);
 		if (req.xhr) {
@@ -206,10 +207,10 @@ app.get('/*', function(req, res) {
 		if (req.session.access 
 			&& req.session.board 
 			&& (id == req.session.board)
-			&& utils.inArray(req.session.access, [require('./access').ADMIN, require('./access').READ, require('./access').WRITE])
+			&& utils.inArray(req.session.access, [a.ADMIN, a.READ, a.WRITE])
 		) {
 			allowedAccess = true;		
-		} else if (access.NONE != access.getLevel(board, "")) {
+		} else if (a.NONE != a.getLevel(board, "")) {
 			allowedAccess = true; 
 		}
 
@@ -230,7 +231,7 @@ app.get('/*', function(req, res) {
 			options.boardId     = id;
 			options.boardName   = name;
 			options.cards       = cards;
-			req.session.access  = req.session.access ? req.session.access : require('./access').ADMIN;
+			req.session.access  = req.session.access ? req.session.access : a.ADMIN;
 			req.session.board   = id;
 			res.render('board', options);
 		});
