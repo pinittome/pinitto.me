@@ -1,10 +1,11 @@
 var totals = require('./util').totals
     , io = require('./io').io
     , cardsDb = require('./database/cards').db
+    , cloneextend = require('cloneextend')
     , boardsDb = require('./database/boards').db
     , util = require('util')
     , events = require('events')
-    , statisticsDb = require('./database/statistics').db;
+    , statisticsDb = require('./database/statistics');
 
 exports.cardAdded = function() {
 	++totals.cards;
@@ -40,14 +41,16 @@ exports.socketOpened = function() {
 }
 
 sendTotals = function() {
-    totals.memoryUsage = process.memoryUsage();
+    totals.memoryUsage = process.memoryUsage().rss;
     totals.uptime      = process.uptime();
 
     io.sockets.in('/').emit('totals', totals);
 }
 
 var saveTotals = function() {
-    statisticsDb.add(totals, function(error) {
+    var totalsWithTime = cloneextend.clone(totals);
+    totalsWithTime.datetime = new Date();
+    statisticsDb.add(totalsWithTime, function(error) {
         if (error) throw Error(error);
     });
 }
