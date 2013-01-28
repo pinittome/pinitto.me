@@ -216,6 +216,7 @@ app.get('/*', function(req, res) {
 		if (false == allowedAccess) {
 			return res.redirect('/login/' + id);
 		}
+		boardsDb.update({_id: utils.ObjectId(id)}, {$set: {lastUsed: new Date()}}, function() {});
 		var cardsDb = require('./database/cards')
 		cardsDb.fetch('/'+id, function(error, cards) {
 			if (error) {

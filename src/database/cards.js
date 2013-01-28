@@ -4,6 +4,7 @@ var db       = require('../database').connection,
 db.collection('cards', function(error, cards) {
 	if (error) throw Error('Can not load cards collection')
 
+    cards.ensureIndex('board', function() {});
     exports.db = cards;
     
     exports.add = function(data, callback) {
