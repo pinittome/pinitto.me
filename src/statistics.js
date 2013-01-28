@@ -3,7 +3,8 @@ var totals = require('./util').totals
     , cardsDb = require('./database/cards').db
     , boardsDb = require('./database/boards').db
     , util = require('util')
-    , events = require('events');
+    , events = require('events')
+    , statisticsDb = require('./database/statistics').db;
 
 exports.cardAdded = function() {
 	++totals.cards;
@@ -39,39 +40,49 @@ exports.socketOpened = function() {
 }
 
 sendTotals = function() {
-	io.sockets.in('/').emit('totals', totals);
+    totals.memoryUsage = process.memoryUsage();
+    totals.uptime      = process.uptime();
+
+    io.sockets.in('/').emit('totals', totals);
+}
+
+var saveTotals = function() {
+    statisticsDb.add(totals, function(error) {
+        if (error) throw Error(error);
+    });
 }
 
 exports.getTotalCardCount = getTotalCardCount = function() {
-	try {
+    try {
     	cardsDb.count(function(error, count) {
-    		if (error) return;
-    		totals.cards = count;
-    		sendTotals();
+            if (error) return;
+    	    totals.cards = count;
+    	    sendTotals();
     	});
-	} catch (e) {
-	  	console.log(e);
-	}	
+    } catch (e) {
+        console.log(e);
+    }	
 }
+
 exports.getTotalBoardCount = getTotalBoardCount = function() {
-	try {
-    	boardsDb.count(function(error, count) {
-    		if (error) return;
-    		totals.boards = count;
-    		sendTotals();
-    	});
-	} catch (e) {
-	  	console.log(e);
-	}	
+    try {
+        boardsDb.count(function(error, count) {
+    	    if (error) return;
+    	    totals.boards = count;
+    	    sendTotals();
+        });
+    } catch (e) {
+        console.log(e);
+    }	
 }
 
 setInterval(getTotalCardCount, 30000);
 setTimeout(function() {
-	setInterval(getTotalBoardCount, 30000);
-	getTotalBoardCount.call();
+    setInterval(getTotalBoardCount, 30000);
+    getTotalBoardCount.call();
 }, 15000);	
-/*setTimeout(function() {
-	setInterval(saveTotals, 30000)
-}, 30000);*/
+setTimeout(function() {
+    setInterval(saveTotals, 30000)
+}, 30000);
 
 getTotalCardCount.call();
