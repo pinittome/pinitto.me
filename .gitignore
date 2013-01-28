@@ -3,6 +3,7 @@
 .classpath
 node_modules
 config*.js
+!config.example.js
 .DS_Store
 npm-debug.log
 logs/*
