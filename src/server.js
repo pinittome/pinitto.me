@@ -51,7 +51,7 @@ app.engine('ejs', engine);
 
 app.get('/', function (req, res) { 
    // So ugly must fix!
-   options          =  JSON.parse(JSON.stringify(config.project))
+   options          = cloneextend.clone(config.project)
    options.totals   = totals
    options.pageName = 'Welcome to pinitto.me'
    options.app      = config.app
@@ -65,13 +65,13 @@ app.get('/logout', function(req, res) {
 });
 
 app.get('/contact', function(req, res) {
-    options          = JSON.parse(JSON.stringify(config.project));
+    options          = cloneextend.clone(config.project);
     options.app      = config.app
 	options.pageName = 'Contact Us';
 	res.render('contact', options);
 });
 app.get('/about', function(req, res) {
-	options          = JSON.parse(JSON.stringify(config.project));
+	options          = cloneextend.clone(config.project);
 	options.app      = config.app
 	options.pageName = 'About ' + options.name;
 	res.render('about', options);
@@ -79,7 +79,7 @@ app.get('/about', function(req, res) {
 
 app.get('/login/*', function(req, res) {
 	if (!req.params[0]) res.redirect('/')
-	options          = JSON.parse(JSON.stringify(config.project))
+	options          = cloneextend.clone(config.project)
 	options.pageName = 'Authorisation for board access'
 	options.totals   = totals
 	options.app      = config.app
@@ -93,7 +93,7 @@ app.post('/login/*', function(req, res) {
 	req.sanitize('board');
 	req.sanitize('password');
 	
-	options          = JSON.parse(JSON.stringify(config.project));
+	options          = cloneextend.clone(config.project);
 	options.app      = config.app
 	options.pageName = 'Authorisation for board access';
 	options.totals   = totals;
@@ -123,14 +123,14 @@ app.post('/login/*', function(req, res) {
 });
 
 app.get('/create', function(req, res) {
-	options          =  JSON.parse(JSON.stringify(config.project));
+	options          =  cloneextend.clone(config.project);
 	options.pageName = 'Create a new board';
 	options.totals   = totals;
 	options.app      = config.app
 	res.render('create', options);
 });
 app.post('/create', function(req, res) {
-	options          =  JSON.parse(JSON.stringify(config.project));
+	options          =  cloneextend.clone(config.project);
 	options.pageName = 'Error creating board';
 	options.totals   = totals;
 	options.app      = config.app
@@ -177,7 +177,7 @@ app.get('/*', function(req, res) {
 	
 	var id      = req.params[0];
 	var board   = {};
-    var options =  JSON.parse(JSON.stringify(config.project));
+    var options =  cloneextend.clone(config.project);
     options.app = config.app
    
 	console.log("Trying to load board " + id);
