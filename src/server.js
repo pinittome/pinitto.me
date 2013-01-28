@@ -1,6 +1,7 @@
 var express = require('express')
   , app = express()
   , engine = require('ejs-locals')
+  , cloneextend = require('cloneextend')
   , boardsDb = require('./database/boards').db
   , sessionStore = require('./database/session').store
   , totals = require('./util').totals
