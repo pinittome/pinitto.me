@@ -316,12 +316,12 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
                     );
 		var x = e.pageX - parseFloat($('.viewport').css('left').replace('px', ''));		
 		var y = e.pageY - viewport.header.height - parseFloat($('.viewport').css('top').replace('px', ''));
-                board.preventCardCreation = true;
-                if (config && config.limits && config.limits.card && config.limits.card.wait) {
-                    setTimeout(function() {
-                        board.preventCardCreation = false;
-                    }, config.limits.card.wait * 1000);
-                }
+            if (config && config.limits && config.limits.card && config.limits.card.wait) {
+            	board.preventCardCreation = true;
+                setTimeout(function() {
+                    board.preventCardCreation = false;
+                }, config.limits.card.wait * 1000);
+            }
 	        socket.emit('card.create', {
 			position : {
 				x : x,

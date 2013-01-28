@@ -7,6 +7,7 @@ var database = require('../database').connection,
 database.collection('boards', function(error, boards) {
 	if (error) throw Error(error)
 	
+	boards.ensureIndex('lastLoaded', function() {});
     exports.db = boards;
 
     exports.setName = function(id, name, callback) {

@@ -9,7 +9,7 @@ var express = require('express')
   , connect = require('connect')
   , Session = connect.middleware.session.Session
   , utils = require('./util')
-  , access = require('./access');
+  , a = require('./access');
   
 exports.server = server = require('http').createServer(app);
 
@@ -51,7 +51,7 @@ app.engine('ejs', engine);
 
 app.get('/', function (req, res) { 
    // So ugly must fix!
-   options          =  JSON.parse(JSON.stringify(config.project))
+   options          = cloneextend.clone(config.project)
    options.totals   = totals
    options.pageName = 'Welcome to pinitto.me'
    options.app      = config.app
@@ -65,13 +65,13 @@ app.get('/logout', function(req, res) {
 });
 
 app.get('/contact', function(req, res) {
-    options          = JSON.parse(JSON.stringify(config.project));
+    options          = cloneextend.clone(config.project);
     options.app      = config.app
 	options.pageName = 'Contact Us';
 	res.render('contact', options);
 });
 app.get('/about', function(req, res) {
-	options          = JSON.parse(JSON.stringify(config.project));
+	options          = cloneextend.clone(config.project);
 	options.app      = config.app
 	options.pageName = 'About ' + options.name;
 	res.render('about', options);
@@ -79,7 +79,7 @@ app.get('/about', function(req, res) {
 
 app.get('/login/*', function(req, res) {
 	if (!req.params[0]) res.redirect('/')
-	options          = JSON.parse(JSON.stringify(config.project))
+	options          = cloneextend.clone(config.project)
 	options.pageName = 'Authorisation for board access'
 	options.totals   = totals
 	options.app      = config.app
@@ -93,7 +93,7 @@ app.post('/login/*', function(req, res) {
 	req.sanitize('board');
 	req.sanitize('password');
 	
-	options          = JSON.parse(JSON.stringify(config.project));
+	options          = cloneextend.clone(config.project);
 	options.app      = config.app
 	options.pageName = 'Authorisation for board access';
 	options.totals   = totals;
@@ -111,9 +111,9 @@ app.post('/login/*', function(req, res) {
     	if (error || (typeof(board) == undefined)) {
     		res.render(404, {title: 'Board not found'})
     	}
-        req.session.access = require('./access').getLevel(board, utils.hashPassword(req.param('password')));
+        req.session.access = a.getLevel(board, utils.hashPassword(req.param('password')));
         req.session.board  = id;
-        if (req.session.access != access.NONE) {
+        if (req.session.access != a.NONE) {
         	res.redirect('/' + id);
         	return;
         }
@@ -123,14 +123,14 @@ app.post('/login/*', function(req, res) {
 });
 
 app.get('/create', function(req, res) {
-	options          =  JSON.parse(JSON.stringify(config.project));
+	options          =  cloneextend.clone(config.project);
 	options.pageName = 'Create a new board';
 	options.totals   = totals;
 	options.app      = config.app
 	res.render('create', options);
 });
 app.post('/create', function(req, res) {
-	options          =  JSON.parse(JSON.stringify(config.project));
+	options          =  cloneextend.clone(config.project);
 	options.pageName = 'Error creating board';
 	options.totals   = totals;
 	options.app      = config.app
@@ -157,8 +157,9 @@ app.post('/create', function(req, res) {
 	if (req.param('password-admin') != '') {    			
 		parameters['access']['admin'] = utils.hashPassword(req.param('password-admin'));
 	}
+	parameters['createdOn'] = parameters['lastLoaded'] = new Date();
 	boardsDb.insert(parameters, function(error, newBoard) {
-		req.session.access = require('./access').ADMIN;
+		req.session.access = a.ADMIN;
 	    req.session.board  = newBoard[0]._id;
 		if (error) throw Error(error);
 		if (req.xhr) {
@@ -176,7 +177,7 @@ app.get('/*', function(req, res) {
 	
 	var id      = req.params[0];
 	var board   = {};
-    var options =  JSON.parse(JSON.stringify(config.project));
+    var options =  cloneextend.clone(config.project);
     options.app = config.app
    
 	console.log("Trying to load board " + id);
@@ -206,16 +207,17 @@ app.get('/*', function(req, res) {
 		if (req.session.access 
 			&& req.session.board 
 			&& (id == req.session.board)
-			&& utils.inArray(req.session.access, [require('./access').ADMIN, require('./access').READ, require('./access').WRITE])
+			&& utils.inArray(req.session.access, [a.ADMIN, a.READ, a.WRITE])
 		) {
 			allowedAccess = true;		
-		} else if (access.NONE != access.getLevel(board, "")) {
+		} else if (a.NONE != a.getLevel(board, "")) {
 			allowedAccess = true; 
 		}
 
 		if (false == allowedAccess) {
 			return res.redirect('/login/' + id);
 		}
+		boardsDb.update({_id: utils.ObjectId(id)}, {$set: {lastUsed: new Date()}}, function() {});
 		var cardsDb = require('./database/cards')
 		cardsDb.fetch('/'+id, function(error, cards) {
 			if (error) {
@@ -229,7 +231,7 @@ app.get('/*', function(req, res) {
 			options.boardId     = id;
 			options.boardName   = name;
 			options.cards       = cards;
-			req.session.access  = req.session.access ? req.session.access : require('./access').ADMIN;
+			req.session.access  = req.session.access ? req.session.access : a.ADMIN;
 			req.session.board   = id;
 			res.render('board', options);
 		});
