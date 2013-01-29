@@ -10,10 +10,10 @@ module.exports = {
     transports: [],
     
     app: {
-	    twitter: "pinittome", 
-	    analytics: {
-	        google: 'UA-XXXX-XX' 
-	    },
+        twitter: "pinittome", 
+        analytics: {
+            google: 'UA-XXXX-XX' 
+        },
             limits: {
                 card: {
                     wait: 0.5
