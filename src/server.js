@@ -147,6 +147,7 @@ app.post('/create', function(req, res) {
             return;
        } else {
        	    options.errors = JSON.stringify(errors);
+       	    options.values = JSON.stringify(req.body);
             res.render('create', options);
             return;
        }

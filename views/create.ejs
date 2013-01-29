@@ -11,7 +11,8 @@
 <div class="container">
     <% if (typeof(errors) != 'undefined') { %>
     <script type="text/javascript">
-    var errors = <%- errors %>
+    var errors = <%- errors %>;
+    var values = <%- values %>;
     </script>
     <% } %>
     <div class="row">

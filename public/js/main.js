@@ -24,6 +24,9 @@ require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'moder
         socket.emit('statistics.join');
 	});
 	
+	if (typeof(values) != 'undefined') {
+		for (key in values) $('input[name=' + key + ']').val(values[key]);
+	}
     if (typeof(errors) != 'undefined') {
 	    for (var i = 0; i < errors.length; i++) {
 	    	error = errors[i];
