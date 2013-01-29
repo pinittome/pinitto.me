@@ -2,17 +2,17 @@ var validator = require('validator');
 
 BoardSanitize = function(validator) {
     this.sanitize = validator.sanitize
-    this.check    = validator.check	
+    this.check    = validator.check    
 }
 
 BoardSanitize.prototype.rename = function(data) {
-	data.name = this.sanitize(data.name).entityEncode()
-	data.name = this.sanitize(data.name).xss()
-	return data
+    data.name = this.sanitize(data.name).entityEncode()
+    data.name = this.sanitize(data.name).xss()
+    return data
 }
 
 BoardSanitize.prototype.checkBoardId = function(id) {
-	this.check(id).regex(/[a-z0-9\/]/i).notEmpty()	
+    this.check(id).regex(/[a-z0-9\/]/i).notEmpty()    
 }
 
 
