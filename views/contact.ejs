@@ -11,15 +11,17 @@
 <div class="container">
 
     <div class="row">
-        <div class="span45">
-            <h2>A few details</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
-        <div class="span4">
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn" href="#">View details &raquo;</a></p>
+        <div class="span12">
+            <% if (typeof config.twitter != undefined) { %>
+            <h2>Twitter</h2>
+            <p>We can be contacted via twitter for the quickest response. Our handle is "<%= config.twitter %>".</p>  
+            <p><a class="btn" href="http://twitter.com/<%= config.twitter %>">Follow us &raquo;</a></p>
+            <% } %>
+            <h2>Chat</h2>
+            <p>As we build a community around the application we'll look at creating an XMPP MUC channel or an 
+            IRC channel for people to ask questions, get help, and share information more rapidly.</p>
+            <p>Until then please contact us via any other method and if required we'll arrange email contact.</p>
+            <p><a class="btn disabled" href="#">Connect with us &raquo;</a></p>
        </div>
     </div>
 
