@@ -70,11 +70,19 @@ app.get('/contact', function(req, res) {
 	options.pageName = 'Contact Us';
 	res.render('contact', options);
 });
+
 app.get('/about', function(req, res) {
 	options          = cloneextend.clone(config.project);
 	options.app      = config.app
 	options.pageName = 'About ' + options.name;
 	res.render('about', options);
+});
+
+app.get('/features', function(req, res) {
+    options = cloneextend.clone(config.project);
+    options.pageName('Features and use-cases');
+    options.app = config.app;
+    res.render('features', options);
 });
 
 app.get('/login/*', function(req, res) {
