@@ -17,6 +17,18 @@
             <p>We can be contacted via twitter for the quickest response. Our handle is "<%= config.twitter %>".</p>  
             <p><a class="btn" href="http://twitter.com/<%= config.twitter %>">Follow us &raquo;</a></p>
             <% } %>
+            <% if (typeof config.facebook != undefined) { %>
+            <h2>Facebook</h2>
+            <p>We can be contacted through facebook, although responses may not be immediate. Please 'like' our 
+            page however in order to get updates which are also shared through that channel.</p>
+            <p><a class="btn" href="https://facebook.com/<%= config.facebook %>">Find us on Facebook</a></p>
+            <% } %>
+            <% if (typeof github != undefined) { %>
+            <p>The best place to log bugs (<i>perish the thought!</i>) is on Github. If you'd like to request 
+            features this is also the place to do it. If you'd like to sponsor an accepted feature (to get it deployed 
+            more quickly) please get in touch...</p>
+            <p><a class="btn" href="https://github.com/<%= config.github %>">Our Github repository</a></p>
+            <% } %>
             <h2>Chat</h2>
             <p>As we build a community around the application we'll look at creating an XMPP MUC channel or an 
             IRC channel for people to ask questions, get help, and share information more rapidly.</p>
