@@ -1,5 +1,13 @@
 # Install
 
+If you wish to use the ```npm start/stop/restart``` scripts then you'll need to install ```forever```:
+
+```bash
+sudo npm i -g forever
+```
+
+Then simply, 
+
 ```bash
 npm i .
 git submodule update --init
@@ -18,6 +26,12 @@ Or to run with ```forver```:
 ```bash
   npm start 
 ```
+
+# Requires
+
+* Cairo library (for captcha)
+* Mongodb server
+* Node v6+  (v8+ if using forever)
 
 # Build status
 

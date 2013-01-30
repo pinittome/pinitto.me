@@ -17,7 +17,8 @@
     "connect": "2.7.0",
     "forever": "~0.10.0",
     "cloneextend": "0.0.3",
-    "colors": "~0.6.0-1"
+    "colors": "~0.6.0-1",
+    "recaptcha": "~1.2.0"
   },
   "devDependencies": {},
   "scripts": {
