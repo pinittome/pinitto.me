@@ -131,7 +131,7 @@ app.get('/create', function(req, res) {
     options.captcha  = { type: 'captcha' };
     if (config.captcha && config.captcha.type) options.captcha = config.captcha;
     if (options.captcha.type == 'recaptcha') {
-    	var recaptcha = new Recaptcha(config.captcha.keys['public'], config.captcha.keys['private']);
+    	var recaptcha = new Recaptcha(config.captcha.keys['public'], config.captcha.keys['private'], true);
     	options.captcha.form = recaptcha.toHTML();
     }
     res.render('create', options);
@@ -151,7 +151,8 @@ app.post('/create', function(req, res) {
     			remoteip:  req.connection.remoteAddress,
 		        challenge: req.body.recaptcha_challenge_field,
 		        response:  req.body.recaptcha_response_field
-    		}
+    		},
+    		true
     	);
     	options.captcha.form = recaptcha.toHTML();
     }
