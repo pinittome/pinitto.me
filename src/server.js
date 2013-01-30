@@ -81,7 +81,7 @@ app.get('/about', function(req, res) {
 
 app.get('/features', function(req, res) {
     options = cloneextend.clone(config.project);
-    options.pageName('Features and use-cases');
+    options.pageName = 'Features and use-cases';
     options.app = config.app;
     res.render('features', options);
 });
