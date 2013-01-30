@@ -159,9 +159,8 @@ app.post('/create', function(req, res) {
     var done = function(additionalErrors) {
     	var errors = req.validationErrors();
     	if (additionalErrors) {
-    		console.log(additionalErrors, additionalErrors.length);
-    		
-    		for (var i=0; i<additionalErrors.length; i++) (errors || []).push(additionalErrors[i]);
+    		if (!errors) errors = [];
+    		for (var i=0; i<additionalErrors.length; i++) errors.push(additionalErrors[i]);
     	}
 	    if (errors) {
 	        if (req.xhr) {
