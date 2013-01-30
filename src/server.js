@@ -9,7 +9,8 @@ var express = require('express')
   , connect = require('connect')
   , Session = connect.middleware.session.Session
   , utils = require('./util')
-  , a = require('./access');
+  , a = require('./access')
+  , Recaptcha = require('recaptcha').Recaptcha;
   
 exports.server = server = require('http').createServer(app);
 
@@ -127,6 +128,12 @@ app.get('/create', function(req, res) {
     options.pageName = 'Create a new board';
     options.totals   = totals;
     options.app      = config.app
+    options.captcha  = { type: 'captcha' };
+    if (config.captcha && config.captcha.type) options.captcha = config.captcha;
+    if (options.captcha.type == 'recaptcha') {
+    	var recaptcha = new Recaptcha(config.captcha.keys['public'], config.captcha.keys['private']);
+    	options.captcha.form = recaptcha.toHTML();
+    }
     res.render('create', options);
 });
 app.post('/create', function(req, res) {
@@ -134,42 +141,74 @@ app.post('/create', function(req, res) {
     options.pageName = 'Error creating board';
     options.totals   = totals;
     options.app      = config.app
-    
+    options.captcha  = { type: 'captcha' };
+    if (config.captcha && config.captcha.type) options.captcha = config.captcha;
+    if (options.captcha.type == 'recaptcha') {
+    	var recaptcha = new Recaptcha(
+    		config.captcha.keys['public'],
+    		config.captcha.keys['private'],
+    		{
+    			remoteip:  req.connection.remoteAddress,
+		        challenge: req.body.recaptcha_challenge_field,
+		        response:  req.body.recaptcha_response_field
+    		}
+    	);
+    	options.captcha.form = recaptcha.toHTML();
+    }
+    var done = function(additionalErrors) {
+    	var errors = req.validationErrors();
+    	if (additionalErrors) {
+    		console.log(additionalErrors, additionalErrors.length);
+    		
+    		for (var i=0; i<additionalErrors.length; i++) (errors || []).push(additionalErrors[i]);
+    	}
+	    if (errors) {
+	        if (req.xhr) {
+	            res.send({error: errors}, 500);
+	            return;
+	       } else {
+	               options.errors = JSON.stringify(errors);
+	               options.values = JSON.stringify(req.body);
+	            res.render('create', options);
+	            return;
+	       }
+	    }
+	    parameters = { owner: req.param('owner'), 'access': {}};
+	    if (req.param('board-name') != '') parameters['name'] = req.param('board-name');
+	    if (req.param('password-admin') != '') {                
+	        parameters['access']['admin'] = utils.hashPassword(req.param('password-admin'));
+	    }
+	    parameters['createdOn'] = parameters['lastLoaded'] = new Date();
+	    boardsDb.insert(parameters, function(error, newBoard) {
+	        req.session.access = a.ADMIN;
+	        req.session.board  = newBoard[0]._id;
+	        if (error) throw Error(error);
+	        if (req.xhr) {
+	            res.send({id: newBoard[0]._id}, 200);
+	        } else {
+	            res.redirect('/' + newBoard[0]._id);
+	        }  
+	        require('./statistics').boardCreated();          
+	    });
+    }
     req.assert('owner', 'Valid email address required').isEmail();
     req.sanitize('board-name');
     req.sanitize('password-admin');
-    req.assert('digits').is(req.session.captcha);
-
-    var errors = req.validationErrors();
-    if (errors) {
-        if (req.xhr) {
-            res.send({error: errors}, 500);
-            return;
-       } else {
-               options.errors = JSON.stringify(errors);
-               options.values = JSON.stringify(req.body);
-            res.render('create', options);
-            return;
-       }
+    if (options.captcha.type == 'captcha') {
+        req.assert('digits').is(req.session.captcha);
+        done();
+    } else if (options.captcha.type == 'recaptcha') {
+    	recaptcha.verify(function(success, error_code) {
+    		if (!success) return done([{
+    			param: 'recaptcha_response_field',
+    			msg: 'Captcha failed - please check and try again',
+    			value: ''
+    		}]);
+    		done();
+    	});
+    } else {
+    	done();
     }
- 
-    parameters = { owner: req.param('owner'), 'access': {}};
-    if (req.param('board-name') != '') parameters['name'] = req.param('board-name');
-    if (req.param('password-admin') != '') {                
-        parameters['access']['admin'] = utils.hashPassword(req.param('password-admin'));
-    }
-    parameters['createdOn'] = parameters['lastLoaded'] = new Date();
-    boardsDb.insert(parameters, function(error, newBoard) {
-        req.session.access = a.ADMIN;
-        req.session.board  = newBoard[0]._id;
-        if (error) throw Error(error);
-        if (req.xhr) {
-            res.send({id: newBoard[0]._id}, 200);
-        } else {
-            res.redirect('/' + newBoard[0]._id);
-        }  
-        require('./statistics').boardCreated();          
-    });
 });
 
 
