@@ -18,7 +18,7 @@
     <div class="row">
         <div class="span7">
             <h2>A few details...</h2>
-            <form class="form-horizontal" method="post">
+            <form class="form-horizontal" method="post" id="create-board">
                 <fieldset>
                     <legend>Administrator</legend>
                     <div class="control-group">
@@ -46,13 +46,27 @@
                             <input type="password" onmouseover="this.title=this.value" name="password-admin" placeholder="" />
                         </div>
                     </div>
-                    <img src="/img/captcha.jpg" class="captcha" />
-                    <div class="control-group">
-                        <label class="control-label" for="pdigits">Captcha</label>
-                        <div class="controls">
-                            <input type="text" name="digits"/>
-                        </div>
-                    </div>
+                    <% if ((typeof(captcha) != undefined) && (captcha.type != 'none')) { %>
+                        <% if (captcha.type == 'captcha') { %>
+	                    	<img src="/img/captcha.jpg" class="captcha" />
+	                    	<div class="control-group">
+		                        <label class="control-label" for="pdigits">Captcha</label>
+		                        <div class="controls">
+		                            <input type="text" name="digits"/>
+		                        </div>
+		                    </div>
+                    	<% } else { %>
+                    	    <div class="control-group">
+	                    	<script type="text/javascript">
+						    var RecaptchaOptions = {
+						       theme : 'clean',
+						       lang  : 'en'
+						    };
+							</script>
+							<%- captcha.form %>
+							</div>
+                    	<% } %>
+                    <% } %>
                 </fieldset> 
          
                 <div class="control-group" >  
