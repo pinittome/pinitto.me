@@ -50,7 +50,7 @@
                                     <% for (var i=0; i<cards.length; i++) { %>
                                     <li id="entry-<%= cards[i]._id %>" class="card-<%= cards[i].cssClass || 'yellow' %>">
                                     <a href="#<%= cards[i]._id %>" onclick="return false;">
-                                    <% if (cards[i].length && cards[i].content.length > 0) { %>
+                                    <% if (cards[i].content && cards[i].content.length > 0) { %>
                                         <%= cards[i].content.substr(0, 30) %>...
                                     <% } else { %>
                                         <i>No content</i>
