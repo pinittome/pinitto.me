@@ -21,7 +21,7 @@
     "recaptcha": "~1.2.0"
   },
   "devDependencies": {
-      "requirejs: L "~2.1.4"
+      "requirejs": "~2.1.4"
   },
   "scripts": {
     "start": "forever start -a -p . -l logs/forever.log -o logs/pinitto.me.out.log -e logs/pinitto.me.err.log index.js",
