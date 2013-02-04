@@ -17,7 +17,11 @@
             }
         </style>
         <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+        
         <link rel="stylesheet" href="css/main.css" />
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/css/theme.css">
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,700,800,600,300' rel='stylesheet' type='text/css'/>
         <script type="text/javascript">
         config = <%- JSON.stringify(app) %>
         </script>
@@ -40,10 +44,9 @@
                     </a>
                     <a class="brand board-name" href="#" title="<%=boardName %>"><%=boardName %></a>
                     <div class="nav-collapse collapse">
-                        <ul class="nav">
-                            <li class="active"><a href="/">Home</a></li>
-                            <li class="card-list dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Card List</a>
+                        <ul class="nav pull-right">
+                            <li class="dropdown card-list">
+                                <a title="Card List" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-file-alt icon-white"></i> <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                 <% if (cards.length > 0) { %>
                                     <li class="no-cards hidden"><a href="#">No cards at present</a></li>
@@ -59,13 +62,12 @@
                                     </li>
                                     <% } %>
                                 <% } else { %>
-                                <li class="no-cards"><a href="#">No cards at present</a></li>
+                                    <li class="no-cards"><a href="#">No cards at present</a></li>
                                 <% } %>
-
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i title="User list" class="icon-user icon-white"></i> <span class="usercount"></span></a>
+                                <a title="User list" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> <span class="usercount"></span>  <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li class="nav-header">User list</li>
                                     <div class="userlist">
@@ -73,30 +75,30 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i title="Settings" class="icon-cog icon-white"></i></a>
+                                <a title="Settings" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog icon-white"></i> <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
+                                    <li class="nav-header">Board settings</li>
+                                    <li><a href="#" class="open-set-board-name-modal admin">Set name</a></li>
+                                    <li><a href="#" class="open-board-access-modal admin">Set password</a></li>
+                                    <li class="divider"></li>
                                     <li class="nav-header">User settings</li>
                                     <li><a href="#" class="open-set-name-modal">Set name</a></li>
-                                    <li class="divider"></li>
-                                    <li class="nav-header">Board Admin</li>
-                                    <li><a href="#" class="open-set-board-name-modal admin">Set name</a></li>
-                                    <li><a href="#" class="open-board-access-modal admin">Access</a></li>
+                                    <li><a href="/logout" class="open-set-name-modal">Logout</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Help</a>
+                                <a title="More" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-plus"></i> <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li class="nav-header">Site</li>
                                     <li><a href="/about">About</a><li>
                                     <li><a href="/contact">Contact us</a></li>
                                     <li class="divider"></li>
-                                    <li class="nav-header">Help</li>
+                                    <li class="nav-header">Project</li>
+                                    <li><a target="_blank" href="https://github.com/pinittome/pinitto.me">Source code</a></li>
                                     <li><a target="_blank" href="https://github.com/pinittome/pinitto.me/issues">Bugs</a></li>
                                     <li><a target="_blank" href="http://pinittome.github.com">Documentation</a></li>
                                 </ul>
                             </li>
-
-                            <li class="leave"><a href="/logout" title="Logout"><i class="icon-off icon-white" title="Logout"></i></a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
