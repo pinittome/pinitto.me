@@ -178,12 +178,9 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         controls = document.createElement('div');
         $(controls).attr('class', 'controls');
         $(controls).append(''
-            + '<i class="icon-resize-full card-resize" title="Resize card">&nbsp;</i>'
             + '&nbsp;&nbsp;<i class="icon-remove card-delete" title="Delete card">&nbsp;</i> '
             + '<i class="icon-eye-open card-colour" title="Change card colour">&nbsp;</i> '
-            + '<i class="icon-magnet card-link" title="' + window.location.href + '#' + id + '">&nbsp;</i>'
-            + '<i class="icon-move card-move">&nbsp;</i> '
-            + '<i>drag to move...</i>')
+            + '<i class="icon-magnet card-link" title="' + window.location.href + '#' + id + '">&nbsp;</i>')
         
         $(controls).appendTo($("#" + id));
     }
