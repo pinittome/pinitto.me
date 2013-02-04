@@ -20,7 +20,9 @@
     "colors": "~0.6.0-1",
     "recaptcha": "~1.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+      "requirejs: L "~2.1.4"
+  },
   "scripts": {
     "start": "forever start -a -p . -l logs/forever.log -o logs/pinitto.me.out.log -e logs/pinitto.me.err.log index.js",
     "stop": "forever stop index.js",
