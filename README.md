@@ -21,7 +21,7 @@ vim config.(production|development).js
 node index
 ```
 
-Or to run with ```forver```:
+Or to run with ```forever```:
 
 ```bash
   npm start 

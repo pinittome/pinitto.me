@@ -20,7 +20,11 @@
         <script type="text/javascript">
         config = <%- JSON.stringify(app) %>
         </script>
+        <% if (!app.useOptimised) { %>
         <script data-main="/js/main.js" src="/js/require.js"></script>
+        <% } else { %>
+        <script src="/main.js"></script>
+        <% } %>
         <link href="/js/vendor/jquery-twitter-display/tweet/jquery.tweet.css" media="all" rel="stylesheet" type="text/css"/>
         </script>
     </head>
