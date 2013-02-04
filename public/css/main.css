@@ -25,17 +25,21 @@ body.board {
 }
 
 .highlight { 
-	box-shadow: 0 0 15px rgba(0, 0, 255, 1);
+	box-shadow: 0 0 15px rgba(255, 255, 255, 1) !important;
 }
 
 .nav { overflow: none; }
+
+.nav .nav-header {
+  text-shadow: none;
+}
 
 .viewport {
     width:100%;
     height:100%;
 }
 .viewport-background {
-    background-image: url('/img/backgrounds/cork.jpg'); 
+  background-image: url('/img/backgrounds/cork.jpg'); 
 	background-repeat: repeat;
 	background-size: 512px 384px;
 	background-origin: content-box;
@@ -48,10 +52,12 @@ li.card-list ul {
 }
 
 .card {
+  min-width: 160px !important;
 	padding: 0;
 	float: left;
-	overflow: hidden;
-	border: 1px #000000 solid;
+	-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .8);
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .8);
+	box-shadow: 0 0 5px rgba(0, 0, 0, .5), inset 0 0 1px rgba(255, 255, 255, .8), inset 0 6px 6px rgba(0, 0, 0, .1);  
 }
 .card textarea {
 	width: 100%;
@@ -61,10 +67,10 @@ li.card-list ul {
 	border: 0;
 	color: #000000;
 	overflow: hidden;
-        z-index: 10;
-        font-size: 13px;
-        line-height: 16px;
-        padding: 5px;	
+  z-index: 10;
+  font-size: 13px;
+  line-height: 16px;
+  padding: 5px;	
 }
 .card textarea:focus {
 	outline: none;
@@ -73,15 +79,20 @@ li.card-list ul {
 	display: none;
 	float: left;
 	position: absolute;
-	bottom: 0;
+	top: -26px;
 	right: 0;
 	width: 100%;
-	height: 22px;
-	background-color: #CCCCCC;
-	border-top-left-radius:  0.3em;
-	border-top-right-radius:  0.3em;
-	opacity: 0.65;
-    z-index: 20;
+	height: 26px;
+  padding: 2px;
+  box-sizing: border-box;
+  overflow: hidden;
+	background-color: rgba(0,0,0,0.5);
+  color: #ddd;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+  z-index: 20;
+  -webkit-border-radius: 3px 3px 0px 0px;
+  -moz-border-radius: 3px 3px 0px 0px;
+  border-radius: 3px 3px 0px 0px;
 }
 div.card:hover .controls {
 	display: block;
@@ -94,6 +105,9 @@ div.card p {
 .controls .card-delete, .controls .card-colour, .controls .card-link { 
 	cursor: pointer;
 }
+.controls .card-delete:hover, .controls .card-colour:hover, .controls .card-link:hover { 
+	color: #fff;
+}
 .controls .card-resize {
 	float:right;
 	margin-top: 5px;
@@ -101,32 +115,34 @@ div.card p {
 }
 
 .card-yellow {
-	background-color: #F0F01D;
+	background-color: #ffee66;
+	background: -webkit-linear-gradient(#ffee66, #f5da41, #f6ef97);
+	background: -moz-linear-gradient(#ffee66, #f5da41, #f6ef97);
+  linear-gradient(#ffee66, #f5da41, #f6ef97);
 }
 .card-green {
-	background-image: linear-gradient(bottom, rgb(136,207,129) 47%, rgb(164,249,155) 74%, rgb(197,255,186) 87%);
-	background-image: -o-linear-gradient(bottom, rgb(136,207,129) 47%, rgb(164,249,155) 74%, rgb(197,255,186) 87%);
-	background-image: -moz-linear-gradient(bottom, rgb(136,207,129) 47%, rgb(164,249,155) 74%, rgb(197,255,186) 87%);
-	background-image: -webkit-linear-gradient(bottom, rgb(136,207,129) 47%, rgb(164,249,155) 74%, rgb(197,255,186) 87%);
-	background-image: -ms-linear-gradient(bottom, rgb(136,207,129) 47%, rgb(164,249,155) 74%, rgb(197,255,186) 87%);
-	
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.47, rgb(136,207,129)),
-		color-stop(0.74, rgb(164,249,155)),
-		color-stop(0.87, rgb(197,255,186))
-	);
+  background-color: #ccffcc;
+  background: -webkit-linear-gradient(#ccffcc, #c3eba7, #c3ffcc);
+  background: -moz-linear-gradient(#ccffcc, #c3eba7, #c3ffcc);
+  linear-gradient(#ccffcc, #c3eba7, #c3ffcc);
 }
 .card-red {
-	background-color: #DE8785;
+	background-color: #de8785;
+	background: -webkit-linear-gradient(#de8785, #d57360, #de8785);
+	background: -moz-linear-gradient(#de8785, #d57360, #de8785);
+  linear-gradient(#de8785, #d57360, #de8785);  
 }
 .card-blue {
-	background-color: #6178D4;
+	background-color: #ccccff;
+	background: -webkit-linear-gradient(#ccccff, #c3b9da, #ccccff);
+	background: -moz-linear-gradient(#ccccff, #c3b9da, #ccccff);
+  linear-gradient(##ccccff, #c3b9da, #ccccff);  
 }
 .card-white {
-	background-color: #FFFFFF;
+	background-color: #ffffff;
+	background: -webkit-linear-gradient(#fefefe, #ffffff, #fefefe);
+	background: -moz-linear-gradient(#fefefe, #ffffff, #fefefe);
+  linear-gradient(#fefefe, #ffffff, #fefefe);  
 }
 
 a.brand { 
@@ -145,7 +161,6 @@ img.captcha {
 	height: 100px; 
 }
 
-
 /* JQuery UI additions */
 .ui-resizable { position: relative;}
 .ui-resizable-handle { position: absolute;font-size: 0.1px; display: block; }
@@ -158,6 +173,14 @@ img.captcha {
 .ui-resizable-sw { cursor: sw-resize; width: 9px; height: 9px; left: -5px; bottom: -5px; }
 .ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
 .ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}
+
+/* Custom jQuery UI styles */
+.ui-resizable-se {
+  background-image: url('../img/ui-icons_256x240.png');
+  background-repeat: no-repeat;
+  background-position: -65px -225px;
+}
+
 
 /* Custom website styles */
 
@@ -174,7 +197,6 @@ img.captcha {
 }
 
 .masthead, .page-header-banner {
-
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
@@ -185,7 +207,6 @@ img.captcha {
   color: #fff;
   text-shadow: 0 0 5px #000;
 }
-
 
 #create-board .help-inline {
 	margin-top: 10px;

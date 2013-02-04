@@ -46,10 +46,12 @@
         <div class="span4">
             <h2>Donate</h2>
             <p><%= name %> is currently a free service. If you like our application please donate to help keep the service online and ad-free.</p>
-            <p><a class="btn" href="/about">Donate &raquo;</a></p>
+            <p><a class="btn" href="#">Donate &raquo;</a></p>
+            <% if (typeof(app.github) !== 'undefined') { %>  
             <h2>Contribute</h2>
             <p><%= name %> is an Open Source project. The application source code is freely available on GitHub.</p>
-            <p><a class="btn" href="/about">GitHub Repo &raquo;</a></p>
+            <p><a class="btn" href="https://github.com/<%=app.github %>" target="_blank">GitHub Repo &raquo;</a></p>                          
+            <% } %>
         </div>
     </div>
 
