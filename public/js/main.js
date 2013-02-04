@@ -1,12 +1,13 @@
 require.config({
     paths: {
-        'jquery': '//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min',
+    	'requireLib': 'require',
+        'jquery': 'vendor/jquery-1.8.3.min',
         'tweet': 'vendor/jquery-twitter-display/tweet/jquery.tweet',
         'socket.io': '/socket.io/socket.io',
         'modernizer': 'vendor/modernizr-2.6.2-respond-1.1.0.min',
         'config': '../config',
         'bootstrap': 'vendor/bootstrap.min',
-        'ui': '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min'
+        'ui': 'vendor/jquery-ui-1.10.0.min',
     },
     shim: {
         'bootstrap': {

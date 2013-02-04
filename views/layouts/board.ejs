@@ -21,10 +21,14 @@
         <script type="text/javascript">
         config = <%- JSON.stringify(app) %>
         </script>
+        <% if (!useOptimised) { %>
         <script data-main="/js/app.js" src="/js/require.js"></script>
+        <% } else { %>
+        <script src="/app.js"></script>
+        <% } %>
     </head>
     <body class="board">
-        <!--[if lt IE 7]>
+        <!--[if lt IE 10]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
 
