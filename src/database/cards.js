@@ -20,7 +20,6 @@ db.collection('cards', function(error, cards) {
             {w:1},
             function(error, numberOfResults) {
                 if (error || (numberOfResults != 1)) {
-                    console.log(error)
                     error ='Could not save new card position'
                 }
                 callback(error);

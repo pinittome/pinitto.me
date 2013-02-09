@@ -56,19 +56,15 @@ io.sockets.on('connection', function (socket) {
     board.setParams(boards, require('./database/session').store, cardsDb);
     
     var card = new Card()
-    card.setSocketContext(socket);
     card.setIo(io);
- 
+
     socket.on('statistics.join', function() {
         socket.join('/');
     });
      
     socket.on('disconnect', function() {
-        socket.get('board', function(error, board) {
-            if (error) return;
-            socket.broadcast.to(board).emit('user.leave', {userId: socket.id});
-            statistics.socketClosed()
-        });
+    	board.setSocketContext(this);
+        board.leave();
     });
     
     socket.on('card.create', function(data) {
