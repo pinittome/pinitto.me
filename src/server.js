@@ -51,7 +51,6 @@ app.configure(function(){
 app.engine('ejs', engine);
 
 app.get('/', function (req, res) { 
-   // So ugly must fix!
    options          = cloneextend.clone(config.project)
    options.totals   = totals
    options.pageName = 'Welcome to pinitto.me'
@@ -120,14 +119,16 @@ app.post('/login/*', function(req, res) {
         if (error || (typeof(board) == undefined)) {
             res.render(404, {title: 'Board not found'})
         }
-        req.session.access = a.getLevel(board, utils.hashPassword(req.param('password')));
-        req.session.board  = id;
-        if (req.session.access != a.NONE) {
-            res.redirect('/' + id);
-            return;
-        }
-        options.errors = { 'error': 'Incorrect password for this board' };
-        res.redirect('/login/' + id)
+        utils.hashPassword(req.param('password'), function(hash) {
+        	req.session.access = a.getLevel(board, hash);
+        	req.session.board  = id;
+	        if (req.session.access != a.NONE) {
+	            res.redirect('/' + id);
+	            return;
+	        }
+	        options.errors = { 'error': 'Incorrect password for this board' };
+	        res.redirect('/login/' + id)
+        })
     });
 });
 
@@ -181,23 +182,27 @@ app.post('/create', function(req, res) {
 	            return;
 	       }
 	    }
+	    var save = function() {
+	    	parameters['createdOn'] = parameters['lastLoaded'] = new Date();
+		    boardsDb.insert(parameters, function(error, newBoard) {
+		        req.session.access = a.ADMIN;
+		        req.session.board  = newBoard[0]._id;
+		        if (error) throw Error(error);
+		        if (req.xhr) {
+		            res.send({id: newBoard[0]._id}, 200);
+		        } else {
+		            res.redirect('/' + newBoard[0]._id);
+		        }  
+		        require('./statistics').boardCreated();          
+		    });
+	    }
 	    parameters = { owner: req.param('owner'), 'access': {}};
 	    if (req.param('board-name') != '') parameters['name'] = req.param('board-name');
 	    if (req.param('password-admin') != '') {                
-	        parameters['access']['admin'] = utils.hashPassword(req.param('password-admin'));
+	        parameters['access']['admin'] = utils.hashPassword(req.param('password-admin'), save);
 	    }
-	    parameters['createdOn'] = parameters['lastLoaded'] = new Date();
-	    boardsDb.insert(parameters, function(error, newBoard) {
-	        req.session.access = a.ADMIN;
-	        req.session.board  = newBoard[0]._id;
-	        if (error) throw Error(error);
-	        if (req.xhr) {
-	            res.send({id: newBoard[0]._id}, 200);
-	        } else {
-	            res.redirect('/' + newBoard[0]._id);
-	        }  
-	        require('./statistics').boardCreated();          
-	    });
+	    save();
+	    
     }
     req.assert('owner', 'Valid email address required').isEmail();
     req.sanitize('board-name');
@@ -265,23 +270,28 @@ app.get('/*', function(req, res) {
         if (false == allowedAccess) {
             return res.redirect('/login/' + id);
         }
-        boardsDb.update({_id: utils.ObjectId(id)}, {$set: {lastUsed: new Date()}}, function() {});
-        var cardsDb = require('./database/cards')
-        cardsDb.fetch('/'+id, function(error, cards) {
-            if (error) {
-                options.title   = "Something is up with our datastore"
-                options.message = "Something has gone around somewhere. Will have beat the sys admin again"
-                options.type    = 'datastore'
-                return res.render(500, options);
-            }
-            name                = board.name || id
-            options._layoutFile = 'layouts/board';
-            options.boardId     = id;
-            options.boardName   = name;
-            options.cards       = cards;
-            req.session.access  = req.session.access ? req.session.access : a.ADMIN;
-            req.session.board   = id;
-            res.render('board', options);
-        });
+        boardsDb.update({_id: utils.ObjectId(id)}, {$set: {lastUsed: new Date()}}, function(error, records) {
+        	if (error) {
+        		console.log("Error updating lastUsed for board " + id)
+        		return res.redirect('/' + id + '?attempt=' (req.param('attempt') || 1));
+        	}
+	        var cardsDb = require('./database/cards')
+	        cardsDb.fetch('/'+id, function(error, cards) {
+	            if (error) {
+	                options.title   = "Something is up with our datastore"
+	                options.message = "Something has gone around somewhere. Will have beat the sys admin again"
+	                options.type    = 'datastore'
+	                return res.render(500, options);
+	            }
+	            name                = board.name || id
+	            options._layoutFile = 'layouts/board';
+	            options.boardId     = id;
+	            options.boardName   = name;
+	            options.cards       = cards;
+	            req.session.access  = req.session.access ? req.session.access : a.ADMIN;
+	            req.session.board   = id;
+	            res.render('board', options);
+	        });
+	    });
     });
 });

@@ -30,17 +30,23 @@ Board.prototype.setAccess = function(data) {
             if (error) return self.socket.emit('error', {message: 'Not able to load board'})
             console.log(data, board)
             if (data.admin && data.admin.require != undefined) {
+            	var saveAccess = function() {
+            		self.db.setAccess(boardId, board.access, function(error) {
+		                if (error) return self.socket.emit('error', {message: 'Access details could not be updated'})
+		                io.sockets.in(boardId).emit('board.access.set', {userId: self.socket.id});
+		            });
+            	}
                 if (false === data.admin.require) {
                     delete board.access.admin
+                    saveAccess();
                 } else {
                     if (!data.admin.password) return self.socket.emit('error', {message: 'Password not provided'})
-                    board.access.admin = utils.hashPassword(data.admin.password)
+                    utils.hashPassword(data.admin.password, function(hash) {
+                    	board.access.admin = hash;
+                    	saveAccess();
+                    })
                 }
             }
-            self.db.setAccess(boardId, board.access, function(error) {
-                if (error) return self.socket.emit('error', {message: 'Access details could not be updated'})
-                io.sockets.in(boardId).emit('board.access.set', {userId: self.socket.id});
-            })
         });
     });
 }
@@ -54,8 +60,10 @@ Board.prototype.leave = function() {
     }    
     this.socket.get('board', function(error, board) {
         if (error) return callback('Error on user disconnect'); 
-        self.socket.leave(board);
         self.socket.broadcast.to(board).emit('user.leave', {userId: self.socket.id});
+        self.socket.set('access', null);
+        self.socket.leave(board);
+        statistics.socketClosed();
         callback()
     });
 }
@@ -71,14 +79,18 @@ Board.prototype.join = function(details) {
             || (session.board != self.board) 
             || !utils.inArray(session.access, [access.ADMIN, access.WRITE, access.READ])
         ) {
-            console.log("User is not allowed to view this board", session);
+            console.log([
+            	'**************************************************',
+            	'User is not allowed to view this board',
+            	'**************************************************'
+            	].join("\n"), session);
             self.socket.emit('connect.fail', 'You are not authorised to view this board');
             self.socket.disconnect();
             return;
         }
-
         self.socket.set('access', session.access, function() {
             self.socket.set('board', '/' + self.board, function() {
+            	console.log("User is joining board " + self.boardName);
                 self.socket.join(self.boardName);
                 userNameIndex = 1;
                 self.sendUserList(details);
