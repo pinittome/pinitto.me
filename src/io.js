@@ -63,10 +63,13 @@ io.sockets.on('connection', function (socket) {
     });
      
     socket.on('disconnect', function() {
-    	board.setSocketContext(this);
-        board.leave();
+    	socket.get('board', function(error, board) {
+    		if (error) return;
+	        socket.broadcast.to(board).emit('user.leave', {userId: socket.id});
+	        statistics.socketClosed()
+	    });
     });
-    
+ 
     socket.on('card.create', function(data) {
         card.setSocketContext(this);
         card.create(data);
