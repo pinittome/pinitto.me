@@ -28,7 +28,6 @@ Board.prototype.setAccess = function(data) {
         if (error) return self.socket.emit('error', {message: "Access details not changed"})
         self.db.load(boardId, function(error, board) {
             if (error) return self.socket.emit('error', {message: 'Not able to load board'})
-            console.log(data, board)
             if (data.admin && data.admin.require != undefined) {
             	var saveAccess = function() {
             		self.db.setAccess(boardId, board.access, function(error) {
@@ -59,7 +58,7 @@ Board.prototype.leave = function() {
         return this.socket.emit('error', {message: 'Illegal board ID provided'});
     }    
     this.socket.get('board', function(error, board) {
-        if (error) return callback('Error on user disconnect'); 
+        if (error) return console.log('Error on user disconnect', error); 
         self.socket.broadcast.to(board).emit('user.leave', {userId: self.socket.id});
         self.socket.set('access', null);
         self.socket.leave(board);
