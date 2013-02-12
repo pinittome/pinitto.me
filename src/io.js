@@ -51,11 +51,11 @@ io.sockets.on('connection', function (socket) {
     
     var user  = require('./classes/user');
        
-    var board = new Board()    
-    board.setSanitizer(sanitizer)
+    var board = new Board();
+    board.setSanitizer(sanitizer);
     board.setParams(boards, require('./database/session').store, cardsDb);
     
-    var card = new Card()
+    var card = new Card(board);
     card.setIo(io);
 
     socket.on('statistics.join', function() {

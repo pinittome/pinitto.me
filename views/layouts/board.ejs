@@ -23,7 +23,8 @@
         <link rel="stylesheet" href="/css/theme.css">
         <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,700,800,600,300' rel='stylesheet' type='text/css'/>
         <script type="text/javascript">
-        config = <%- JSON.stringify(app) %>
+        config      = <%- JSON.stringify(app) %>
+        boardConfig = <%- JSON.stringify(config) %>
         </script>
         <% if (!app.useOptimised) { %>
         <script data-main="/js/app.js" src="/js/require.js"></script>

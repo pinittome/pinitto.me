@@ -172,7 +172,13 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
                     }
                 });
             }
-        }); 
+        });
+        if (boardConfig.snap && boardConfig.snap.position) {
+        	this.setPositionGrid(boardConfig.snap.position, id);
+        }
+        if (boardConfig.snap && boardConfig.snap.size) {
+        	this.setSizeGrid(boardConfig.snap.size, id);
+        }
     }
     Card.prototype.addControls = function(id) {
         controls = document.createElement('div');
@@ -183,6 +189,38 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             + '<i class="icon-magnet card-link" title="' + window.location.href + '#' + id + '">&nbsp;</i>')
         
         $(controls).appendTo($("#" + id));
+    }
+    Card.prototype.setPositionGrid = function(size, id) {
+    	var grid = null;
+    	switch (size) {
+    		case 'large':
+    		    grid = [100, 100];
+    		    break;
+    		case 'medium':
+    		    grid = [50, 50];
+    		    break;
+    		case 'small':
+    		    grid = [25, 25];
+    		    break;
+    	}
+    	if (id != null) return $('#' + id).draggable({grid: grid});
+        $('div.card').each(function(index, card) { $(card).draggable({grid: grid})});
+    }
+    Card.prototype.setSizeGrid = function(size, id) {
+    	var grid = null;
+    	switch (size) {
+    		case 'large':
+    		    grid = 150;
+    		    break;
+    		case 'medium':
+    		    grid = 75;
+    		    break;
+    		case 'small':
+    		    grid = 25;
+    		    break;
+    	}
+    	if (id != null) return $('#' + id).resizable({grid: grid});
+        $('div.card').each(function(index, card) { $(card).resizable({grid: grid}) });
     }
     Card.prototype.addCardListEntry = function(data) {
         content = "<i>No content</i>";
@@ -203,6 +241,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         this.socket = socket;
         this.infinite = infinite;
         this.board = board;
+        this.board.setCard(this);
     }
     
     var cardEntity = new Card(socket, infiniteDrag, board);

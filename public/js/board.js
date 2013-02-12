@@ -8,6 +8,15 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user'],
     Board.prototype.setAccess = function(access) {
         this.socket.emit('board.access.set', access)
     }
+    Board.prototype.setCard = function(card) {
+    	this.card = card;
+    }
+    Board.prototype.setSizeGrid = function(size) {
+    	this.card.setSizeGrid(size);
+    }
+    Board.prototype.sizePositionGrid = function(size) {
+    	this.card.setPostionGrid(size);
+    }
     function Board(socket) {
         this.socket = socket;
         this.preventCardCreation = false;
@@ -90,6 +99,12 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user'],
         });
         notification.add('The board name has been changed to "' + data.name + '"');
     });
+    socket.on('board.grid.postion', function(data) {
+        board.setPositionGrid(data.size);
+    });
+    socket.on('board.grid.size', function(data) {
+    	board.setSizeGrid(data.size);
+    })
     $('.leave').click(function() {
         document.location.href = '/logout';
     });

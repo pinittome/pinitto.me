@@ -5,7 +5,7 @@ var io        = require('../io').io,
 module.exports = Board = function Board(){};
 
 Board.prototype.setName = function(data) {
-    var self = this
+    var self = this;
     try {
         var data = this.sanitizer.rename(data)
     } catch (e) {
@@ -49,7 +49,15 @@ Board.prototype.setAccess = function(data) {
         });
     });
 }
-  
+
+Board.prototype.load = function(id, callback) {
+	var self = this;
+	self.db.load(id, function(error, board) {
+		if (error) return callback(error, null);
+		callback(null, board);
+	});
+}
+
 Board.prototype.leave = function() {
     var self = this
     try {

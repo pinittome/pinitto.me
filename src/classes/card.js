@@ -1,23 +1,52 @@
-var santizier  = require('./sanitize/card'),
-    statistics = require('../statistics'),
-    db         = require('../database/cards')
+var santizier   = require('./sanitize/card'),
+    statistics  = require('../statistics'),
+    db          = require('../database/cards');
 
-module.exports = Card = function Card(){};
+module.exports = Card = function Card(board){
+	this.board = board;
+};
 
 Card.prototype.create = function(data) {
-    var self = this
-    this.getBoard(function(board) {
-        data.board = board;
+    var self = this;
+    try { 
+        var data = santizier.create(data)
+    } catch (e) {
+        console.log(e, data)
+        return this.socket.emit('error', {message: 'New card could not be created'})
+    } 
+    this.getBoardConfig(function(error, config) {
+    	if (error) return self.socket.emit('error', {message: 'New card could not be created'});
+        data.board = '/' + config._id;
         data.size  = { width: 150, height: 150 };
+        console.log('****', config);
+        if (config.snap && config.snap.position) {
+        	data.position = self.calculateCardPosition(data.position, config.snap.position);
+        }
         db.add(data, function(error, result) {
             if (error) return self.socket.emit('error', {message: 'New card could not be created'})
             data.cardId = result[0]._id;
-            self.io.sockets.in(board).emit('card.created', data);
+            self.io.sockets.in('/' + config._id).emit('card.created', data);
             statistics.cardAdded();
         });    
     });
 };
 
+Card.prototype.calculateCardPosition = function(position, size) {
+	var grid = null;
+	switch (size) {
+		case 'large':
+		    grid = 100;
+		    break;
+		case 'medium':
+		    grid = 50;
+		    break;
+		case 'small':
+		    grid = 25;
+		    break;
+	}
+	if (null == grid) return position;
+	return {x: Math.floor(position.x / grid) * grid, y: Math.floor(position.y / grid) * grid};
+}
 Card.prototype.moved = function(data) {
     var self = this
     try { 
@@ -132,9 +161,20 @@ Card.prototype.textChange = function(data) {
 Card.prototype.getBoard = function(callback) {
     var self = this;
     this.socket.get('board', function(error, board) {
-        if (error) return self.socket.emit('error', {message:'Could not get board ID for user', action: 'reload'});
+        if (error) return self.socket.emit(
+        	'error',
+        	{message:'Could not get board ID for user', action: 'reload'}
+        );
         callback(board);
     });
+}
+
+Card.prototype.getBoardConfig = function(callback) {
+	var self = this;
+	this.socket.get('board', function(error, id) {
+		if (error) return callback(error, null);
+		self.board.load(id, callback);
+	});
 }
 Card.prototype.setSocketContext = function(socket) {
     this.socket = socket;
