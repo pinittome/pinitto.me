@@ -99,6 +99,7 @@ io.sockets.on('connection', function (socket) {
         card.moving(data)
     });
     socket.on('card.text-change', function(data) {
+    	card.setSocketContext(this);
         card.textChange(data)
     });
 

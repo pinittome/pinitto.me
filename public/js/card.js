@@ -291,7 +291,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         $('#entry-' + $(this).parent().attr('id')).find('a').html(content);
     });
     socket.on('card.text-change', function(data) {
-        $('#' + data.cardId).find('textarea').val(data.content);
+        $('#' + data.cardId).find('textarea').val(htmlDecode(data.content));
         if (data.content.length == 0) {
             data.content = "<i>No content</i>";
         } else { 
@@ -305,12 +305,12 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     });
     $("div.viewport-container").click(function(e) {
         lastClick = e;
-                if (board.preventCardCreation)
-                    return notification.add(
-                        "You can only create a card once every " 
-                          + config.limits.card.wait + " seconds",
-                        "notice"
-                    );
+        if (board.preventCardCreation)
+            return notification.add(
+                "You can only create a card once every " 
+                  + config.limits.card.wait + " seconds",
+                "notice"
+            );
         var x = e.pageX - parseFloat($('.viewport').css('left').replace('px', ''));        
         var y = e.pageY - viewport.header.height - parseFloat($('.viewport').css('top').replace('px', ''));
             if (config && config.limits && config.limits.card && config.limits.card.wait) {
@@ -326,5 +326,11 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             }
         });
     });
+    
+    function htmlDecode(input){
+		var e = document.createElement('div');
+		e.innerHTML = input;
+	    return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
     return cardEntity;
 });
