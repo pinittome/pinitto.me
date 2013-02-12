@@ -43,8 +43,10 @@ app.configure(function(){
     app.use(express.favicon(__dirname + '/../public/favicon.ico'));
     app.use(app.router);
     app.use(express.logger);
+    var errors = false;
+    if ('development' == environment) errors = true;
     app.use(express.errorHandler({
-        dumpExceptions: true, showStack: true
+        dumpExceptions: errors, showStack: errors
     }));
 });
 
@@ -244,7 +246,8 @@ app.get('/*', function(req, res) {
     boardsDb.findOne({_id: utils.ObjectId(id)}, function(error, board) {
         if (error) {
             options.title   = "Something is up with our datastore"
-            options.message = "Something has gone around somewhere. Will have beat the sys admin again"
+            options.message = "Something has gone around somewhere. Will have to poke the sys admin " + 
+                "again, or put another coin in the meter!"
             options.type    = 'datastore'
             return res.render(500, options);
         }
@@ -279,7 +282,8 @@ app.get('/*', function(req, res) {
 	        cardsDb.fetch('/'+id, function(error, cards) {
 	            if (error) {
 	                options.title   = "Something is up with our datastore"
-	                options.message = "Something has gone around somewhere. Will have beat the sys admin again"
+	                options.message = "Something has gone around somewhere. Will have to poke " +
+	                    "the sys admin again, or put another coin in the meter!"
 	                options.type    = 'datastore'
 	                return res.render(500, options);
 	            }
