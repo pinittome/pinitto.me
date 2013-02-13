@@ -20,7 +20,7 @@ environment = process.env.NODE_ENV || 'production';
 
 
 config = require('./config.' + environment + '.js');
-config.cookie.key = 'connect.sid';    socket.on('reconnect', fu)
+config.cookie.key = 'connect.sid';
 if (!config.app.useOptimised) {
     config.app.useOptimised = ('development' == environment) ? false : true; 
 }
