@@ -21,7 +21,7 @@ define(['socket', 'user', 'util/notification'], function(socket, user, notificat
     	console.log('Server has requested board join');
     	socket.emit('board.join', {id: boardId, user: user.name});
     	user.id = socket.socket.sessionid;
-    	notification.add("Error caused by bad connection, this is automatically being fixed. Please try again", "warning"); 	
+    	notification.add("Error caused by bad connection, this is automatically being fixed. Please try again", "info"); 	
     });
     
     socket.on('reconnecting', function() {
