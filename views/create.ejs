@@ -15,114 +15,132 @@
     var values = <%- values %>;
     </script>
     <% } %>
+    <form class="form-horizontal" method="post" id="create-board">
     <div class="row">
         <div class="span7">
             <h2>A few details...</h2>
-            <form class="form-horizontal" method="post" id="create-board">
-                <fieldset>
-                    <legend>Administrator</legend>
-                    <div class="control-group">
-                        <label class="control-label" for="owner">Email address</label>
-                        <div class="controls">
-                            <input type="email" name="owner" placeholder="Email goes here..." />
-                        
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend>Board properties</legend>
-                    <div class="control-group">
-                        <label class="control-label" for="board-name">Board name</label>
-                        <div class="controls">
-                            <input type="text" name="board-name" placeholder="Board name (optional)" />
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend>Access</legend>
-                    <div class="control-group">
-                        <label class="control-label" for="password-admin">Password</label>
-                        <div class="controls">
-                            <input type="password" onmouseover="this.title=this.value" name="password-admin" placeholder="" />
-                        </div>
-                    </div>
-                    <% if ((typeof(captcha) != undefined) && (captcha.type != 'none')) { %>
-                        <% if (captcha.type == 'captcha') { %>
-	                    	<img src="/img/captcha.jpg" class="captcha" />
-	                    	<div class="control-group">
-		                        <label class="control-label" for="pdigits">Captcha</label>
-		                        <div class="controls">
-		                            <input type="text" name="digits"/>
-		                        </div>
-		                    </div>
-                    	<% } else { %>
-                    	    <div class="control-group">
-	                    	<script type="text/javascript">
-						    var RecaptchaOptions = {
-						       theme : 'clean',
-						       lang  : 'en'
-						    };
-							</script>
-							<%- captcha.form %>
-							</div>
-                    	<% } %>
-                    <% } %>
-                </fieldset> 
-         
-                <div class="control-group" >  
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Create board</button>
-                        <button type="button" class="btn leave">Cancel</button>
+            <fieldset>
+                <legend>Administrator</legend>
+                <div class="control-group">
+                    <label class="control-label" for="owner">Email address</label>
+                    <div class="controls">
+                        <input type="email" name="owner" placeholder="Email goes here..." />
+                    
                     </div>
                 </div>
+            </fieldset>
+            <% if ((typeof(captcha) != undefined) && (captcha.type != 'none')) { %>
+            <fieldset>
+                <legend>Access</legend>
                 
-                <fieldset>
-                    <legend>Grids</legend>
-                    <div class="control-group">
-                        <label class="control-label" for="grid-size">Card size increments</label>
+                <% if (captcha.type == 'captcha') { %>
+                	<img src="/img/captcha.jpg" class="captcha" />
+                	<div class="control-group">
+                        <label class="control-label" for="pdigits">Captcha</label>
                         <div class="controls">
-                            <select name="grid-size">
-                                <option value="none">Any</option>
-                                <option value="small">Small</option>
-                                <option value="medium">Medium</option>
-                                <option value="large">Large</option>
-                            </select>
-                            
-                        </div>
-                        <div class="control-group">
-                        <label class="control-label" for="grid-position">Position grid size</label>
-                        <div class="controls">
-                            <select name="grid-position">
-                                <option value="none">Any</option>
-                                <option value="small">Small</option>
-                                <option value="medium">Medium</option>
-                                <option value="large">Large</option>
-                            </select>
-                            
+                            <input type="text" name="digits"/>
                         </div>
                     </div>
+            	<% } else { %>
+            	    <div class="control-group">
+                	<script type="text/javascript">
+				    var RecaptchaOptions = {
+				       theme : 'clean',
+				       lang  : 'en'
+				    };
+					</script>
+					<%- captcha.form %>
+					</div>
+            	<% } %>
+            </fieldset> 
+            <% } %>
+            <fieldset>
+                <legend>Board properties</legend>
+                <div class="control-group">
+                    <label class="control-label" for="board-name">Board name</label>
+                    <div class="controls">
+                        <input type="text" name="board-name" placeholder="Board name (optional)" />
                     </div>
-                </fieldset>                    
-            </form>
+                </div>
+            </fieldset>
         </div>
         <div class="span5">
             <h2>Help</h2>
-            <p class="lead">The best bit about this that almost all of these fields are optional!</p>
+            <p class="lead">The best bit about this is that only a very small amount of information is required!</p>
             <h3>Email <span class="text-error">- required</span> </h3>
             <p>Your email is used to remind you of your board 
-            password<% if (typeof(board) !== 'undefined' && typeof(board.expiry) !== 'undefined') { %>
+            password if set<% if (typeof(board) !== 'undefined' && typeof(board.expiry) !== 'undefined') { %>
             , and to inform you when your board is about to expire (currently after <%=board.expiry %> days of inactivity)</p>
-            <% } %>. No selling this or spamming you.
+            <% } %>. No selling this or spamming you.</p>
+            <% if ((typeof(captcha) != undefined) && (captcha.type != 'none')) { %>
+            <h3>Captcha <span class="text-error">- required</span></h3>
+            <p>Your not a 'bot are you? Are you? Check things can change very quickly these days.</p>
+            <% } %>
             <h3>Board name <span class="text-success">- optional</span></h3>
             <p>Completely optional, but hey it makes it all a bit more personal!</p>
-            <h3>Password <span class="text-success">- optional</span></h3>
-            <p>If you want to prevent access to your board enter a password here.</p>
-            <p>Hover over the password box to see what you've entered already.</p>        
-            <p class="text-warning">Warning: not setting a password leaves your board open to abuse by those wishing to do bad.</p>
-            <p class="text-muted">We're adding more fine-grained access controls soon e.g. read-only, edit but no admin, etc.</p>
-            <h3>Captcha <span class="text-error">- required</span></h3>
-            <p>Your not a 'bot are you? Are you? Check things can change very quickly these days.
        </div>
     </div>
-
+    <div class="row">
+	    <div class="control-group">  
+	        <div class="form-actions">
+	            <button type="submit" class="btn btn-primary">Create board</button>
+	            <button type="button" class="btn leave">Cancel</button>
+	            <a href="#advanced-settings">Or try some of the advanced settings out &raquo;</a>
+	        </div>
+	    </div>
+    </div>
+    <a name="advanced-settings"></a>
+    <div class="row">
+	    <div class="span7">
+	        <h2>Advanced settings</h2>
+	        <fieldset>
+                <legend>Access</legend>
+                <div class="control-group">
+                    <label class="control-label" for="password-admin">Password</label>
+                    <div class="controls">
+                        <input type="password" onmouseover="this.title=this.value" name="password-admin" placeholder="" />
+                        <span class="help-block">Hover over the password box to see what you've entered already.</span>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Grids</legend>
+                <div class="control-group">
+                    <label class="control-label" for="grid-size">Card size increments</label>
+                    <div class="controls">
+                        <select name="grid-size">
+                            <option value="none">Any</option>
+                            <option value="small">Small</option>
+                            <option value="medium">Medium</option>
+                            <option value="large">Large</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="grid-position">Position grid size</label>
+                    <div class="controls">
+                        <select name="grid-position">
+                            <option value="none">Any</option>
+                            <option value="small">Small</option>
+                            <option value="medium">Medium</option>
+                            <option value="large">Large</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+	    </div>
+	    <div class="span5">
+            <h2>Super-charge your board!</h2>
+            <p class="lead">Customise your board so you get the best out of it.</p>
+	        <h3>Access</h3>
+	        <p>If you want to prevent access to your board enter a password here.</p>     
+	        <p class="text-warning">Warning: not setting a password leaves your board open to abuse by those wishing to do bad.</p>
+	        <p class="text-muted">We're adding more fine-grained access controls soon e.g. read-only, edit but no admin, etc.</p>      
+	        <h3>Grids</h3>
+	        <p>Do you like order? Do nice straight lines do it for you? Then you'll love the grids feature!</p>
+	        <p>By default, card sizes and positions are freeform, but apply the grids and either of both of these 
+	           forces either card size &amp;/or position to resize/move in fixed increments.</p>
+	    </div>
+	</div>
+	</form>
 </div> <!-- /container -->
