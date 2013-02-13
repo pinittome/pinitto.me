@@ -13,14 +13,14 @@ environment = process.env.NODE_ENV || 'production';
     "",
     " Created by: ".cyan,
     "    - Lloyd Watkin (@lloydwatkin)".cyan,
-    "    - Jonny Heavey (@jonnyheavey".cyan,
+    "    - Jonny Heavey (@jonnyheavey)".cyan,
     "",
     "    www.pinitto.me ::: github.com/pinittome ::: @pinittome".green,
     ""].forEach(function(data) { console.log(data)})
 
 
 config = require('./config.' + environment + '.js');
-config.cookie.key = 'connect.sid';
+config.cookie.key = 'connect.sid';    socket.on('reconnect', fu)
 if (!config.app.useOptimised) {
     config.app.useOptimised = ('development' == environment) ? false : true; 
 }
