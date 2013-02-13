@@ -18,7 +18,6 @@ environment = process.env.NODE_ENV || 'production';
     "    www.pinitto.me ::: github.com/pinittome ::: @pinittome".green,
     ""].forEach(function(data) { console.log(data)})
 
-
 config = require('./config.' + environment + '.js');
 config.cookie.key = 'connect.sid';
 if (!config.app.useOptimised) {

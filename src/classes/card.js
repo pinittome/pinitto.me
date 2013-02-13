@@ -18,7 +18,6 @@ Card.prototype.create = function(data) {
     	if (error) return self.socket.emit('error', {message: 'New card could not be created'});
         data.board = '/' + config._id;
         data.size  = { width: 150, height: 150 };
-        console.log('****', config);
         if (config.snap && config.snap.position) {
         	data.position = self.calculateCardPosition(data.position, config.snap.position);
         }
@@ -173,6 +172,7 @@ Card.prototype.getBoardConfig = function(callback) {
 	var self = this;
 	this.socket.get('board', function(error, id) {
 		if (error) return callback(error, null);
+		if (null == id) return callback('Board not loaded, please try again');
 		self.board.load(id, callback);
 	});
 }

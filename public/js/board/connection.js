@@ -12,6 +12,13 @@ define(['socket', 'user'], function(socket, user) {
     });
     
     socket.on('reconnect', function() {
+    	console.log('Connection reconnected');
+    	socket.emit('board.join', {id: boardId, user: user.name});
+    	user.id = socket.socket.sessionid;
+    });
+
+    socket.on('reconnecting', function() {
+    	console.log('Connection connecting');
     	socket.emit('board.join', {id: boardId, user: user.name});
     	user.id = socket.socket.sessionid;
     });
