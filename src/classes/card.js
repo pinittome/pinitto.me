@@ -46,6 +46,7 @@ Card.prototype.calculateCardPosition = function(position, size) {
 	if (null == grid) return position;
 	return {x: Math.floor(position.x / grid) * grid, y: Math.floor(position.y / grid) * grid};
 }
+
 Card.prototype.moved = function(data) {
     var self = this
     try { 
@@ -172,7 +173,10 @@ Card.prototype.getBoardConfig = function(callback) {
 	var self = this;
 	this.socket.get('board', function(error, id) {
 		if (error) return callback(error, null);
-		if (null == id) return callback('Board not loaded, please try again');
+		if (null == id) {
+			self.socket.emit('board.request-join');
+			return callback('Board not loaded, please try again');
+		}
 		self.board.load(id, callback);
 	});
 }
