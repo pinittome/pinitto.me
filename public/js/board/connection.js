@@ -29,4 +29,24 @@ define(['socket', 'user', 'util/notification'], function(socket, user, notificat
     	socket.emit('board.join', {id: boardId, user: user.name});
     	user.id = socket.socket.sessionid;
     });
+    
+    socket.on('board.snap.size', function(size) {
+    	if (!boardConfig.snap) boardConfig.snap = {};
+    	boardConfig.snap.size = size;
+    	if (size != 'none') {
+    	    notification.add('Card size changes now in ' + size + ' increments', 'info');
+    	} else {
+    		notification.add('Card size changes are now free form', 'info');
+    	}
+    });
+    
+    socket.on('board.snap.position', function(position) {
+    	if (!boardConfig.snap) boardConfig.snap = {};
+    	boardConfig.snap.position = position;
+    	if (position != 'none') {
+    	    notification.add('Card position changes now on ' + position + ' grid', 'info');
+    	} else {
+    		notification.add('Card position changes are now free form', 'info');
+    	}
+    });
 })

@@ -35,7 +35,6 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user'],
     $('#update-board-name').click(function() {
         name = $('#set-board-name-modal').find('input').val();
         board.setName(name);
-
         $('#set-board-name-modal').modal('hide');
     });
     
@@ -91,6 +90,58 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user'],
             notification.add("Board access details successfully updated!", "success");
         }
     });
+    
+    $('body').on('click', '.open-board-grid-modal', function() {
+        $('#board-grid-modal').modal({
+            backdrop : true
+        });
+    });
+    $('#close-board-grid-modal').click(function() {
+        $('#board-grid-modal').modal('hide');
+    });
+    $('#update-board-grid').on('click', function() {
+    	$('#board-grid-modal .modal-body .error').remove();
+    	var error  = $(document.createElement('div'));
+        var button = $(document.createElement('button'))
+        error.attr('class', 'alert alert-error');            
+        button.attr('class', 'close').attr('data-dismiss', 'alert').html('&times;')
+        button.appendTo(error);
+        if (0 == $('.grid-confirm:checked').length) {
+        	var message = '<strong>Hang on a minute...</strong><br/>'
+        	    + 'Please check the confirmation below in order to continue';
+            $(document.createElement('div')).html(message).appendTo(error)
+            $('#board-grid-modal .modal-body').prepend(error);
+            return;
+        }
+        var getValue = function(element) {
+        	if (['none', 'small', 'medium', 'large'].indexOf(element.val()) == -1) return 'none';
+        	return element.val();
+        }
+        var position = getValue($('.grid-position'));
+        var size     = getValue($('.grid-size'));
+        if (boardConfig.snap) boardConfig.snap = {};
+        if (!boardConfig.snap.position || (boardConfig.snap.position != position)) {
+            socket.emit('board.snap.position', position);
+            if ('none' == size) return;
+            socket.one('board.snap.position', function(size) {
+            	$('.cards').each(function(index, card) {
+            		console.log('Need to update card positions here');
+            		console.log(boardConfig);
+            	});
+            });
+        }
+        if (!boardConfig.snap.size || boardConfig.snap.size != size) {
+            socket.emit('board.snap.size', size);
+            if ('none' == size) return;
+            socket.one('board.snap.size', function(size) {
+            	$('.cards').each(function(index, card) {
+            		console.log('Need to update card sizes here');
+            		console.log(boardConfig);
+            	});
+            });
+        }
+    });
+    
     socket.on('board.name.set', function(data) {
         var oldName;
         $('.board-name').each(function(index, element) {

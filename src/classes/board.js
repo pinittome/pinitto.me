@@ -148,6 +148,41 @@ Board.prototype.sendUserList = function(details) {
         });
 }
 
+Board.prototype.setSizeGrid = function(size) {
+	var size = this._getSize(size);
+	var self = this;
+	this.socket.get('board', function(error, board) {
+		if (error) return self.socket.emit('error', {message: 'Could not save grid size changes'});
+	    io.sockets.in(board).emit('board.snap.size', size);
+	    db.setSizeGrid(board, size, function(error) {
+	        if (error) return self.socket.emit('error', {message: 'Could not save grid size changes'});
+	    });
+	});
+}
+
+Board.prototype.setPositionGrid = function(size) {
+	var size = this._getSize(size);
+	var self = this;
+	this.socket.get('board', function(error, board) {
+		if (error) return self.socket.emit('error', {message: 'Could not save position grid changes'});
+	    io.sockets.in(board).emit('board.snap.position', size);
+	    db.setSizeGrid(board, size, function(error) {
+	        if (error) return self.socket.emit('error', {message: 'Could not save position grid changes'});
+	    });
+	});
+}
+
+Board.prototype._getSize = function(size) {
+	var grid = 'none';
+	switch (size) {
+		case 'large':
+		case 'medium':
+		case 'small':
+		    grid = size;
+	}
+	return grid;
+}
+
 Board.prototype.setParams = function(db, session, cardsDb) {
     this.db      = db;
     this.session = session;

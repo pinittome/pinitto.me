@@ -28,8 +28,8 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     }
     Card.prototype.updatePosition = function(event, ui) {
         var position = { 
-            x: $(this).css('left').substring(0, $(this).css('left').length - 2),
-            y: $(this).css('top').substring(0, $(this).css('top').length - 2)
+            x: $(this).css('left').replace('px', ''),
+            y: $(this).css('top').replace('px', '')
         };
         socket.emit('card.moving', {
             cardId : $(this).attr('id'),

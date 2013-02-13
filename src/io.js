@@ -124,4 +124,12 @@ io.sockets.on('connection', function (socket) {
         board.setSocketContext(this);
         board.leave(data)
     });
+    socket.on('board.grid.size', function(data) {
+    	board.setSocketContext(this);
+    	board.setSizeGrid(data);
+    });
+    socket.on('board.grid.position', function(data) {
+    	board.setSocketContext(this);
+    	board.sizePositionGrid(data);
+    });
 });

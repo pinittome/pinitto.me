@@ -1,0 +1,46 @@
+<div class="modal hide fade" id="board-grid-modal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Setup board grid</h3>
+    </div>
+    <div class="modal-body">
+	    <form class="form-horizontal">
+	        <div class="control-group">
+	            <label class="control-label" for="grid-size">Card size increment</label>
+	            <div class="controls">
+			        <select name="grid-size" class="grid-size">
+			            <option value="none">Free form</option>
+			            <option value="small">Small</option>
+			            <option value="medium">Medium</option>
+			            <option value="large">Large</option>
+			        </select>
+	            </div>
+	        </div>
+	        <div class="control-group">
+	            <label class="control-label" for="grid-position">Position grid size</label>
+	            <div class="controls">
+	                <select name="grid-position" class="grid-position">
+			            <option value="none">Free form</option>
+			            <option value="small">Small</option>
+			            <option value="medium">Medium</option>
+			            <option value="large">Large</option>
+			        </select>
+			    </div>
+	        </div>
+	        <p>If changing grid systems the cards on the board may jump and 
+	        resize slightly to fit with the new grid settings. So just tick 
+	        the box to let us know that you've read and understood this:</p>
+	        <div class="control-group">
+	            <div class="controls">
+	                <label class="checkbox">
+	                    <input type="checkbox" class="grid-confirm" /> Sure thing
+	                </label>
+	            </div>
+	        </div>
+	    </form>
+    </div>
+    <div class="modal-footer">
+        <a href="#" id="close-board-grid-modal" class="btn">Close</a>
+        <a href="#" id="update-board-grid" class="btn btn-primary">Update grid settings</a>
+    </div> 
+</div>
