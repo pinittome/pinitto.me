@@ -270,8 +270,15 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         if (data.userId != user.id) notification.add(data.name + " deleted a card", 'info');
     });
     $('.viewport').on('click', '.card-link', function(event) {
-        alert("You can link to this card directly using:\n\n" + $(this).attr('title'));
+    	var link = window.location.href.split('#')[0] + '#' 
+    	    + $(this).parent().parent().attr('id');
+    	$('#card-link-modal .card-link').html('<a href="' + link + '">' + link + '</a>');
+    	$('#card-link-modal').modal(true);
     });
+    $('#close-card-link-modal').on('click', function() {
+        $('#card-link-modal').modal('hide');
+    });
+    
     $('.viewport').on('click', '.card-colour', function(event){
         card = $(this).parents('.card');
         cardListEntry = $('li.card-list').find('#entry-' + card.attr('id'));

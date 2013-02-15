@@ -211,3 +211,9 @@ img.captcha {
 #create-board .help-inline {
 	margin-top: 10px;
 }
+
+#card-link-modal div.card-link {
+	max-width: 90%;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
