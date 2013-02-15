@@ -130,6 +130,6 @@ io.sockets.on('connection', function (socket) {
     });
     socket.on('board.grid.position', function(data) {
     	board.setSocketContext(this);
-    	board.sizePositionGrid(data);
+    	board.setPositionGrid(data);
     });
 });

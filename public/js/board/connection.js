@@ -1,4 +1,6 @@
-define(['socket', 'user', 'util/notification'], function(socket, user, notification) {
+define(['socket', 'user', 'util/notification', '../board'],
+    function(socket, user, notification, board) {
+
     socket.on('connect', function(data) {
         console.log("Requesting to join board: " + boardId)
         socket.emit('board.join', {id: boardId, user: user.name});
@@ -21,7 +23,11 @@ define(['socket', 'user', 'util/notification'], function(socket, user, notificat
     	console.log('Server has requested board join');
     	socket.emit('board.join', {id: boardId, user: user.name});
     	user.id = socket.socket.sessionid;
-    	notification.add("Error caused by bad connection, this is automatically being fixed. Please try again", "info"); 	
+    	notification.add(
+    		"Error caused by bad connection, this is automatically "
+    		    + "being fixed. Please try again",
+    		"info"
+        ); 	
     });
     
     socket.on('reconnecting', function() {
@@ -30,9 +36,10 @@ define(['socket', 'user', 'util/notification'], function(socket, user, notificat
     	user.id = socket.socket.sessionid;
     });
     
-    socket.on('board.snap.size', function(size) {
-    	if (!boardConfig.snap) boardConfig.snap = {};
-    	boardConfig.snap.size = size;
+    socket.on('board.grid.size', function(size) {
+    	if (!boardConfig.grid) boardConfig.grid = { position: 'none', size: 'none'};
+    	boardConfig.grid.size = size;
+    	board.setSizeGrid(size);
     	if (size != 'none') {
     	    notification.add('Card size changes now in ' + size + ' increments', 'info');
     	} else {
@@ -40,9 +47,10 @@ define(['socket', 'user', 'util/notification'], function(socket, user, notificat
     	}
     });
     
-    socket.on('board.snap.position', function(position) {
-    	if (!boardConfig.snap) boardConfig.snap = {};
-    	boardConfig.snap.position = position;
+    socket.on('board.grid.position', function(position) {
+    	if (!boardConfig.grid) boardConfig.grid = { position: 'none', size: 'none'};
+    	boardConfig.grid.position = position;
+    	board.setPositionGrid(position);
     	if (position != 'none') {
     	    notification.add('Card position changes now on ' + position + ' grid', 'info');
     	} else {

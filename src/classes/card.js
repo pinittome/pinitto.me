@@ -18,8 +18,8 @@ Card.prototype.create = function(data) {
     	if (error) return self.socket.emit('error', {message: 'New card could not be created'});
         data.board = '/' + config._id;
         data.size  = { width: 150, height: 150 };
-        if (config.snap && config.snap.position) {
-        	data.position = self.calculateCardPosition(data.position, config.snap.position);
+        if (config.grid.position) {
+        	data.position = self.calculateCardPosition(data.position, config.grid.position);
         }
         db.add(data, function(error, result) {
             if (error) return self.socket.emit('error', {message: 'New card could not be created'})

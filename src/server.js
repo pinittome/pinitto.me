@@ -199,7 +199,7 @@ app.post('/create', function(req, res) {
 	    parameters = {
 	    	owner: req.param('owner'),
 	    	'access': {},
-	    	snap: {
+	    	grid: {
 	    		position: req.param('grid-position'),
 	    		size: req.param('grid-size')
 	    	}
@@ -301,7 +301,7 @@ app.get('/*', function(req, res) {
 	            options.boardName   = name;
 	            options.cards       = cards;
 	            options.config      = {
-	                snap: board.snap || {}	
+	                grid: board.grid || { position: 'none', size: 'none' }	
 	            }
 	            req.session.access  = req.session.access ? req.session.access : a.ADMIN;
 	            req.session.board   = id;

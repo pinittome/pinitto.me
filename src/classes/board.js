@@ -153,8 +153,8 @@ Board.prototype.setSizeGrid = function(size) {
 	var self = this;
 	this.socket.get('board', function(error, board) {
 		if (error) return self.socket.emit('error', {message: 'Could not save grid size changes'});
-	    io.sockets.in(board).emit('board.snap.size', size);
-	    db.setSizeGrid(board, size, function(error) {
+	    io.sockets.in(board).emit('board.grid.size', size);
+	    self.db.setSizeGrid(board, size, function(error) {
 	        if (error) return self.socket.emit('error', {message: 'Could not save grid size changes'});
 	    });
 	});
@@ -165,8 +165,8 @@ Board.prototype.setPositionGrid = function(size) {
 	var self = this;
 	this.socket.get('board', function(error, board) {
 		if (error) return self.socket.emit('error', {message: 'Could not save position grid changes'});
-	    io.sockets.in(board).emit('board.snap.position', size);
-	    db.setSizeGrid(board, size, function(error) {
+	    io.sockets.in(board).emit('board.grid.position', size);
+	    self.db.setPositionGrid(board, size, function(error) {
 	        if (error) return self.socket.emit('error', {message: 'Could not save position grid changes'});
 	    });
 	});

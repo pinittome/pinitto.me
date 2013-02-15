@@ -42,7 +42,7 @@ database.collection('boards', function(error, boards) {
     exports.setSizeGrid = function(id, size, callback) {
          boards.update(
             {_id: new utils.ObjectId(id.replace('/', ''))},
-            {$set:{'snap.size':size}},
+            {$set:{'grid.size':size}},
             {w:1},
             function(error, numberOfResults) {
                 callback(error)
@@ -53,7 +53,7 @@ database.collection('boards', function(error, boards) {
     exports.setPositionGrid = function(id, position, callback) {
          boards.update(
             {_id: new utils.ObjectId(id.replace('/', ''))},
-            {$set:{'snap.position':position}},
+            {$set:{'grid.position':position}},
             {w:1},
             function(error, numberOfResults) {
                 callback(error)
