@@ -20,6 +20,8 @@ CardSanitize.prototype.resize = function(data) {
 }
 
 CardSanitize.prototype.create = function(data) {
+	this.check(data.position.x, 'Illegal card position provided').isDecimal();
+	this.check(data.position.y, 'Illegal card position provided').isDecimal();
     return data
 }
 

@@ -23,7 +23,8 @@
         <link rel="stylesheet" href="/css/theme.css">
         <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,700,800,600,300' rel='stylesheet' type='text/css'/>
         <script type="text/javascript">
-        config = <%- JSON.stringify(app) %>
+        config      = <%- JSON.stringify(app) %>
+        boardConfig = <%- JSON.stringify(config) %>
         </script>
         <% if (!app.useOptimised) { %>
         <script data-main="/js/app.js" src="/js/require.js"></script>
@@ -84,10 +85,11 @@
                                     <li class="nav-header">Board settings</li>
                                     <li><a href="#" class="open-set-board-name-modal admin">Set name</a></li>
                                     <li><a href="#" class="open-board-access-modal admin">Set password</a></li>
+                                    <li><a href="#" class="open-board-grid-modal admin">Set up grid</a></li>
                                     <li class="divider"></li>
                                     <li class="nav-header">User settings</li>
                                     <li><a href="#" class="open-set-name-modal">Set name</a></li>
-                                    <li><a href="/logout" class="leave" class="open-set-name-modal">Logout</a></li>
+                                    <li><a href="/logout" class="leave">Logout</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -124,3 +126,4 @@
 <% include ../partials/name-modal %>
 <% include ../partials/board-name-modal %>
 <% include ../partials/board-access-modal %>
+<% include ../partials/board-grid-modal %>

@@ -20,6 +20,7 @@ db.collection('cards', function(error, cards) {
             {w:1},
             function(error, numberOfResults) {
                 if (error || (numberOfResults != 1)) {
+                	console.log(error);
                     error ='Could not save new card position'
                 }
                 callback(error);
@@ -33,7 +34,10 @@ db.collection('cards', function(error, cards) {
             {$set:{size:data.size}},
             {w:1},
             function(error, numberOfResults) {
-                if (error || (numberOfResults != 1)) error = 'Count not save new card size'
+                if (error || (numberOfResults != 1)) {
+                	console.log(error, data.cardId, board, data.size);
+                	error = 'Could not save new card size';
+                }
                 callback(error)
             }
         );
@@ -44,7 +48,10 @@ db.collection('cards', function(error, cards) {
             {_id: new utils.ObjectId(data.cardId), board: board},
             {w:1},
             function(error, numberOfResults) {
-                if (error || (numberOfResults != 1)) error = 'Deletion not saved to datastore'
+                if (error || (numberOfResults != 1)) {
+                	console.log(error);
+                	error = 'Deletion not saved to datastore';
+                }
                 callback(error);
             }
         );

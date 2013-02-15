@@ -178,8 +178,8 @@ app.post('/create', function(req, res) {
 	            res.send({error: errors}, 500);
 	            return;
 	       } else {
-	               options.errors = JSON.stringify(errors);
-	               options.values = JSON.stringify(req.body);
+	            options.errors = JSON.stringify(errors);
+	            options.values = JSON.stringify(req.body);
 	            res.render('create', options);
 	            return;
 	       }
@@ -198,7 +198,14 @@ app.post('/create', function(req, res) {
 		        require('./statistics').boardCreated();          
 		    });
 	    }
-	    parameters = { owner: req.param('owner'), 'access': {}};
+	    parameters = {
+	    	owner: req.param('owner'),
+	    	'access': {},
+	    	grid: {
+	    		position: req.param('grid-position'),
+	    		size: req.param('grid-size')
+	    	}
+	    };
 	    if (req.param('board-name') != '') parameters['name'] = req.param('board-name');
 	    if (req.param('password-admin') != '') {                
 	        parameters['access']['admin'] = utils.hashPassword(req.param('password-admin'), save);
@@ -207,6 +214,10 @@ app.post('/create', function(req, res) {
 	    
     }
     req.assert('owner', 'Valid email address required').isEmail();
+    req.assert('grid-position', 'Invalid card size increment selectd')
+        .isIn(['none', 'small', 'medium', 'large']);
+    req.assert('grid-size', 'Invalid card size increment selectd')
+        .isIn(['none', 'small', 'medium', 'large']);
     req.sanitize('board-name');
     req.sanitize('password-admin');
     if (options.captcha.type == 'captcha') {
@@ -292,6 +303,9 @@ app.get('/*', function(req, res) {
 	            options.boardId     = id;
 	            options.boardName   = name;
 	            options.cards       = cards;
+	            options.config      = {
+	                grid: board.grid || { position: 'none', size: 'none' }	
+	            }
 	            req.session.access  = req.session.access ? req.session.access : a.ADMIN;
 	            req.session.board   = id;
 	            res.render('board', options);

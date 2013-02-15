@@ -1,6 +1,6 @@
 define(['jquery', 'socket', 'util/determine-css-class', 'board', 
-         'util/notification', 'board/infinite-drag', 'user', 'viewport'], 
-    function($, socket, determineCssClass, board, notification, infiniteDrag, user, viewport) {
+         'util/notification', 'board/infinite-drag', 'user', 'viewport', 'util/grid-size'], 
+    function($, socket, determineCssClass, board, notification, infiniteDrag, user, viewport, gridCalc) {
     
     Card.prototype.bringToFront = function(event, element) {
 
@@ -24,12 +24,12 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             cardId : $(this).attr('id'),
             position : position            
         });
-        event.stopPropagation();
+        if (event) event.stopPropagation();
     }
     Card.prototype.updatePosition = function(event, ui) {
         var position = { 
-            x: $(this).css('left').substring(0, $(this).css('left').length - 2),
-            y: $(this).css('top').substring(0, $(this).css('top').length - 2)
+            x: $(this).css('left').replace('px', ''),
+            y: $(this).css('top').replace('px', '')
         };
         socket.emit('card.moving', {
             cardId : $(this).attr('id'),
@@ -80,7 +80,6 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
                 }
             },
             300);
-        
     }
     
     Card.prototype.create = function(data) {
@@ -97,6 +96,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         this.addCardListEntry(data)
         this.dynamify(data.cardId)
     }
+    
     Card.prototype.draw = function(data) {
         div     = document.createElement('div');        
         card    = $(div).attr('class', 'card draggable')
@@ -124,6 +124,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         this.addControls(data.cardId);
         this.setPosition(data.cardId, data.position);
     }
+    
     Card.prototype.dynamify = function(id) {
         var card = $('#' + id);
         if (card.css('z-index') > board.zIndex) {
@@ -163,17 +164,26 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
                 $(this).find('textarea').css('width', parseFloat($(this).css('width')) - 10)
                     .css('height', parseFloat($(this).css('height'))- 10);
             },
-            stop: function(event, ui) {
-                socket.emit('card.resize', {
-                    cardId : $(this).attr('id'),
-                    size : {
-                        width : ui.size.width,
-                        height : ui.size.height
-                    }
-                });
-            }
-        }); 
+            stop: this.resized,
+        });
+        if (boardConfig.grid && boardConfig.grid.position) {
+        	this.setPositionGrid(boardConfig.grid.position, id);
+        }
+        if (boardConfig.grid && boardConfig.grid.size) {
+        	this.setSizeGrid(boardConfig.grid.size, id);
+        }
     }
+    
+    Card.prototype.resized = function(event, ui) {
+        socket.emit('card.resize', {
+            cardId : $(this).attr('id'),
+            size : {
+                width : ui.size.width,
+                height : ui.size.height
+            }
+        });
+    }
+    
     Card.prototype.addControls = function(id) {
         controls = document.createElement('div');
         $(controls).attr('class', 'controls');
@@ -184,13 +194,25 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         
         $(controls).appendTo($("#" + id));
     }
+    
+    Card.prototype.setPositionGrid = function(size, id) {
+    	var grid = gridCalc.position(size);
+    	if (id != null) return $('#' + id).draggable({grid: grid});
+        $('div.card').each(function(index, card) { $(card).draggable({grid: grid})});
+    }
+    
+    Card.prototype.setSizeGrid = function(size, id) {
+    	var grid = gridCalc.size(size);
+    	if (id != null) return $('#' + id).resizable({grid: grid});
+        $('div.card').each(function(index, card) { $(card).resizable({grid: grid}) });
+    }
     Card.prototype.addCardListEntry = function(data) {
         content = "<i>No content</i>";
         if (data.content && data.content != '') {
             content = data.content.substring(0, 30) + '...';
         }
-                css = 'card-yellow';
-                if (data.cssClass) css = 'card-' + data.cssClass;
+        css = 'card-yellow';
+        if (data.cssClass) css = 'card-' + data.cssClass;
         cardListEntry = $(document.createElement('li'));
         cardListEntry.attr('id', 'entry-' + data.cardId);
         cardListEntry.addClass(css);
@@ -203,11 +225,11 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         this.socket = socket;
         this.infinite = infinite;
         this.board = board;
+        this.board.setCard(this);
     }
     
     var cardEntity = new Card(socket, infiniteDrag, board);
-    
-    
+
     socket.on('card.zIndex', function(data) {
         $('#' + data.cardId).css('z-index', data.zIndex);
         board.zIndex = data.zIndex;

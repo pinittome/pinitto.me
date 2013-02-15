@@ -5,7 +5,7 @@ var io        = require('../io').io,
 module.exports = Board = function Board(){};
 
 Board.prototype.setName = function(data) {
-    var self = this
+    var self = this;
     try {
         var data = this.sanitizer.rename(data)
     } catch (e) {
@@ -49,7 +49,15 @@ Board.prototype.setAccess = function(data) {
         });
     });
 }
-  
+
+Board.prototype.load = function(id, callback) {
+	var self = this;
+	self.db.load(id, function(error, board) {
+		if (error) return callback(error, null);
+		callback(null, board);
+	});
+}
+
 Board.prototype.leave = function() {
     var self = this
     try {
@@ -138,6 +146,41 @@ Board.prototype.sendUserList = function(details) {
                 .emit('user.join', {userId: self.socket.id, name: name});
             });
         });
+}
+
+Board.prototype.setSizeGrid = function(size) {
+	var size = this._getSize(size);
+	var self = this;
+	this.socket.get('board', function(error, board) {
+		if (error) return self.socket.emit('error', {message: 'Could not save grid size changes'});
+	    io.sockets.in(board).emit('board.grid.size', size);
+	    self.db.setSizeGrid(board, size, function(error) {
+	        if (error) return self.socket.emit('error', {message: 'Could not save grid size changes'});
+	    });
+	});
+}
+
+Board.prototype.setPositionGrid = function(size) {
+	var size = this._getSize(size);
+	var self = this;
+	this.socket.get('board', function(error, board) {
+		if (error) return self.socket.emit('error', {message: 'Could not save position grid changes'});
+	    io.sockets.in(board).emit('board.grid.position', size);
+	    self.db.setPositionGrid(board, size, function(error) {
+	        if (error) return self.socket.emit('error', {message: 'Could not save position grid changes'});
+	    });
+	});
+}
+
+Board.prototype._getSize = function(size) {
+	var grid = 'none';
+	switch (size) {
+		case 'large':
+		case 'medium':
+		case 'small':
+		    grid = size;
+	}
+	return grid;
 }
 
 Board.prototype.setParams = function(db, session, cardsDb) {
