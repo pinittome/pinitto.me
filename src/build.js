@@ -3,7 +3,7 @@ var requirejs = require('requirejs');
 var applicationConfig = {
     baseUrl: './public/js',
     name: 'app',
-    out: './public/app.js',
+    out: './public/app.' + config.app.version + '.js',
     mainConfigFile: './public/js/app.js',
     paths: {
         'socket.io': 'empty:',
@@ -18,7 +18,7 @@ var mainConfig = {
     baseUrl: './public/js',
     name: 'main',
     out: './public/main.js',
-    mainConfigFile: './public/js/main.js',
+    mainConfigFile: './public/js/main.' + config.app.version + '.js',
     paths: {
         'socket.io': 'empty:',
         'requireLib': 'require'
@@ -44,7 +44,7 @@ requirejs.optimize(mainConfig, function (log) {
 
 var cssConfig = {
 	cssIn: './public/css/main.css',
-	out: './public/app.css',
+	out: './public/app.' + config.app.version + '.css',
 	optimizeCss: 'standard'
 };
 requirejs.optimize(cssConfig, function(log) {

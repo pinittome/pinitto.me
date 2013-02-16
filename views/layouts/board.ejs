@@ -24,8 +24,8 @@
         <script data-main="/js/app.js" src="/js/require.js"></script>
         <link rel="stylesheet" href="/css/main.css" />
         <% } else { %>
-        <script src="/app.js"></script>
-        <link rel="stylesheet" href="/css/main.css" />
+        <script src="/app.<%= app.version %>.js"></script>
+        <link rel="stylesheet" href="/app.<%= app.version %>.css">
         <% } %>
     </head>
     <body class="board">
