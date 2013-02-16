@@ -248,6 +248,7 @@ app.get('/*', function(req, res) {
    
     console.log("Trying to load board " + id);
     if (id.length != 24) {
+    	console.log('404 referrer: ' + req.header('Referer'));
         options.title   = 'Page not found'
         options.message = 'This page doesn\'t exist'
         options.type    = 'page'

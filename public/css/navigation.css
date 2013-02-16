@@ -1,0 +1,10 @@
+.nav { overflow: none; }
+
+.nav .nav-header {
+  text-shadow: none;
+}
+
+li.card-list ul {
+    overflow-x: hidden;
+    overflow-y: scroll;	
+}

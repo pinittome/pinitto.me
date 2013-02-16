@@ -1,6 +1,6 @@
 require('colors')
-
-environment = process.env.NODE_ENV || 'production';
+var readJson = require('read-package-json');
+environment  = process.env.NODE_ENV || 'production';
 
    ["",
     " Welcome to...".green,
@@ -24,6 +24,13 @@ if (!config.app.useOptimised) {
     config.app.useOptimised = ('development' == environment) ? false : true; 
 }
 
-require('./src/build');
-httpServer = require('./src/server');
-require('./src/io');
+readJson('./package.json', function (error, data) {
+    if (error) {
+        console.error("There was an error reading package.json, quitting...".red);
+        process.exit();
+    }
+    config.app.version = data.version;
+    require('./src/build');
+    httpServer = require('./src/server');
+    require('./src/io');
+});
