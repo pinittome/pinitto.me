@@ -30,6 +30,7 @@ readJson('./package.json', function (error, data) {
         process.exit();
     }
     config.app.version = data.version;
+    config.app.environment = environment;
     require('./src/build');
     httpServer = require('./src/server');
     require('./src/io');
