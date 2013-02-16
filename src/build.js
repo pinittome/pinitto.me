@@ -37,7 +37,19 @@ requirejs.optimize(applicationConfig, function (log) {
 
 requirejs.optimize(mainConfig, function (log) {
 	console.log("Main javascript optimisation complete".green);
+    console.log((log).cyan);
+}, function(error) {
+    console.log(("Error optimizing javascript: " + error).red);
+});
+
+var cssConfig = {
+	cssIn: './public/css/main.css',
+	out: './public/app.css',
+	optimizeCss: 'standard'
+};
+requirejs.optimize(cssConfig, function(log) {
+	console.log(("Application CSS optimisation complete").green);
 	console.log((log).cyan);
-}, function(err) {
-    console.log(("Error optimizing javascript: " + err).red);
+}, function(error) {
+    console.log(("Error optimizing CSS: " + error).red);
 });
