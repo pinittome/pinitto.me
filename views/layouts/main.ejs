@@ -9,21 +9,17 @@
         <title>Welcome to <%=name %> - <%=pageName %></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
-
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
-        <link rel="stylesheet" href="/css/main.css">
-        <link rel="stylesheet" href="/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/css/theme.css">
         <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,700,800,600,300' rel='stylesheet' type='text/css'/>
         
         <script type="text/javascript">
         config = <%- JSON.stringify(app) %>
         </script>
         <% if (!app.useOptimised) { %>
+        <link rel="stylesheet" href="/css/main.css">
         <script data-main="/js/main.js" src="/js/require.js"></script>
         <% } else { %>
-        <script src="/main.js"></script>
+        <script src="/main.<%= app.version %>.js"></script>
+        <link rel="stylesheet" href="/app.<%= app.version %>.css">
         <% } %>
         <link href="/js/vendor/jquery-twitter-display/tweet/jquery.tweet.css" media="all" rel="stylesheet" type="text/css"/>
         </script>

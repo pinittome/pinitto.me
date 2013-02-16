@@ -1,0 +1,9 @@
+#create-board .help-inline {
+	margin-top: 10px;
+}
+
+img.captcha {
+	margin: 5px 0 15px 150px;
+	border: 5px solid black;
+	height: 100px; 
+}

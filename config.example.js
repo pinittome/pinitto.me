@@ -16,11 +16,12 @@ module.exports = {
         analytics: {
             google: 'UA-XXXX-XX' 
         },
-            limits: {
-                card: {
-                    wait: 0.5
-                }
+        limits: {
+            card: {
+                wait: 0.5
             }
+        }
+        /* useOptimised: true */
     }
 
     /* Captcha to use on board create - default to 'captcha'
