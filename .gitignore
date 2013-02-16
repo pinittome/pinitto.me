@@ -7,6 +7,6 @@ config*.js
 .DS_Store
 npm-debug.log
 logs/*
-public/app.js
-public/main.js
-public/app.css
+public/app*.js
+public/main*.js
+public/app*.css
