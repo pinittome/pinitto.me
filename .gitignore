@@ -9,3 +9,4 @@ npm-debug.log
 logs/*
 public/app.js
 public/main.js
+public/app.css
