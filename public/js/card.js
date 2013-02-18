@@ -215,8 +215,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         if (data.cssClass) css = 'card-' + data.cssClass;
         cardListEntry = $(document.createElement('li'));
         cardListEntry.attr('id', 'entry-' + data.cardId);
-        cardListEntry.addClass(css);
-        cardListEntry.append('<a href="#' + data.cardId + '" onclick="return false;">' + content + '</a>');
+        cardListEntry.append('<a href="#' + data.cardId + '" onclick="return false;"><span class="' + css + '"></span><p class="content-preview">' + content + '</p></a>');
         $('.card-list').find('li.no-cards').addClass('hidden');
         ul = $('.card-list').find('ul');
         cardListEntry.appendTo($(ul));
@@ -281,7 +280,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     
     $('.viewport').on('click', '.card-colour', function(event){
         card = $(this).parents('.card');
-        cardListEntry = $('li.card-list').find('#entry-' + card.attr('id'));
+        cardListEntry = $('li.card-list').find('#entry-' + card.attr('id')).find('span');
         
         cssClass = determineCssClass(card);
         card.removeClass();
@@ -307,7 +306,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     
     socket.on('card.colour', function(data){
         $('#' + data.cardId).removeClass().addClass('card').addClass('card-' + data.cssClass);
-        $('#entry-' + data.cardId).removeClass().addClass('card-' + data.cssClass);
+        $('#entry-' + data.cardId).find('span').removeClass().addClass('card-' + data.cssClass);
     });
     $('.viewport').on('input propertychange', '.card textarea', function(event) {
         socket.emit('card.text-change', {cardId: $(this).parent().attr('id'), content: $(this).val()});
@@ -315,18 +314,18 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         if (content.length == 0) {
             content = '<i>No content</i>';
         } else {
-            content = content.substring(0, 30) + '...';
+            content = content.substring(0, 20) + '...';
         }
-        $('#entry-' + $(this).parent().attr('id')).find('a').html(content);
+        $('#entry-' + $(this).parent().attr('id')).find('p').html(content);
     });
     socket.on('card.text-change', function(data) {
         $('#' + data.cardId).find('textarea').val(htmlDecode(data.content));
         if (data.content.length == 0) {
             data.content = "<i>No content</i>";
         } else { 
-            data.content = data.content.substring(0, 30) + '...';
+            data.content = data.content.substring(0, 20) + '...';
         }
-        $('#entry-' + data.cardId).find('a').html(data.content);
+        $('#entry-' + data.cardId).find('p').html(data.content);
     });
     $('.viewport-container').on('click', '.card', function(event) {
         cardEntity.bringToFront(event, $(this));
