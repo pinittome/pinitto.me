@@ -34,7 +34,7 @@ app.configure(function(){
     app.use(express.static(__dirname + '/../public'));
     app.use(require('connect').cookieParser(config.cookie.secret));
     app.use(forceSsl);
-    app.set('views', __dirname + '/../views');
+    app.set('views', __dirname + '/views');
     app.set('view engine', 'ejs');
     app.use(express.bodyParser());
     app.use(require('express-validator'));
