@@ -33,8 +33,10 @@ require.config({
 
 require([
     'jquery', 'viewport', 'user', 'card', 'util/notification', 'socket', 'board',
-        'board/connection', 'analytics', 'board/infinite-drag', 'modernizer'], 
+        'board/connection', 'analytics', 'board/infinite-drag', 'modernizer', 'util/connection-status'], 
     function($, viewport, user, card, notification, socket, board) {
+    
+    $('#connection-status-modal').modal('show')
     
     $('.card').each(function() {
         if ($(this).css('z-index') > board.zIndex) board.zIndex = $(this).css('z-index')
