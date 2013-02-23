@@ -11,6 +11,7 @@
 @import url('header.css');
 @import url('navigation.css');
 @import url('viewport.css');
+@import url('forms.css');
 
 .scale, .pan { 
 	cursor: pointer;
