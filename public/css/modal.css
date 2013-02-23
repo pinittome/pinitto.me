@@ -3,3 +3,11 @@
     text-overflow: ellipsis;
     overflow-x: hidden;
 }
+
+.modal {
+	z-index: 15001 !important;
+}
+
+.modal-backdrop { 
+	z-index: 15000 !important;
+}

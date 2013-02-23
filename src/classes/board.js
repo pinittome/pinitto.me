@@ -101,6 +101,7 @@ Board.prototype.join = function(details) {
                 self.socket.join(self.boardName);
                 userNameIndex = 1;
                 self.sendUserList(details);
+                self.socket.emit('board.connected');
             });
         });
     });
