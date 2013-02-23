@@ -11,16 +11,17 @@ define(['socket', 'user', 'jquery'], function(socket, user) {
             keyboard: false
         });
     };
+    openConnectionStatusModal();
+    
     var closeConnectionStatusModal = function() {
-        $('#connection-status-modal').modal(false);
+        $('#connection-status-modal').modal('hide');
     }
-    var setConnectionStatus = function(message, status) {
-        console.log(status, message);            
+    var setConnectionStatus = function(message, status) {            
         $('#connection-status-modal').addClass(status);
         $('#connection-status-modal').find('.status-message').html(message);
         switch (status) {
             case 'connected':
-                return setTimeout(closeConnectionStatusModal(), 2000);
+                return setTimeout(closeConnectionStatusModal, 1000);
             case 'connecting':
                 openConnectionStatusModal();
                 break;
@@ -47,10 +48,8 @@ define(['socket', 'user', 'jquery'], function(socket, user) {
     }
 
     socket.on('board.connected', function() {
-    	setTimeout(closeConnectionStatusModal, 1000)
-    	console.log('Successfully connected to board')
     	status = 'online'
-    	clearInterval(connectionCheck)
+    	if (connectionCheck) clearInterval(connectionCheck)
     	connectionStatus('connected')
     });
     $(window).bind('offline', function() {
