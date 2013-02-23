@@ -157,8 +157,8 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             iframeFix: true
         });
         card.resizable({
-            minHeight: 15,
-            minWidth: 15,
+            minHeight: 75,
+            minWidth: 75,
             handles: 'se',
             resize: function(event, ui) {
                 $(this).find('textarea').css('width', parseFloat($(this).css('width')) - 10)
