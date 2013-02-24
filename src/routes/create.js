@@ -60,6 +60,15 @@ exports.post = function(req, res) {
 	    var save = function() {
 	    	parameters['createdOn'] = parameters['lastLoaded'] = new Date();
 		    boardsDb.insert(parameters, function(error, newBoard) {
+		    	if (error) {
+		    		var errors = new Array()
+		    		errors.push({mainMessage: 'Unable to create board, please try again'})
+		    		console.error(errors)
+		    		options.errors = JSON.stringify(errors);
+	                options.values = JSON.stringify(req.body);
+	                res.render('create', options);
+	                return;
+		    	}
 		        req.session.access = a.ADMIN;
 		        req.session.board  = newBoard[0]._id;
 		        if (error) throw Error(error);
@@ -82,9 +91,9 @@ exports.post = function(req, res) {
 	    if (req.param('board-name') != '') parameters['name'] = req.param('board-name');
 	    if (req.param('password-admin') != '') {                
 	        parameters['access']['admin'] = utils.hashPassword(req.param('password-admin'), save);
+	        return
 	    }
 	    save();
-	    
     }
     req.assert('owner', 'Valid email address required').isEmail();
     req.assert('grid-position', 'Invalid card size increment selectd')
