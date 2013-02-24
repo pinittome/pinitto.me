@@ -3,7 +3,7 @@ define(['socket', 'user', 'jquery'], function(socket, user) {
     var connectionCheck = setInterval(function() {
     	console.log('Attempting board connection')
     	socket.emit('board.join', {id: boardId, user: user.name})
-    }, 500)
+    }, 1500)
     
     var openConnectionStatusModal = function() {
         $('#connection-status-modal').modal({
