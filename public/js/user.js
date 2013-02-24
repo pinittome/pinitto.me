@@ -15,8 +15,8 @@ define(['jquery', 'socket', 'util/notification', 'util/update-user-count', 'boot
     }
     User.prototype.addToList = function(data) {
         isUser = (user.id == data.userId) ? ' (me)' : '';
+        $('#user-' + data.userId).remove();
         newUser = document.createElement('li');
-        $('id', 'user-' + data.userId).remove();
         $(newUser).attr('id', 'user-' + data.userId).append(
             '<a href="#"><i class="icon-user"></i> <span>' 
                 + data.name + '</span>' + isUser + '</a>'
