@@ -31,10 +31,20 @@ require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'moder
     if (typeof(errors) != 'undefined') {
         for (var i = 0; i < errors.length; i++) {
             error = errors[i];
-            var input = $('input[name=' + error.param + ']');
-            input.val(error.value);
-            input.parents('div.control-group').addClass('error');
-            input.after('<span class="help-inline">' + error.msg + '</span>');
+            if (error.mainMessage) {
+            	var errorMessage = $(document.createElement('div'))
+            	    .attr('class', 'alert alert-error')
+            	    .append("<button type=\"button\" class=\"close\" "
+            	        + "data-dismiss=\"alert\">&times;</button><strong>Error</strong> " 
+            	        + error.mainMessage
+            	    )
+            	$('form#create-board h2.main').after(errorMessage)
+            } else {
+	            var input = $('input[name=' + error.param + ']');
+	            input.val(error.value);
+	            input.parents('div.control-group').addClass('error');
+	            input.after('<span class="help-inline">' + error.msg + '</span>');
+	        }
         };
     }
     if (typeof(config.twitter) != 'undefined' && config.twitter) {
