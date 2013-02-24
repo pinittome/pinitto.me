@@ -21,7 +21,6 @@ define(['socket', 'user', 'util/notification', '../board'],
 
     socket.on('board.request-join', function() {
     	console.log('Server has requested board join');
-    	socket.emit('board.join', {id: boardId, user: user.name});
     	user.id = socket.socket.sessionid;
     	notification.add(
     		"Error caused by bad connection, this is automatically "
@@ -32,7 +31,6 @@ define(['socket', 'user', 'util/notification', '../board'],
     
     socket.on('reconnecting', function() {
     	console.log('Connection connecting');
-    	socket.emit('board.join', {id: boardId, user: user.name});
     	user.id = socket.socket.sessionid;
     });
     
