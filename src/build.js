@@ -17,8 +17,8 @@ var applicationConfig = {
 var mainConfig = {
     baseUrl: './public/js',
     name: 'main',
-    out: './public/main.js',
-    mainConfigFile: './public/js/main.' + config.app.version + '.js',
+    out: './public/main.' + config.app.version + '.js',
+    mainConfigFile: './public/js/main.js',
     paths: {
         'socket.io': 'empty:',
         'requireLib': 'require'
