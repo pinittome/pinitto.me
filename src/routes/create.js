@@ -90,7 +90,10 @@ exports.post = function(req, res) {
 	    };
 	    if (req.param('board-name') != '') parameters['name'] = req.param('board-name');
 	    if (req.param('password-admin') != '') {                
-	        parameters['access']['admin'] = utils.hashPassword(req.param('password-admin'), save);
+	        utils.hashPassword(req.param('password-admin'), function(password) {
+	        	parameters['access']['admin'] = password
+	        	save()
+	        });
 	        return
 	    }
 	    save();
