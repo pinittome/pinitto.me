@@ -20,10 +20,11 @@ exports.post = function(req, res) {
     req.sanitize('board');
     req.sanitize('password');
     
-    options          = cloneextend.clone(config.project);
+    options          = cloneextend.clone(config.project)
     options.app      = config.app
-    options.pageName = 'Authorisation for board access';
-    options.totals   = totals;
+    options.pageName = 'Authorisation for board access'
+    options.totals   = totals
+    options.referrer = req.param('referrer')
     
     var errors = req.validationErrors();
     if (errors) {
@@ -41,12 +42,25 @@ exports.post = function(req, res) {
         utils.hashPassword(req.param('password'), function(hash) {
         	req.session.access = a.getLevel(board, hash);
         	req.session.board  = id;
+        	var url = '/' + id
+	        if (req.param('referrer')
+	            && (req.param('referrer').split('/')[2] == req.headers.host)) {
+	            url = req.param('referrer')	
+	        }
 	        if (req.session.access != a.NONE) {
-	            res.redirect('/' + id);
+	        	console.log('User authenticated, sending them to ' + url)
+	            res.redirect(url);
 	            return;
 	        }
-	        options.errors = { 'error': 'Incorrect password for this board' };
-	        res.redirect('/login/' + id)
+	        console.log("Password incorrect")
+	        options          = cloneextend.clone(config.project)
+            options.app      = config.app
+            options.pageName = 'Authorisation for board access'
+            options.totals   = totals
+            options.boardId  = id
+	        options.referrer = req.param('referrer')
+	        options.errors   = { 'error': 'Incorrect password for this board' }
+	        res.render('login', options)
         })
     });
 }
