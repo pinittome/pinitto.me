@@ -48,7 +48,7 @@ exports.get = function(req, res) {
         }
 
         if (false == allowedAccess) {
-            return res.redirect('/login/' + id);
+            return res.redirect('/login/' + id.split('#')[0]);
         }
         boardsDb.update({_id: utils.ObjectId(id)}, {$set: {lastUsed: new Date()}}, function(error, records) {
         	if (error) {
