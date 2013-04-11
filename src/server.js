@@ -12,7 +12,7 @@ server.listen(config.server.port);
 forceSsl = function(req, res, next) {
     onlySecure = config.project.secure || false;
     if ((onlySecure == true) && (req.headers['x-forwarded-proto'] != 'https')) {
-        return res.redirect('https://' + req.host + req.originalUrl);
+        return res.redirect(301, 'https://' + req.host + req.originalUrl);
     }
     next();
 }
