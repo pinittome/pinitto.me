@@ -29,9 +29,7 @@ io.configure(function (){
             accept(null, true);
         });
     });
-    if (config.transports) {
-        io.set('transports', config.transports);
-    }
+    io.set('transports', config.transports);
 });
 
 if (environment == 'production') {
@@ -40,8 +38,8 @@ if (environment == 'production') {
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
         io.set('log level', 1);                    // reduce logging
-        transports = config.transports || ['websocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']
-        io.set('transports', transports);
+        
+        io.set('transports', config.transports);
     });
 }
 

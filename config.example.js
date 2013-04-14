@@ -8,7 +8,7 @@ module.exports = {
     }
 
     /* Socket.io transports to use - comment for all excluding flashsocket */
-    , transports: []
+    /* , transports: [] */
 
     /* Main application configuration - webclient */    
     , app: {

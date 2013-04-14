@@ -46,7 +46,7 @@ app.configure(function(){
         dumpExceptions: errors, showStack: errors
     }))
     app.engine('ejs', engine)
-    if (!config.captcha || !config.captcha || ('captcha' == config.captcha.type)) {
+    if ('captcha' == config.captcha.type) {
         app.use(require('captcha')({
             url: '/img/captcha.jpg',
             color:'#0064cd',

@@ -18,19 +18,12 @@ environment  = process.env.NODE_ENV || 'production';
     "    www.pinitto.me ::: github.com/pinittome ::: @pinittome".green,
     ""].forEach(function(data) { console.log(data)})
 
-config = require('./config.' + environment + '.js');
-config.cookie.key = 'connect.sid';
-if (!config.app.useOptimised) {
-    config.app.useOptimised = ('development' == environment) ? false : true; 
-}
-
 readJson('./package.json', function (error, data) {
     if (error) {
         console.error("There was an error reading package.json, quitting...".red);
         process.exit();
     }
-    config.app.version = data.version;
-    config.app.environment = environment;
+    config = require('./src/config')(data)
     require('./src/build');
     httpServer = require('./src/server');
     require('./src/io');
