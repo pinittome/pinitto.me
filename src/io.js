@@ -1,45 +1,47 @@
-var httpServer = require('./server');
-exports.io = io = require('socket.io').listen(httpServer.server);
-var Session    = require('connect').middleware.session.Session;
-var boards     = require('./database/boards');
-var cardsDb    = require('./database/cards');
-var statistics = require('./statistics');
-var sanitizer = require('./classes/sanitize/board');
+var httpServer  = require('./server')
+exports.io = io = require('socket.io').listen(httpServer.server)
+var Session     = require('connect').middleware.session.Session
+  , boards      = require('./database/boards')
+  , cardsDb     = require('./database/cards')
+  , statistics  = require('./statistics')
+  , sanitizer   = require('./classes/sanitize/board')
+  , access      = require('./access')
 
-Board = require('./classes/board');
-Card  = require('./classes/card');
+Board = require('./classes/board')
+Card  = require('./classes/card')
+Acl   = require('./classes/acl')
 
 io.configure(function (){
     io.set('authorization', function(data, accept) {
         if (!data.headers.cookie) {
-            return accept('No cookie received', true);
+            return accept('No cookie received', true)
         }
-        data.cookies      = require('cookie').parse(data.headers.cookie);
-        data.cookies      = require('cookie').parse(data.headers.cookie, config.cookie.secret);
-        data.sessionID    = data.cookies['connect.sid'].split('.')[0].split(':')[1];
-        data.sessionStore = require('./database/session').store;
+        data.cookies      = require('cookie').parse(data.headers.cookie)
+        data.cookies      = require('cookie').parse(data.headers.cookie, config.cookie.secret)
+        data.sessionID    = data.cookies['connect.sid'].split('.')[0].split(':')[1]
+        data.sessionStore = require('./database/session').store
         require('./database/session').store.get(data.sessionID, function(error, session) {
             if (error || !session) {
-                console.log("ERROR", error);
-                console.log("session:", session);
-                return accept('No session', false);
+                console.log("ERROR", error)
+                console.log("session:", session)
+                return accept('No session', false)
             }
-            data.session = new Session(data, session);
-            data.session.save();
-            accept(null, true);
-        });
-    });
-    io.set('transports', config.transports);
+            data.session = new Session(data, session)
+            data.session.save()
+            accept(null, true)
+        })
+    })
+    io.set('transports', config.transports)
 });
 
 if (environment == 'production') {
-    io.configure('production', function(){
-        io.enable('browser client minification');  // send minified client
-        io.enable('browser client etag');          // apply etag caching logic based on version number
-        io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 1);                    // reduce logging
+    io.configure('production', function() {
+        io.enable('browser client minification') // send minified client
+        io.enable('browser client etag')         // apply etag caching logic based on version number
+        io.enable('browser client gzip')         // gzip the file
+        io.set('log level', 1)                   // reduce logging
         
-        io.set('transports', config.transports);
+        io.set('transports', config.transports)
     });
 }
 
