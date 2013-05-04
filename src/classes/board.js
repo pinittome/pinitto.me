@@ -1,8 +1,10 @@
 var io        = require('../io').io,
     access    = require('../access'),
-    utils     = require('../util');
+    utils     = require('../util')
 
-module.exports = Board = function Board(){};
+var Board = function Board() {
+    this.socket = null;
+}
 
 Board.prototype.setName = function(data) {
     var self = this;
@@ -196,3 +198,5 @@ Board.prototype.setSocketContext = function(socket) {
 Board.prototype.setSanitizer = function(sanitizer) {
     this.sanitizer = sanitizer
 }
+
+module.exports = Board

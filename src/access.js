@@ -29,7 +29,7 @@ exports.getLevel = function(board, password) {
     } else if ((typeof(board.access.admin) == 'undefined') 
         && (typeof(board.access.write) == 'undefined')
         && (typeof(board.access.read) == 'undefined')) {
-        console.log("User has access level 'admin', due to no password");
+        console.log("User has access level 'admin', due to no board password");
         return access.ADMIN;
     }
     return access.NONE;            

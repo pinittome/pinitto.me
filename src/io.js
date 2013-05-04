@@ -47,87 +47,114 @@ io.sockets.on('connection', function (socket) {
 
     statistics.socketOpened()
     
-    var user  = require('./classes/user');
-       
-    var board = new Board();
-    board.setSanitizer(sanitizer);
-    board.setParams(boards, require('./database/session').store, cardsDb);
+    var sessionStore = require('./database/session').store
+    var user         = require('./classes/user')
+    var acl          = new Acl(socket)
+
+    var board = new Board()
+    board.setSanitizer(sanitizer)
+    board.setParams(boards, sessionStore, cardsDb)
+ 
+    sessionStore.get(socket.handshake.sessionID, function(error, session) {
+        if (error) {
+            console.error(error)
+            return socket.emit(
+                'error', 
+                { message: 'Something went wrong! Please refresh and try again' }
+            )
+        }
+        acl.setCurrentLevel(session.access)
+    })
     
-    var card = new Card(board);
-    card.setIo(io);
+    var card = new Card(board)
+    card.setIo(io)
 
     socket.on('statistics.join', function() {
-        socket.join('/');
+        socket.join('/')
     });
      
     socket.on('disconnect', function() {
     	socket.get('board', function(error, board) {
-    		if (error) return;
-	        socket.broadcast.to(board).emit('user.leave', {userId: socket.id});
+    		if (error) return
+	        socket.broadcast.to(board).emit('user.leave', {userId: socket.id})
 	        statistics.socketClosed()
-	    });
-    });
- 
+	    })
+    })
+
     socket.on('card.create', function(data) {
-        card.setSocketContext(this);
-        card.create(data);
-    });
+        if (!acl.hasPermission(access.WRITE)) return
+        card.setSocketContext(this)
+        card.create(data)
+    })
     socket.on('card.moved', function(data) {
-        card.setSocketContext(this);
+        if (!acl.hasPermission(access.WRITE)) return
+        card.setSocketContext(this)
         card.moved(data)
-    });
+    })
     socket.on('card.resize', function(data) {
-        card.setSocketContext(this);
+        if (!acl.hasPermission(access.WRITE)) return
+        card.setSocketContext(this)
         card.resize(data)
-    });
+    })
     socket.on('card.delete', function(data) {
-        card.setSocketContext(this);
+        if (!acl.hasPermission(access.WRITE)) return
+        card.setSocketContext(this)
         card.remove(data)
-    });
+    })
     socket.on('card.colour', function(data) {
-        card.setSocketContext(this);
-        card.changeColour(data);
-    });    
+        if (!acl.hasPermission(access.WRITE)) return
+        card.setSocketContext(this)
+        card.changeColour(data)
+    })
     socket.on('card.zIndex', function(data) {
-        card.setSocketContext(this);
+        if (!acl.hasPermission(access.WRITE)) return
+        card.setSocketContext(this)
         card.stackOrder(data)
-    });
+    })
     socket.on('card.moving', function(data) {
-        card.setSocketContext(this);
+        if (!acl.hasPermission(access.WRITE)) return
+        card.setSocketContext(this)
         card.moving(data)
-    });
+    })
     socket.on('card.text-change', function(data) {
-    	card.setSocketContext(this);
+        if (!acl.hasPermission(access.WRITE)) return
+    	card.setSocketContext(this)
         card.textChange(data)
-    });
+    })
 
     socket.on('user.name.set', function(data) {
+        if (!acl.hasPermission(access.READ)) return
         user.setSocketContext(this)
         user.setName(data)
-    });
+    })
 
     socket.on('board.name.set', function(data) {
-        board.setSocketContext(this);
+        if (!acl.hasPermission(access.ADMIN)) return
+        board.setSocketContext(this)
         board.setName(data)
-    });
+    })
     socket.on('board.access.set', function(data) {
-        board.setSocketContext(this);
+        if (!acl.hasPermission(access.ADMIN)) return
+        board.setSocketContext(this)
         board.setAccess(data)
     })
     socket.on('board.join', function(data) {
-        board.setSocketContext(this);
-        board.join(data);
-    });
+        if (!acl.hasPermission(access.READ)) return
+        board.setSocketContext(this)
+        board.join(data)
+    })
     socket.on('board.leave', function(data) {
-        board.setSocketContext(this);
+        board.setSocketContext(this)
         board.leave(data)
-    });
+    })
     socket.on('board.grid.size', function(data) {
-    	board.setSocketContext(this);
-    	board.setSizeGrid(data);
-    });
+        if (!acl.hasPermission(access.ADMIN)) return
+    	board.setSocketContext(this)
+    	board.setSizeGrid(data)
+    })
     socket.on('board.grid.position', function(data) {
-    	board.setSocketContext(this);
-    	board.setPositionGrid(data);
-    });
-});
+        if (!acl.hasPermission(access.ADMIN)) return
+    	board.setSocketContext(this)
+    	board.setPositionGrid(data)
+    })
+})
