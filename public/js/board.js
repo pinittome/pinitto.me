@@ -1,6 +1,8 @@
 define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-size'],
     function($, socket, notification, viewport, user, gridCalc) { 
 
+    var accessLevels = ['admin', 'write', 'read']
+
     Board.prototype.setName = function(name) {
         this.socket.emit('board.name.set', { name : name })
     }
@@ -42,50 +44,59 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
         $('#board-access-modal').modal({
             backdrop : true
         })
+        $('#board-access-modal .modal-body .error').remove()
     })
     $('#close-board-access-modal').click(function() {
         $('#board-access-modal').modal('hide')
-    });
-    ['admin', 'write', 'read'].forEach(function(level) {
+    })
+
+    var error  = $(document.createElement('div'))
+    var button = $(document.createElement('button'))
+    error.attr('class', 'alert alert-error')
+    button.attr('class', 'close').attr('data-dismiss', 'alert').html('&times;')
+    button.appendTo(error)
+
+    accessLevels.forEach(function(level) {
         $('input[name=password-admin-require]').click(function() {
-            if ($(this).attr('checked')) return $('input[name=password-'+level+'-value]').removeAttr('disabled');
+            if ($(this).attr('checked')) return $('input[name=password-'+level+'-value]').removeAttr('disabled')
             $('input[name=password-'+level+'-value]').attr('disabled', 'disabled')
         
         })
     })
 
     $('.update-board-access').click(function() {
-
-        var error  = $(document.createElement('div'));
-        var button = $(document.createElement('button'))
-        error.attr('class', 'alert alert-error');
-        button.attr('class', 'close').attr('data-dismiss', 'alert').html('&times;')
-        button.appendTo(error)
-
-        $('#board-access-modal .modal-body .error').remove()
+        $('#board-access-modal .modal-body .alert-error div').remove()
+        $('#board-access-modal .modal-body .alert-error').remove()
         var access = {}
-        ['admin','write','read'].forEach(function(level) {
+        var validData = true
+        accessLevels.forEach(function(level) {
             access[level] = { 
                 require: Boolean($('input[name=password-'+level+'-require]').attr('checked')),
                 password: $('#board-access-modal').find('input[name=password-'+level+'-value]').val()
             }
                
-            if (access.admin.require && access.admin.password.length == 0) {
-                $(document.createElement('div'))
+            if (access[level].require && (0 == access[level].password.length)) {
+                if (true == validData) $(document.createElement('div'))
                     .html('<strong>Whoa!</strong> Password is *required*, yet you\'ve left it blank!')
                     .appendTo(error)
                 $('#board-access-modal .modal-body').prepend(error)
-                return
+                validData = false
+                return 
             }
         })
-        board.setAccess(access)
-        $('#board-access-modal').modal('hide')
+        if (true == validData) {
+            board.setAccess(access)
+            $('#board-access-modal').modal('hide')
+        }
     })
 
     socket.on('board.access.set', function(data) {
         if (data.userId != user.id) {
             notification.add($('#user-' + data.userId).find('span').text() + " updated board access details", 'info')
         } else {
+            accessLevels.forEach(function(level) {
+                $('input[name=password-'+level+'-value]').val('')
+            })
             notification.add("Board access details successfully updated!", "success")
         }
     })
