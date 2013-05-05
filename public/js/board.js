@@ -2,148 +2,147 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
     function($, socket, notification, viewport, user, gridCalc) { 
 
     Board.prototype.setName = function(name) {
-        this.socket.emit('board.name.set', { name : name });
+        this.socket.emit('board.name.set', { name : name })
     }
-    Board.prototype.zIndex = 100;
+    Board.prototype.zIndex = 100
     Board.prototype.setAccess = function(access) {
         this.socket.emit('board.access.set', access)
     }
     Board.prototype.setCard = function(card) {
-    	this.card = card;
+    	this.card = card
     }
     Board.prototype.setSizeGrid = function(size) {
-    	this.card.setSizeGrid(size);
+    	this.card.setSizeGrid(size)
     }
     Board.prototype.setPositionGrid = function(size) {
-    	this.card.setPositionGrid(size);
+    	this.card.setPositionGrid(size)
     }
     function Board(socket) {
-        this.socket = socket;
-        this.preventCardCreation = false;
+        this.socket = socket
+        this.preventCardCreation = false
     }
     
-    board = new Board(socket);
+    board = new Board(socket)
     
     $('body').on('click', '.open-set-board-name-modal', function() {
         $('#set-board-name-modal').modal({
             backdrop : true
-        });
-    });
+        })
+    })
     $('#close-set-board-name-modal').click(function() {
-        $('#set-board-name-modal').modal('hide');
-    });
+        $('#set-board-name-modal').modal('hide')
+    })
     $('#update-board-name').click(function() {
-        name = $('#set-board-name-modal').find('input').val();
-        board.setName(name);
-        $('#set-board-name-modal').modal('hide');
-    });
+        name = $('#set-board-name-modal').find('input').val()
+        board.setName(name)
+        $('#set-board-name-modal').modal('hide')
+    })
     
     $('body').on('click', '.open-board-access-modal', function() {
         $('#board-access-modal').modal({
             backdrop : true
-        });
-    });
-    $('#close-board-access-modal').click(function() {
-        $('#board-access-modal').modal('hide');
-    });
-    $('input[name=password-admin-require]').click(function() {
-        if ($(this).attr('checked')) return $('input[name=password-admin-value]').removeAttr('disabled');
-        $('input[name=password-admin-value]').attr('disabled', 'disabled')
-        
+        })
     })
+    $('#close-board-access-modal').click(function() {
+        $('#board-access-modal').modal('hide')
+    });
+    ['admin', 'write', 'read'].forEach(function(level) {
+        $('input[name=password-admin-require]').click(function() {
+            if ($(this).attr('checked')) return $('input[name=password-'+level+'-value]').removeAttr('disabled');
+            $('input[name=password-'+level+'-value]').attr('disabled', 'disabled')
+        
+        })
+    })
+
     $('.update-board-access').click(function() {
-        $('#board-access-modal .modal-body .error').remove();
-        var access = {
-            admin: {
-                require: Boolean($('input[name=password-admin-require]').attr('checked')),
-                password: $('#board-access-modal').find('input[name=password-admin-value]').val()
-            },
-            write: {
-                require: false,
-                password: null
-            },
-            read: { 
-                require: false,
-                password: null
-            }
-        }
+
         var error  = $(document.createElement('div'));
         var button = $(document.createElement('button'))
-        error.attr('class', 'alert alert-error');            
+        error.attr('class', 'alert alert-error');
         button.attr('class', 'close').attr('data-dismiss', 'alert').html('&times;')
-        button.appendTo(error);
+        button.appendTo(error)
+
+        $('#board-access-modal .modal-body .error').remove()
+        var access = {}
+        ['admin','write','read'].forEach(function(level) {
+            access[level] = { 
+                require: Boolean($('input[name=password-'+level+'-require]').attr('checked')),
+                password: $('#board-access-modal').find('input[name=password-'+level+'-value]').val()
+            }
                
-        if (access.admin.require && access.admin.password.length == 0) {
-            $(document.createElement('div'))
-                .html('<strong>Whoa!</strong> Password is *required*, yet you\'ve left it blank!')
-                .appendTo(error)
-            $('#board-access-modal .modal-body').prepend(error);
-            return;
-        }
-        board.setAccess(access);
-        $('#board-access-modal').modal('hide');
-    });
+            if (access.admin.require && access.admin.password.length == 0) {
+                $(document.createElement('div'))
+                    .html('<strong>Whoa!</strong> Password is *required*, yet you\'ve left it blank!')
+                    .appendTo(error)
+                $('#board-access-modal .modal-body').prepend(error)
+                return
+            }
+        })
+        board.setAccess(access)
+        $('#board-access-modal').modal('hide')
+    })
+
     socket.on('board.access.set', function(data) {
         if (data.userId != user.id) {
-            notification.add($('#user-' + data.userId).find('span').text() + " updated board access details", 'info');
+            notification.add($('#user-' + data.userId).find('span').text() + " updated board access details", 'info')
         } else {
-            notification.add("Board access details successfully updated!", "success");
+            notification.add("Board access details successfully updated!", "success")
         }
-    });
+    })
     
     $('body').on('click', '.open-board-grid-modal', function() {
         $('#board-grid-modal').modal({
             backdrop : true
-        });
-        $('#board-grid-modal select.grid-position').val(boardConfig.grid.position || 'none');
-        $('#board-grid-modal select.grid-size').val(boardConfig.grid.size || 'none');
-        $('#board-grid-modal input.grid-confirm').attr('checked', false);
-    });
+        })
+        $('#board-grid-modal select.grid-position').val(boardConfig.grid.position || 'none')
+        $('#board-grid-modal select.grid-size').val(boardConfig.grid.size || 'none')
+        $('#board-grid-modal input.grid-confirm').attr('checked', false)
+    })
     $('#close-board-grid-modal').click(function() {
-        $('#board-grid-modal').modal('hide');
-    });
+        $('#board-grid-modal').modal('hide')
+    })
     $('#update-board-grid').on('click', function() {
-    	$('#board-grid-modal .modal-body .error').remove();
-    	var error  = $(document.createElement('div'));
+    	$('#board-grid-modal .modal-body .error').remove()
+    	var error  = $(document.createElement('div'))
         var button = $(document.createElement('button'))
-        error.attr('class', 'alert alert-error');            
+        error.attr('class', 'alert alert-error')        
         button.attr('class', 'close').attr('data-dismiss', 'alert').html('&times;')
-        button.appendTo(error);
+        button.appendTo(error)
         if (0 == $('.grid-confirm:checked').length) {
-        	var message = '<strong>Hang on a minute...</strong><br/>'
-        	    + 'Please check the confirmation below in order to continue';
+            var message = '<strong>Hang on a minute...</strong><br/>'
+                + 'Please check the confirmation below in order to continue'
             $(document.createElement('div')).html(message).appendTo(error)
-            $('#board-grid-modal .modal-body').prepend(error);
-            return;
+            $('#board-grid-modal .modal-body').prepend(error)
+            return
         }
         var getValue = function(element) {
-        	if (['none', 'small', 'medium', 'large'].indexOf(element.val()) == -1) return 'none';
-        	return element.val();
+            if (['none', 'small', 'medium', 'large'].indexOf(element.val()) == -1) return 'none'
+            return element.val()
         }
-        var position = getValue($('.grid-position'));
-        var size     = getValue($('.grid-size'));
+        var position = getValue($('.grid-position'))
+        var size     = getValue($('.grid-size'))
 
-        if (!boardConfig.grid) boardConfig.grid = { position: 'none', size: 'none'};
+        if (!boardConfig.grid) boardConfig.grid = { position: 'none', size: 'none'}
 
         if (boardConfig.grid.position != position) {
-            socket.emit('board.grid.position', position);
+            socket.emit('board.grid.position', position)
             if ('none' != size) {
 	            socket.once('board.grid.position', function(size) {
-	            	var grid = gridCalc.position(position);
+	            	var grid = gridCalc.position(position)
 	            	$('.card').each(function(index, c) {
-	            		var top = Math.ceil($(c).css('top').replace('px', '') / grid[1]) * grid[1];
-	            		var left = Math.ceil($(c).css('left').replace('px', '') / grid[0]) * grid[0];
-	            		$(c).css('top', top);
-	            		$(c).css('left', left);
-	            	    board.card.savePosition.call($(c));
-	            	});
-	            });
+	            		var top = Math.ceil($(c).css('top').replace('px', '') / grid[1]) * grid[1]
+	            		var left = Math.ceil($(c).css('left').replace('px', '') / grid[0]) * grid[0]
+	            		$(c).css('top', top)
+	            		$(c).css('left', left)
+	            	    board.card.savePosition.call($(c))
+	            	})
+	            })
 	        }
         }
         if (boardConfig.grid.size != size) {
-            socket.emit('board.grid.size', size);
+            socket.emit('board.grid.size', size)
             if ('none' != size) {
-	            var grid = gridCalc.size(size);
+	            var grid = gridCalc.size(size)
 	            socket.once('board.grid.size', function(size) {
 	            	$('.card').each(function(index, c) {
 	            		var width = Math.ceil($(c).css('width').replace('px', '') / grid) * grid;

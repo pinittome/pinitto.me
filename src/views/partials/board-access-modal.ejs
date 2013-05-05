@@ -4,24 +4,35 @@
         <h3>Update board access</h3>
     </div>
     <div class="modal-body">
-        <form onsubmit="return false">
+        <p>Set passwords for the various access levels of the board below.</p>
+        <form onsubmit="return false" class="form-horizontal">
             <fieldset>
+                <%
+                var levels = [
+                    { label: "Administration", id: "admin" },
+                    { label: "Write", id: "write" },
+                    { label: "Read", id: "read" }
+                ]
+                %>
+                <% levels.forEach(function(level) { %>
                 <div class="control-group">
-                    <label class="control-label">Adminstration</label>
+                    <label class="control-label"><%=level.label%></label>
                     <div class="controls">
                         <div class="input-prepend">
                             <span class="add-on">
                                 <label class="checkbox">
-                                    <input type="checkbox" class="" checked="checked" name="password-admin-require" />
+                                    <input type="checkbox" class="" checked="checked" name="password-<%=level.id%>-require" />
                                 </label>
                             </span>
-                            <input class="span2" placeholder="password" type="password" onmouseover="this.title=this.value" name="password-admin-value" />
+                            <input class="span2" placeholder="password" type="password" onmouseover="this.title=this.value" name="password-<%=level.id%>-value" />
                          </div>
-                         <p class="help-block">Check box to require password</p>
                     </div>
                 </div>
+                <% }) %>
             </fieldset>
         </form>
+        <p>If you use the same password for two levels users submitting that password will 
+        gain the highest matching permission.</p>
     </div>
     <div class="modal-footer">
         <a href="#" id="close-board-access-modal" class="btn">Close</a>
