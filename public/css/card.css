@@ -32,6 +32,7 @@
     right: 0;
     width: 100%; width: -moz-calc(100% - 4px); width: calc(100% - 4px);
     padding: 2px;
+    padding-left: 10px;
     box-sizing: border-box;
     overflow: hidden;
     background-color: rgba(0,0,0,0.5);

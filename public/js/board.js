@@ -19,13 +19,26 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
     Board.prototype.setPositionGrid = function(size) {
     	this.card.setPositionGrid(size)
     }
-    function Board(socket) {
+    Board.prototype.setupBoard = function() {
+        switch (true) {
+            case ('read' == this.access):
+                $('.write').remove()
+                // Missing 'break' intentionally
+            case ('write' == this.access):
+                $('.admin').remove()
+        }
+    }
+    Board.prototype.access = 'read'
+  
+    function Board(socket, access) {
         this.socket = socket
         this.preventCardCreation = false
+        this.access = access
+        this.setupBoard()
     }
     
-    board = new Board(socket)
-    
+    board = new Board(socket, accessLevel)
+   
     $('body').on('click', '.open-set-board-name-modal', function() {
         $('#set-board-name-modal').modal({
             backdrop : true
@@ -57,7 +70,7 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
     button.appendTo(error)
 
     accessLevels.forEach(function(level) {
-        $('input[name=password-admin-require]').click(function() {
+        $('input[name=password-'+level+'-require]').click(function() {
             if ($(this).attr('checked')) return $('input[name=password-'+level+'-value]').removeAttr('disabled')
             $('input[name=password-'+level+'-value]').attr('disabled', 'disabled')
         
@@ -169,8 +182,8 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
 	        }
         }
         $('#board-grid-modal').modal('hide');
-    });
-    
+    })
+   
     socket.on('board.name.set', function(data) {
         var oldName;
         $('.board-name').each(function(index, element) {
@@ -178,16 +191,16 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
             $(element).attr('title', data.name);
         });
         notification.add('The board name has been changed to "' + data.name + '"');
-    });
+    })
     socket.on('board.grid.postion', function(data) {
         board.setPositionGrid(data.size);
-    });
+    })
     socket.on('board.grid.size', function(data) {
     	board.setSizeGrid(data.size);
     })
     $('.leave').click(function() {
         document.location.href = '/logout';
-    });
-    
-    return board;
-});
+    })
+ 
+    return board
+})

@@ -1,6 +1,7 @@
-var io        = require('../io').io,
-    access    = require('../access'),
-    utils     = require('../util')
+var io      = require('../io').io,
+    access  = require('../access'),
+    utils   = require('../util'),
+    async   = require('async')
 
 var Board = function Board() {
     this.socket = null;
@@ -27,29 +28,76 @@ Board.prototype.setName = function(data) {
 Board.prototype.setAccess = function(data) {
     var self = this
     this.socket.get('board', function(error, boardId) {
+
         if (error) return self.socket.emit('error', {message: "Access details not changed"})
+
         self.db.load(boardId, function(error, board) {
             if (error) return self.socket.emit('error', {message: 'Not able to load board'})
-            if (data.admin && data.admin.require != undefined) {
-            	var saveAccess = function() {
-            		self.db.setAccess(boardId, board.access, function(error) {
-		                if (error) return self.socket.emit('error', {message: 'Access details could not be updated'})
-		                io.sockets.in(boardId).emit('board.access.set', {userId: self.socket.id});
-		            });
-            	}
-                if (false === data.admin.require) {
-                    delete board.access.admin
-                    saveAccess();
-                } else {
-                    if (!data.admin.password) return self.socket.emit('error', {message: 'Password not provided'})
+
+            var saveAccess = function() {
+                self.db.setAccess(boardId, board.access, function(error) {
+                    if (error)
+                       return self.socket.emit('error', {message: 'Access details could not be updated'})
+                    io.sockets.in(boardId).emit('board.access.set', {userId: self.socket.id})
+                })
+            }            
+
+            var validData = true
+            access.levels.forEach(function(level) {
+                switch (true) {
+                    case (typeof(data[level]) == 'undefined'):
+                    case (typeof(data[level].require) == 'undefined'):
+                    case (typeof(data[level].password) == 'undefined'):
+                        validData = false
+                }
+            })
+            // This should never be the case with valid UI call
+            if (false == validData) return self.socket.emit('error', {message: 'Invalid access data provided'})
+
+            async.parallel([
+                function(callback) {
+                    if (false == data.admin.require) {
+                        delete board.access.admin
+                        return callback(null, true)
+                    }
+                    if (true == data.admin.require && '' == data.admin.password)
+                        return callback({message: 'Admin password required but not provided'}, null)
                     utils.hashPassword(data.admin.password, function(hash) {
-                    	board.access.admin = hash;
-                    	saveAccess();
+                        board.access.admin = hash
+                        callback(null, true)
+                    })
+                },
+                function(callback) {
+                    if (false == data.write.require) {
+                        delete board.access.write
+                        return callback(null, true)
+                    }
+                    if (true == data.write.require && '' == data.write.password)
+                        return callback({message: 'Password for write access required but not provided'}, null)
+                    utils.hashPassword(data.write.password, function(hash) {
+                        board.access.write = hash
+                        callback(null, true)
+                    })
+                },
+                function(callback) {
+                    if (false == data.read.require) {
+                        delete board.access.read
+                        return callback(null, true)
+                    }
+                    if (true == data.read.require && '' == data.read.password)
+                        return callback({message: 'Password for read access required but not provided'}, null)
+                    utils.hashPassword(data.read.password, function(hash) {
+                        board.access.read = hash
+                        callback(null, true)
                     })
                 }
-            }
-        });
-    });
+            ], function(error, results) {
+                if (error) return self.socket.emit('error', error)
+                console.log(board.access)
+                saveAccess()
+            })
+        })
+    })
 }
 
 Board.prototype.load = function(id, callback) {
