@@ -51,7 +51,7 @@ define(['socket', 'user', 'jquery'], function(socket, user) {
     	status = 'online'
     	if (connectionCheck) clearInterval(connectionCheck)
     	connectionStatus('connected')
-    });
+    })
     $(window).bind('offline', function() {
         connectionStatus('offline');
     });

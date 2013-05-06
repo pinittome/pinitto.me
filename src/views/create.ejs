@@ -91,18 +91,48 @@
     </div>
     <a name="advanced-settings"></a>
     <div class="row">
+            <div class="span5">
+            <h2>Super-charge your board!</h2>
+            <p class="lead">Customise your board to get the best out of it.</p>
+                <h3>Access</h3>
+                <p>If you want to control access to your board enter passwords here. Using the same password in multiple fields will result in the user gaining the highest level of access for that password.</p>
+                <p class="text-warning">Warning: not setting a password leaves your board open to abuse by those wishing to do bad.</p>
+                <p>For more information please see <a href="http://go.pinitto.me/manual/access-controls/" target="_blank">access controls</a>. Leave a field blank for no password required.</p>
+                <p><strong>Hint:</strong> Hover over the password field to see what has been entered already.</p>
+
+                <br/><br/><br/>
+                <h3>Grids</h3>
+                <p>Do you like order? Do nice straight lines do it for you? Then you'll love the grids feature!</p>
+                <p>By default, card sizes and positions are freeform, but apply the grids and either of both of these
+                   forces either card size &amp;/or position to resize/move in fixed increments.</p>
+            </div>
 	    <div class="span7">
 	        <h2>Advanced settings</h2>
 	        <fieldset>
                 <legend>Access</legend>
                 <div class="control-group">
-                    <label class="control-label" for="password-admin">Password</label>
+                    <label class="control-label" for="password-admin">Administrator</label>
                     <div class="controls">
                         <input type="password" onmouseover="this.title=this.value" name="password-admin" placeholder="" />
-                        <span class="help-block">Hover over the password box to see what you've entered already.</span>
+                        <span class="help-block">Users entering this password will be able to administer the board.</span>
                     </div>
                 </div>
+                <div class="control-group">
+                    <label class="control-label" for="password-write">Write Access</label>
+                    <div class="controls">
+                        <input type="password" onmouseover="this.title=this.value" name="password-write" placeholder="" />
+                        <span class="help-block">Users entering this password will be able to create, edit, delete, move, resize cards.</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="password-read">Read Access</label>
+                    <div class="controls">
+                        <input type="password" onmouseover="this.title=this.value" name="password-read" placeholder="" />
+                        <span class="help-block">Users entering this password will only be able to view the board.</span>
+                    </div>
+                </div>                
             </fieldset>
+            <p><strong>Don't panic...</strong> you will be able to change access controls once you are in the board too.</p>
             <fieldset>
                 <legend>Grids</legend>
                 <div class="control-group">
@@ -128,18 +158,6 @@
                     </div>
                 </div>
             </fieldset>
-	    </div>
-	    <div class="span5">
-            <h2>Super-charge your board!</h2>
-            <p class="lead">Customise your board so you get the best out of it.</p>
-	        <h3>Access</h3>
-	        <p>If you want to prevent access to your board enter a password here.</p>     
-	        <p class="text-warning">Warning: not setting a password leaves your board open to abuse by those wishing to do bad.</p>
-	        <p class="text-muted">We're adding more fine-grained access controls soon e.g. read-only, edit but no admin, etc.</p>      
-	        <h3>Grids</h3>
-	        <p>Do you like order? Do nice straight lines do it for you? Then you'll love the grids feature!</p>
-	        <p>By default, card sizes and positions are freeform, but apply the grids and either of both of these 
-	           forces either card size &amp;/or position to resize/move in fixed increments.</p>
 	    </div>
 	</div>
 	</form>

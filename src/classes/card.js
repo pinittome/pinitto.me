@@ -2,9 +2,10 @@ var santizier   = require('./sanitize/card'),
     statistics  = require('../statistics'),
     db          = require('../database/cards');
 
-module.exports = Card = function Card(board){
-	this.board = board;
-};
+var Card = function Card(board) {
+	this.board = board
+        this.socket = null
+}
 
 Card.prototype.create = function(data) {
     var self = this;
@@ -186,3 +187,5 @@ Card.prototype.setSocketContext = function(socket) {
 Card.prototype.setIo = function(io) {
     this.io = io;
 }
+
+module.exports = Card

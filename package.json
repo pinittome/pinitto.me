@@ -1,6 +1,6 @@
 {
   "name": "pinitto.me",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Open source corkboard-type application",
   "main": "index.js",
   "dependencies": {
@@ -20,7 +20,8 @@
     "colors": "~0.6.0-1",
     "recaptcha": "~1.2.0",
     "read-package-json": "~0.2.0",
-    "express-force-domain": "0.0.6"
+    "express-force-domain": "0.0.6",
+    "async": "~0.2.8"
   },
   "devDependencies": {
     "requirejs": "~2.1.4"
