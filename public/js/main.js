@@ -19,7 +19,8 @@ require.config({
     }
 });
 
-require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'modernizer', 'ui'], function($, socket) {
+require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'modernizer', 'ui', 'site/create'],
+    function($, socket) {
 
     socket.on('connect', function(data) {
         socket.emit('statistics.join');

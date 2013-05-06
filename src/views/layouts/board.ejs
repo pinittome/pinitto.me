@@ -18,6 +18,7 @@
         <script type="text/javascript">
         config      = <%- JSON.stringify(app) %>
         boardConfig = <%- JSON.stringify(config) %>
+        accessLevel = '<%=access%>'
         </script>
         <% if (!app.useOptimised) { %>
         <script data-main="/js/app.js" src="/js/require.js"></script>
@@ -83,8 +84,9 @@
                                 <ul class="dropdown-menu">
                                     <li class="nav-header">User settings</li>
                                     <li><a href="#" class="open-set-name-modal">Set name</a></li>
+                                    <li><a href="/login/<%=boardId%>" title="Change access level">Change access level (<%=access%>)</a></li>
                                     <li><a href="/logout" class="leave">Logout</a></li>
-                                    <li class="nav-header">Board settings</li>
+                                    <li class="nav-header admin">Board settings</li>
                                     <li><a href="#" class="open-set-board-name-modal admin">Set board name</a></li>
                                     <li><a href="#" class="open-board-access-modal admin">Set password</a></li>
                                     <li><a href="#" class="open-board-grid-modal admin">Set up grid</a></li>

@@ -141,7 +141,11 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         })
         $(card).find('textarea').val($('<div/>').html(content).text());
         paragraphs.remove();
-        var self = this;
+        var self = this
+        if ('read' == board.access) {
+            textarea.attr('disabled', 'disabled')
+            return
+        }
         card.draggable({
             cursor : "move",
             keyboard : true,
@@ -188,10 +192,11 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         controls = document.createElement('div');
         $(controls).attr('class', 'controls');
         $(controls).append(''
-            + '&nbsp;&nbsp;<i class="icon-remove card-delete" title="Delete card">&nbsp;</i> '
-            + '<i class="icon-eye-open card-colour" title="Change card colour">&nbsp;</i> '
             + '<i class="icon-magnet card-link" title="' + window.location.href + '#' + id + '">&nbsp;</i>')
-        
+        if ('read' != board.access) $(controls).append(''
+            + '&nbsp;&nbsp;<i class="icon-remove card-delete write" title="Delete card">&nbsp;</i> '
+            + '<i class="icon-eye-open card-colour write" title="Change card colour">&nbsp;</i> '
+        ) 
         $(controls).appendTo($("#" + id));
     }
     
@@ -227,58 +232,60 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         this.board.setCard(this);
     }
     
-    var cardEntity = new Card(socket, infiniteDrag, board);
+    var cardEntity = new Card(socket, infiniteDrag, board)
 
     socket.on('card.zIndex', function(data) {
         $('#' + data.cardId).css('z-index', data.zIndex);
         board.zIndex = data.zIndex;
-    });
+    })
     socket.on('card.moving', function(data) {
         cardEntity.setPosition(data.cardId, data.position);
-    });
+    })
     socket.on('card.list', function(data) {
         data.forEach(function(d) {
             if ($('#' + d._id).length == 0) {
                 d.cardId = d._id;
                 cardEntity.create(d);
             }
-        });
-    });
+        })
+    })
     socket.on('card.created', function(data) {
         cardEntity.create(data);
-    });
+    })
     socket.on('card.resize', function(data) {
         $('#' + data.cardId).find('textarea').animate({
             width: parseFloat(data.size.width - 10) + 'px',
             height: parseFloat(data.size.height - 10) + 'px'
-        });    
+        });   
         $('#' + data.cardId).animate({
             width: data.size.width,
             height: data.size.height
-        });
-    });
+        })
+    })
     $('.viewport').on('click', '.card-delete', function(event) {
+        if ('read' == board.access) return
         socket.emit('card.delete', { cardId: $(this).parents('.card').attr('id') });
         $('ul.card-list').find('li.no-cards').removeClass('hidden');
         event.stopPropagation();
-    });
+    })
     socket.on('card.delete', function(data) {
         $('#' + data.cardId).remove();
         $('#entry-' + data.cardId).remove();
         if ($('li.card-list ul li').length < 2) $('.no-cards').removeClass('hidden')
         if (data.userId != user.id) notification.add(data.name + " deleted a card", 'info');
-    });
+    })
     $('.viewport').on('click', '.card-link', function(event) {
     	var link = window.location.href.split('#')[0] + '#' 
     	    + $(this).parent().parent().attr('id');
     	$('#card-link-modal .card-link').html('<a href="' + link + '">' + link + '</a>');
     	$('#card-link-modal').modal(true);
-    });
+    })
     $('#close-card-link-modal').on('click', function() {
         $('#card-link-modal').modal('hide');
-    });
+    })
     
-    $('.viewport').on('click', '.card-colour', function(event){
+    $('.viewport').on('click', '.card-colour', function(event) {
+        if ('read' == board.access) return
         card = $(this).parents('.card');
         cardListEntry = $('li.card-list').find('#entry-' + card.attr('id')).find('span');
         
@@ -292,7 +299,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             { cardId: card.attr('id'), cssClass: cssClass}
         );
         event.stopPropagation();
-    });
+    })
     
     $('li.card-list').on('mouseover', 'li', function(event) {
          if ($(this).attr('id')) $('#' + $(this).attr('id').replace('entry-', '')).addClass('highlight');    
@@ -304,7 +311,8 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
          cardEntity.scrollTo($(this).attr('id').replace('entry-', ''));
     });
     
-    socket.on('card.colour', function(data){
+    socket.on('card.colour', function(data) {
+        if ('read' == board.access) return
         $('#' + data.cardId).removeClass().addClass('card').addClass('card-' + data.cssClass);
         $('#entry-' + data.cardId).find('span').removeClass().addClass('card-' + data.cssClass);
     });
@@ -326,19 +334,21 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             data.content = data.content.substring(0, 20) + '...';
         }
         $('#entry-' + data.cardId).find('p').html(data.content);
-    });
+    })
     $('.viewport-container').on('click', '.card', function(event) {
+        if ('read' == board.access) return
         cardEntity.bringToFront(event, $(this));
         event.stopPropagation();
-    });
+    })
     $("div.viewport-container").click(function(e) {
-        lastClick = e;
+        lastClick = e
+        if ('read' == board.access) return
         if (board.preventCardCreation)
             return notification.add(
                 "You can only create a card once every " 
                   + config.limits.card.wait + " seconds",
                 "notice"
-            );
+            )
         var x = e.pageX - parseFloat($('.viewport').css('left').replace('px', ''));        
         var y = e.pageY - viewport.header.height - parseFloat($('.viewport').css('top').replace('px', ''));
             if (config && config.limits && config.limits.card && config.limits.card.wait) {
@@ -352,13 +362,13 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
                 x : x,
                 y : y
             }
-        });
-    });
+        })
+    })
     
-    function htmlDecode(input){
-		var e = document.createElement('div');
-		e.innerHTML = input;
-	    return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    function htmlDecode(input) {
+        var e = document.createElement('div')
+        e.innerHTML = input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue
     }
-    return cardEntity;
-});
+    return cardEntity
+})

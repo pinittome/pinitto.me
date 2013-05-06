@@ -43,7 +43,7 @@ exports.get = function(req, res) {
             && utils.inArray(req.session.access, [a.ADMIN, a.READ, a.WRITE])
         ) {
             allowedAccess = true;        
-        } else if (a.NONE != a.getLevel(board, "")) {
+        } else if (a.NONE != a.getLevel(board, false)) {
             allowedAccess = true; 
         }
 
@@ -71,8 +71,9 @@ exports.get = function(req, res) {
 	            options.config      = {
 	                grid: board.grid || { position: 'none', size: 'none' }	
 	            }
-	            req.session.access  = req.session.access ? req.session.access : a.ADMIN;
+	            req.session.access  = req.session.access ? req.session.access : a.getLevel(board, false)
 	            req.session.board   = id;
+                    options.access      = req.session.access
 	            res.render('board', options);
 	        });
 	    });
