@@ -6,7 +6,7 @@
 
 li.card-list ul {
     overflow-x: hidden;
-    overflow-y: scroll;	
+    overflow-y: auto;	
 }
 
 li.card-list ul li span {

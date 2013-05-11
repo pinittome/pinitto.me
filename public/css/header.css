@@ -27,3 +27,7 @@ a.brand {
 	overflow: hidden;
 	height: 20px;
 }
+
+ul.dropdown-menu {
+    overflow-y: auto
+}
