@@ -10,7 +10,8 @@ require.config({
         'ui': 'vendor/jquery-ui-1.10.0.min',
         'growl': 'vendor/bootstrap-growl/jquery.bootstrap-growl',
         'mousewheel': 'vendor/jquery-mousewheel/jquery.mousewheel',
-        'infinite': 'vendor/jquery-infinite-drag/javascripts/jquery.infinitedrag'
+        'infinite': 'vendor/jquery-infinite-drag/javascripts/jquery.infinitedrag',
+        'throttle': 'util/throttle'
     },
     shim: {
         'growl': {
@@ -27,7 +28,10 @@ require.config({
         },
         'socket': {
             deps: ['socket.io']
-        }
+        },
+        'throttle': {
+            deps: ['jquery']
+        },
     }
 });
 

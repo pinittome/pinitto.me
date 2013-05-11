@@ -1,6 +1,6 @@
 define(['jquery', 'socket', 'util/determine-css-class', 'board', 
-         'util/notification', 'board/infinite-drag', 'user', 'viewport', 'util/grid-size'], 
-    function($, socket, determineCssClass, board, notification, infiniteDrag, user, viewport, gridCalc) {
+         'util/notification', 'board/infinite-drag', 'user', 'viewport', 'util/grid-size', 'throttle'], 
+    function($, socket, determineCssClass, board, notification, infiniteDrag, user, viewport, gridCalc, throttle) {
     
     Card.prototype.bringToFront = function(event, element) {
 
@@ -316,8 +316,8 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         $('#' + data.cardId).removeClass().addClass('card').addClass('card-' + data.cssClass);
         $('#entry-' + data.cardId).find('span').removeClass().addClass('card-' + data.cssClass);
     });
-    $('.viewport').on('input propertychange', '.card textarea', function(event) {
-        socket.emit('card.text-change', {cardId: $(this).parent().attr('id'), content: $(this).val()});
+    $('.viewport').on('input propertychange', '.card textarea', throttle(function(event) {
+        socket.emit('card.text-change', {cardId: $(this).parent().attr('id'), content: $(this).val()})
         content = $(this).val();
         if (content.length == 0) {
             content = '<i>No content</i>';
@@ -325,7 +325,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             content = content.substring(0, 20) + '...';
         }
         $('#entry-' + $(this).parent().attr('id')).find('p').html(content);
-    });
+    }, 300))
     socket.on('card.text-change', function(data) {
         $('#' + data.cardId).find('textarea').val(htmlDecode(data.content));
         if (data.content.length == 0) {
