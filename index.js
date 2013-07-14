@@ -1,6 +1,6 @@
 require('colors')
-var readJson = require('read-package-json');
-environment  = process.env.NODE_ENV || 'production';
+var readJson = require('read-package-json')
+environment  = process.env.NODE_ENV || 'production'
 
    ["",
     " Welcome to...".green,
@@ -20,11 +20,11 @@ environment  = process.env.NODE_ENV || 'production';
 
 readJson('./package.json', function (error, data) {
     if (error) {
-        console.error("There was an error reading package.json, quitting...".red);
-        process.exit();
+        console.error("There was an error reading package.json, quitting...".red)
+        process.exit()
     }
     config = require('./src/config')(data)
-    require('./src/build');
-    httpServer = require('./src/server');
-    require('./src/io');
-});
+    require('./src/build')
+    httpServer = require('./src/server')
+    require('./src/io')
+})
