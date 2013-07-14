@@ -1,24 +1,16 @@
-<div class="page-header-banner">
-    <div class="container">
-        <div class="row">
-            <div class="span12">
-                <h1>Get access to board</h1>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-
-    <% if (typeof(errors) != 'undefined') { %>
+<% if (typeof boardId !== 'undefined') { %>
+<a name="login"></a>
+<section name="login">
+    <h1>Login</h1>
+    <% if (typeof(errors.login) != 'undefined') { %>
     <script type="text/javascript">
-    var errors = <%- errors %>
+    errors.login = <%- JSON.stringify(errors.login) %>
     </script>
     <% } %>
     <div class="row">
         <div class="span7">
             <h2>This board requires authorisation</h2>
-            <form class="form-horizontal" method="post">
+            <form class="form-horizontal" method="post" id="login-form">
                 <fieldset>
                     <legend>Login</legend>
                     <div class="control-group">
@@ -33,24 +25,25 @@
                             <input type="password" name="password" placeholder="" />
                         </div>
                     </div>
-                </fieldset> 
-         
-                <div class="control-group" >  
+                </fieldset>
+
+                <div class="control-group" >
                     <div class="form-actions">
                         <input type="hidden" name="referrer" value="<%=referrer %>" />
                         <button type="submit" class="btn btn-primary">Get me some access...</button>
                         <button type="button" class="btn leave">Cancel</button>
                     </div>
-                </div>                    
+                </div>
+                <input type="hidden" name="form" value="login" />
             </form>
         </div>
         <div class="span5">
             <h2>Help</h2>
             <p>Enter a password here to get access to the board.</p>
-            <p>If you believe you should be able to access this board without a password then 
-            <a href="/<%=boardId%>" title="Attempt board access without a password">click here</a> to 
-            attempt board access without a password.</p>        
+            <p>If you believe you should be able to access this board without a password then
+            <a href="/<%=boardId%>" title="Attempt board access without a password">click here</a> to
+            attempt board access without a password.</p>
        </div>
     </div>
-
-</div> <!-- /container -->
+</section>
+<% } %>

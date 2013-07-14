@@ -27,7 +27,9 @@ Acl.prototype.hasPermission = function(required) {
             break
     }
     if (false == allowed) {
-        this.socket.emit('error', {message: 'You do not have permission to perform this action'})
+        this.socket.emit('error', {
+          message: 'You do not have permission to perform this action' 
+        })
     }
     return allowed        
 }

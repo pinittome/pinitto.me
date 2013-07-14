@@ -1,18 +1,10 @@
-<div class="page-header-banner">
-    <div class="container">
-        <div class="row">
-            <div class="span12">
-                <h1><%= pageName %></h1>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <% if (typeof(errors) != 'undefined') { %>
+<a name="create"></a>
+<section name="create">
+    <h1>Create a new board</h1>
+    <% if (typeof(errors.create) != 'undefined') { %>
     <script type="text/javascript">
-    var errors = <%- errors %>;
-    var values = <%- values %>;
+    errors.create = <%- errors.create %>
+    var values = <%- values %>
     </script>
     <% } %>
     <form class="form-horizontal" method="post" id="create-board">
@@ -160,5 +152,6 @@
             </fieldset>
 	    </div>
 	</div>
+        <input type="hidden" name="form" value="create" />
 	</form>
-</div> <!-- /container -->
+</section>

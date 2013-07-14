@@ -22,31 +22,41 @@ require.config({
 require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'modernizer', 'ui', 'site/create'],
     function($, socket) {
 
+    var addErrors = function(element, errors) {
+console.log(errors, errors.length)
+        for (var i = 0; i < errors.length; i++) {
+            var error = errors[i]
+console.log(error, errors)
+            if (error.mainMessage) {
+                var errorMessage = $(document.createElement('div'))
+                    .attr('class', 'alert alert-error')
+                    .append("<button type=\"button\" class=\"close\" "
+                        + "data-dismiss=\"alert\">&times;</button><strong>Error</strong> "
+                        + error.mainMessage
+                    )
+                element.after(errorMessage)
+            } else {
+                    var input = $('input[name=' + error.param + ']')
+                    input.val(error.value)
+                    input.parents('div.control-group').addClass('error')
+                    input.after('<span class="help-inline">' + error.msg + '</span>')
+                }
+        }
+    }
+
+
     socket.on('connect', function(data) {
         socket.emit('statistics.join');
-    });
+    })
     
     if (typeof(values) != 'undefined') {
-        for (key in values) $('input[name=' + key + ']').val(values[key]);
+        for (key in values) $('input[name=' + key + ']').val(values[key])
     }
-    if (typeof(errors) != 'undefined') {
-        for (var i = 0; i < errors.length; i++) {
-            error = errors[i];
-            if (error.mainMessage) {
-            	var errorMessage = $(document.createElement('div'))
-            	    .attr('class', 'alert alert-error')
-            	    .append("<button type=\"button\" class=\"close\" "
-            	        + "data-dismiss=\"alert\">&times;</button><strong>Error</strong> " 
-            	        + error.mainMessage
-            	    )
-            	$('form#create-board h2.main').after(errorMessage)
-            } else {
-	            var input = $('input[name=' + error.param + ']');
-	            input.val(error.value);
-	            input.parents('div.control-group').addClass('error');
-	            input.after('<span class="help-inline">' + error.msg + '</span>');
-	        }
-        };
+    if (typeof(errors.create) != 'undefined') {
+        addErrors($('form#create-board h2.main'), errors.create)
+    }
+    if (typeof(errors.login) != 'undefined') {
+        addErrors($('form#login-form legend'), errors.login)
     }
     if (typeof(config.twitter) != 'undefined' && config.twitter) {
         $(".tweet").tweet({

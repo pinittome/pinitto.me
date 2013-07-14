@@ -1,10 +1,18 @@
 define(['socket', 'user', 'jquery'], function(socket, user) {
 
+    var connectionAttempts = 0
+
     var connectionCheck = setInterval(function() {
     	console.log('Attempting board connection')
+        ++connectionAttempts
     	socket.emit('board.join', {id: boardId, user: user.name})
     }, 1500)
-    
+   
+    socket.on('connect.fail', function(error) {
+        console.error(error)
+        window.location.href = '/?id=' + boardId + '#login'
+    })
+ 
     var openConnectionStatusModal = function() {
         $('#connection-status-modal').modal({
             backdrop: 'static',

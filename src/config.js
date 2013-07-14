@@ -36,6 +36,8 @@ module.exports = function(data) {
 	
 	config.app.version = data.version;
 	config.app.environment = environment;
+
+        config.project.errors = {} 
 	    
 	return config
 }

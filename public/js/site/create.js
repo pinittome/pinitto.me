@@ -6,7 +6,7 @@ define(['site/create'], function() {
         if ((0 == writePassword.val().length) || (writePassword.val() == lastAdminPassword)) 
             writePassword.val(this.value)
         if ((0 == readPassword.val().length) || (readPassword.val() == lastAdminPassword))
-            readPassword.val(this.value)
+        readPassword.val(this.value)
         lastAdminPassword = this.value
     })
 })

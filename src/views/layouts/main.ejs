@@ -12,7 +12,8 @@
         <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,700,800,600,300' rel='stylesheet' type='text/css'/>
         
         <script type="text/javascript">
-        config = <%- JSON.stringify(app) %>
+        var config = <%- JSON.stringify(app) %>
+        var errors = {}
         </script>
         <% if (!app.useOptimised) { %>
         <link rel="stylesheet" href="/css/main.css">
@@ -39,17 +40,17 @@
                         <div class="nav-collapse collapse">
                             <ul class="nav">
                                 <li><a href="/">Home</a></li>
-                                <li><a href="/features">Features</a></li>
-                                <li><a href="/create">Create New board</a></li>
+                                <li><a href="/#create">Create New board</a></li>
+                                <li><a href="http://go.pinitto.me/manual" title="Manual">Manual</a></li>
                                 <!-- dropdown -->
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="/about">About</a><li>
-                                        <li><a href="/contact">Contact us</a></li>
+                                        <li><a href="http://go.pinitto.me/about">About</a><li>
+                                        <li><a href="http://go.pinitto.me/contact">Contact us</a></li>
                                         <li class="divider"></li>
                                         <li><a target="_blank" href="https://github.com/pinittome/pinitto.me">Source Code</a></li>
-                                        <li><a target="_blank" href="http://pinittome.github.com">Documentation</a></li>
+                                        <li><a target="_blank" href="http://go.pinitto.me/manual">Documentation</a></li>
                                         <li><a target="_blank" href="https://github.com/pinittome/pinitto.me/issues">Bugs</a></li>
                                         <li><a href="#">Version: <%= app.version %><% if (app.environment == 'development') { %>-development<% } %></a></li>
                                         
@@ -61,8 +62,31 @@
                 </div><!-- /.navbar -->
             </div><!-- /.container -->
         </div><!-- /.navbar-wrapper -->
+<div class="masthead">
+    <div class="container">
+        <div class="carousel-caption">
+            <h1>Welcome to <%= name %></h1>
+            <p class="lead visible-desktop"><%= name %> is an infinite virtual corkboard. Collaborate with friends, family, or colleagues in real time in any way you want. Make plans, share ideas, play games...</p>
+            <a class="btn btn-large btn-primary" href="/create">Create New Board</a>
+        </div>
+    </div>
+</div>
 
-        <%- body %>
+<div class="middle-bar">
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <h2>It's easy to get started. Just click this button <a href="/#create" class="btn btn-large">Create New Board <i class="icon-circle-arrow-right"></i></a></h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+        <% include ../index %>
+        <% include ../login %>
+        <% include ../create %>
+        </div>
 
         <footer>
             <div class="container">
