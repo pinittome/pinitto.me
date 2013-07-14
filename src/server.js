@@ -55,10 +55,16 @@ app.configure(function(){
     }
 });
 
-app.get('/', require('./routes/index').get);
-app.get('/contact', require('./routes/contact').get);
-app.get('/about', require('./routes/about').get);
-app.get('/features', require('./routes/features').get);
+app.get('/', require('./routes/index').get)
+app.get('/contact', function(req, res) {
+    res.redirect('http://go.pinitto.me/contact')
+})
+app.get('/about', function(req, res) {
+    res.redirect('http://go.pinitto.me/about')
+})
+app.get('/features', function(req, res) {
+    res.redirect('http://go.pinitto.me/features')
+})
 
 app.get('/login/*', require('./routes/login').get);
 app.post('/login/*', require('./routes/login').post);
