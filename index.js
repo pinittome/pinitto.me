@@ -2,7 +2,7 @@ require('colors')
 var readJson = require('read-package-json')
 environment  = process.env.NODE_ENV || 'production'
 
-   ["",
+   var helloWorld = ["",
     " Welcome to...".green,
     "       ___  _         _  __   __".red,                     
     "      / _ \\(_) ___   (_)/ /_ / /_ ___      __ _  ___".red, 
@@ -16,7 +16,9 @@ environment  = process.env.NODE_ENV || 'production'
     "    - Jonny Heavey (@jonnyheavey)".cyan,
     "",
     "    www.pinitto.me ::: github.com/pinittome ::: @pinittome".green,
-    ""].forEach(function(data) { console.log(data)})
+    ""].join('\n')
+
+console.log(helloWorld)
 
 readJson('./package.json', function (error, data) {
     if (error) {
