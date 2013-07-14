@@ -15,6 +15,9 @@ require.config({
         },
         'ui': {
             deps: ['jquery']
+        },
+        'jquery': {
+            exports: '$'
         }
     }
 });
@@ -23,10 +26,8 @@ require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'moder
     function($, socket) {
 
     var addErrors = function(element, errors) {
-console.log(errors, errors.length)
         for (var i = 0; i < errors.length; i++) {
             var error = errors[i]
-console.log(error, errors)
             if (error.mainMessage) {
                 var errorMessage = $(document.createElement('div'))
                     .attr('class', 'alert alert-error')
@@ -59,12 +60,32 @@ console.log(error, errors)
         addErrors($('form#login-form legend'), errors.login)
     }
     if (typeof(config.twitter) != 'undefined' && config.twitter) {
-        $(".tweet").tweet({
+        /*$(".tweet").tweet({
             join_text: "auto",
             username: config.twitter,
             avatar_size: 32,
             count: 3,
             loading_text: "Loading tweets..."
-        });
+        })*/
     }
-});
+    $(document).ready(function() {
+        $("#tabs").tabs()
+        $('.open-tab').click(function(event) {
+          var tab = $(this).attr('href')
+          var index = 0
+          switch (tab) {
+            case '/#main': 
+            default:
+                index = 0
+                break
+            case '/#create':
+                index = 1
+                break
+            case '/#login':
+                index = 2
+                break
+          }
+          return $('#tabs').tabs('option', 'active', index)
+        })
+    })
+})

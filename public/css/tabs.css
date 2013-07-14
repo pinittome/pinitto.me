@@ -1,0 +1,8 @@
+.ui-tabs .ui-tabs-panel {
+  padding: 0;
+}
+
+#tabs { 
+  border: 0;
+  width: 940px;
+}
