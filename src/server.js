@@ -66,9 +66,11 @@ app.get('/features', function(req, res) {
     res.redirect('http://go.pinitto.me/features')
 })
 
-app.get('/login/*', require('./routes/login').get);
-app.post('/login/*', require('./routes/login').post);
-app.get('/logout', require('./routes/logout').get);
+app.get('/login/*', require('./routes/login').get)
+app.post('/login/*', require('./routes/login').post)
+app.get('/logout', function(req, res) {
+    res.redirect('/?logout=1')
+})
 
 app.get('/create', require('./routes/create').get);
 app.post('/create', require('./routes/create').post);
