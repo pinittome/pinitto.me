@@ -19,7 +19,7 @@
     "cloneextend": "0.0.3",
     "colors": "~0.6.0-1",
     "recaptcha": "~1.2.0",
-    "read-package-json": "~0.2.0",
+    "read-package-json": "0.2.1",
     "express-force-domain": "0.0.6",
     "async": "~0.2.8"
   },
