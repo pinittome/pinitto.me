@@ -11,7 +11,8 @@ require.config({
         'growl': 'vendor/bootstrap-growl/jquery.bootstrap-growl',
         'mousewheel': 'vendor/jquery-mousewheel/jquery.mousewheel',
         'infinite': 'vendor/jquery-infinite-drag/javascripts/jquery.infinitedrag',
-        'throttle': 'util/throttle'
+        'throttle': 'util/throttle',
+        'zoom-js': 'vendor/zoom.js/js/zoom'
     },
     shim: {
         'growl': {
@@ -31,6 +32,9 @@ require.config({
         },
         'throttle': {
             deps: ['jquery']
+        },
+        'zoom.js': {
+            exports: 'zoom'
         },
     }
 });

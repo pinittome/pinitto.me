@@ -1,6 +1,8 @@
 define(['jquery', 'socket', 'util/determine-css-class', 'board', 
-         'util/notification', 'board/infinite-drag', 'user', 'viewport', 'util/grid-size', 'throttle'], 
-    function($, socket, determineCssClass, board, notification, infiniteDrag, user, viewport, gridCalc, throttle) {
+         'util/notification', 'board/infinite-drag', 'user', 
+         'viewport', 'util/grid-size', 'throttle', 'zoom-js'], 
+    function($, socket, determineCssClass, board, notification, 
+        infiniteDrag, user, viewport, gridCalc, throttle) {
     
     Card.prototype.bringToFront = function(event, element) {
 
@@ -196,6 +198,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         if ('read' != board.access) $(controls).append(''
             + '&nbsp;&nbsp;<i class="icon-remove card-delete write" title="Delete card">&nbsp;</i> '
             + '<i class="icon-eye-open card-colour write" title="Change card colour">&nbsp;</i> '
+            + '<i class="icon-zoom-in card-zoom" title="Zoom in on this card">&nbsp;</i> '
         ) 
         $(controls).appendTo($("#" + id));
     }
@@ -203,7 +206,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     Card.prototype.setPositionGrid = function(size, id) {
     	var grid = gridCalc.position(size);
     	if (id != null) return $('#' + id).draggable({grid: grid});
-        $('div.card').each(function(index, card) { $(card).draggable({grid: grid})});
+        $('div.card').each(function(index, card) { $(card).draggable({grid: grid})})
     }
     
     Card.prototype.setSizeGrid = function(size, id) {
@@ -283,7 +286,14 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     $('#close-card-link-modal').on('click', function() {
         $('#card-link-modal').modal('hide');
     })
-    
+    $('.viewport').on('click', '.icon-zoom-in', function(event) {
+        $(this).removeClass('icon-zoom-in').addClass('icon-zoom-out')
+        zoom.to({ element: $(this).parent().parent()[0] })
+    })
+    $('.viewport').on('click', '.icon-zoom-out', function(event) {
+        zoom.out($(this).parent().parent()[0])
+        $(this).removeClass('icon-zoom-out').addClass('icon-zoom-in')
+    })
     $('.viewport').on('click', '.card-colour', function(event) {
         if ('read' == board.access) return
         card = $(this).parents('.card');

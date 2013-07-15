@@ -51,10 +51,12 @@ div.card p {
     margin: 5px;
 }
 
-.controls .card-delete, .controls .card-colour, .controls .card-link { 
+.controls .card-delete, .controls .card-colour, .controls .card-link, 
+  .controls .card-zoom { 
     cursor: pointer;
 }
-.controls .card-delete:hover, .controls .card-colour:hover, .controls .card-link:hover { 
+.controls .card-delete:hover, .controls .card-colour:hover, 
+    .controls .card-link:hover, .controls .card-zoom:hover { 
     color: #fff;
 }
 .controls .card-resize {

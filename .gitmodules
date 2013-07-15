@@ -13,3 +13,6 @@
 [submodule "public/js/vendor/jquery-twitter-display"]
 	path = public/js/vendor/jquery-twitter-display
 	url = https://github.com/seaofclouds/tweet
+[submodule "public/js/vendor/zoom.js"]
+	path = public/js/vendor/zoom.js
+	url = git@github.com:hakimel/zoom.js.git
