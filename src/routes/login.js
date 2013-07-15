@@ -16,10 +16,9 @@ exports.post = function(req, res, options, done) {
     
     options.referrer = req.param('referrer')
     options.boardId = req.param('board')
-console.log(options, req.param('board'), req.param('id'))
     var errors = req.validationErrors()
     if (errors) {
-        options.errors.login = JSON.stringify(errors)
+        options.errors.login = errors
         return done()
     }
     req.session.captcha = null

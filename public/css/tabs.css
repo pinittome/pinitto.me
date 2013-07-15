@@ -1,8 +1,53 @@
-.ui-tabs .ui-tabs-panel {
+#tabs { 
+  border: 0;
+  width: 100%;
   padding: 0;
 }
 
-#tabs { 
+#tabs ul.tabs {
+  margin: 0;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0;
+  text-align: center;
+}
+
+#tabs ul.tabs li {
+  display: block;
+  text-align:center;
+  background-color: #222222;
+}
+
+#tabs ul.tabs li a {
+  line-height: 25px;
+  font-size: 31.5px;
+  margin: 10px 0;
+  color: #fff;
+  background-color: #222222;
+  font-weight: normal;
+}
+
+#tabs ul.tabs li a, #tabs ul.tabs li a:visited, #tabs ul.tabs li a:hover {
+    font-weight: 300;
+    border: 0;
+    background: #222222;
+    font-family: 'Open Sans', Arial, sans-serif;
+
+}
+
+#tabs div.container {
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
   border: 0;
-  width: 940px;
+  background-color: #222222;
+}
+
+.ui-tabs .ui-tabs-nav li { 
+  float: none;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+  background: #222222;
 }

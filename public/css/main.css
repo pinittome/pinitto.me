@@ -27,4 +27,10 @@ div.tweet {
 	margin-bottom: 10px;
 }
 
+.carousel-caption {
+  margin-top: 4px;
+}
 
+.masthead {
+  height: 250px;
+}

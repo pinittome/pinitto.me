@@ -59,15 +59,6 @@ require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'moder
     if (typeof(errors.login) != 'undefined') {
         addErrors($('form#login-form legend'), errors.login)
     }
-    if (typeof(config.twitter) != 'undefined' && config.twitter) {
-        /*$(".tweet").tweet({
-            join_text: "auto",
-            username: config.twitter,
-            avatar_size: 32,
-            count: 3,
-            loading_text: "Loading tweets..."
-        })*/
-    }
     $(document).ready(function() {
         $("#tabs").tabs()
         $('.open-tab').click(function(event) {
@@ -86,6 +77,10 @@ require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'moder
                 break
           }
           return $('#tabs').tabs('option', 'active', index)
+        })
+        $('.manual').click(function(e) {
+            document.location.href = $(this).attr('href')
+            e.preventDefault()
         })
     })
 })

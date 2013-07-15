@@ -30,38 +30,7 @@
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
-        
-        <div class="navbar-wrapper">
-            <div class="container">
-                <div class="navbar navbar-inverse">
-                    <div class="navbar-inner">
-                        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">Menu</a>
-                        <a class="brand" href="#"><%= pageName %></a>
-                        <div class="nav-collapse collapse">
-                            <ul class="nav">
-                                <li><a href="/">Home</a></li>
-                                <li><a href="/#create">Create New board</a></li>
-                                <li><a href="http://go.pinitto.me/manual" title="Manual">Manual</a></li>
-                                <!-- dropdown -->
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="http://go.pinitto.me/about">About</a><li>
-                                        <li><a href="http://go.pinitto.me/contact">Contact us</a></li>
-                                        <li class="divider"></li>
-                                        <li><a target="_blank" href="https://github.com/pinittome/pinitto.me">Source Code</a></li>
-                                        <li><a target="_blank" href="http://go.pinitto.me/manual">Documentation</a></li>
-                                        <li><a target="_blank" href="https://github.com/pinittome/pinitto.me/issues">Bugs</a></li>
-                                        <li><a href="#">Version: <%= app.version %><% if (app.environment == 'development') { %>-development<% } %></a></li>
-                                        
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div><!--/.nav-collapse -->
-                    </div><!-- /.navbar-inner -->
-                </div><!-- /.navbar -->
-            </div><!-- /.container -->
-        </div><!-- /.navbar-wrapper -->
+
 <div class="masthead">
     <div class="container">
         <div class="carousel-caption">
@@ -72,39 +41,28 @@
     </div>
 </div>
 
-<div class="middle-bar">
-    <div class="container">
-        <div class="row">
-            <div class="span12">
-                <h2>It's easy to get started. Just click this button <a href="/#create" class="btn btn-large open-tab">Create New Board <i class="icon-circle-arrow-right"></i></a></h2>
-            </div>
-        </div>
-    </div>
+<div id="tabs">
+    <ul class="middle-bar tabs">
+        <li><a href="#main">Welcome</a></li>
+        <li><a href="#create">Create a new board</a></li>
+        <li><a href="#login">Login</a></li>
+        <li><a href="http://go.pinitto.me/manual" class="manual">Manual</a></li>
+    </ul>
+    <% include ../index %>
+    <% include ../login %>
+    <% include ../create %>
 </div>
-
-        <div id="tabs" class="container pages">
-        <ul>
-            <li><a href="#main">Welcome</a></li>
-            <li><a href="#create">Create a new board</a></li>
-            <% if (typeof boardId != 'undefined') { %>
-            <li><a href="#login">Login</a></li>
-            <% } %>
-        </ul>
-        <% include ../index %>
-        <% include ../login %>
-        <% include ../create %>
-        </div>
 
         <footer>
             <div class="container">
                 <div class="row">
                     <div class="span4">
-                        <h5>About <%= name %></h5>
-                        <p><%= name %> is an infinite virtual corkboard.  Collaborate with friends, family, or colleagues in real time 
+                        <h5>About pinitto.me</h5>
+                        <p>pinitto.me is an infinite virtual corkboard.  Collaborate with friends, family, or colleagues in real time 
                         in any way you want. Make plans, share ideas, play games...</p>
                         <p>This is a free service (please donate to help cover costs) and the code will be open sourced very soon. Please feel 
                         free to make suggestions for improvements and let us know about any of those nasty bugs.</p>
-                        <p><a class="btn" href="/about">About &raquo;</a></p>
+                        <p><a class="btn" href="http://go.pinitto.me/about">About &raquo;</a></p>
                     </div>
                     
                     <hr class="visible-phone">
@@ -123,16 +81,11 @@
                         <h5>Misc</h5>
                         <p>Contact us on one of the following services:</p>
                         <ul>
-                            <% if (typeof(app.facebook) !== 'undefined') { %>
-                            <li><i class="icon-facebook"></i> <a href="http://facebook.com/<%=app.facebook %>" target="_blank">Friend us</a></li>
-                            <% } %>
-                            <% if (typeof(app.twitter) !== 'undefined') { %>
-                            <li><i class="icon-twitter"></i> <a href="https://twitter.com/<%=app.twitter %>" target="_blank">Follow us</a></li>
-                            <% } %>
-                            <% if (typeof(app.github) !== 'undefined') { %>                            
-                            <li><i class="icon-github"></i> <a href="https://github.com/<%=app.github %>" target="_blank">Fork us</a></li>
-                            <% } %>
-                            <!--<li><i class="icon-google-plus"></i> <a href="#">Donate</a></li>-->
+                            <li><i class="icon-facebook"></i> <a href="http://facebook.com/pinittome" target="_blank">Friend us</a></li>
+                            <li><i class="icon-twitter"></i> <a href="https://twitter.com/pinittome" target="_blank">Follow us</a></li>
+                            <li><i class="icon-github"></i> <a href="https://github.com/pinittome" target="_blank">Fork us</a></li>
+                            <li><i class="icon-cloud"></i> <a href="http://go.pinitto.me">Website / Blog</a></li>
+                            <li><i class="icon-rss"></i> <a href="http://go.pinitto.me/atom.xml">RSS Feed</a></li>
                         </ul>
                     </div>
                 </div>
