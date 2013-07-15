@@ -20,13 +20,6 @@
         boardConfig = <%- JSON.stringify(config) %>
         accessLevel = '<%=access%>'
         </script>
-        <% if (!app.useOptimised) { %>
-        <script data-main="/js/app.js" src="/js/require.js"></script>
-        <link rel="stylesheet" href="/css/main.css" />
-        <% } else { %>
-        <script src="/app.<%= app.version %>.js"></script>
-        <link rel="stylesheet" href="/app.<%= app.version %>.css">
-        <% } %>
     </head>
     <body class="board">
         <% include ../partials/connection-status-modal%>
@@ -122,6 +115,13 @@
         <script type="text/javascript">
           var boardId = '<%= boardId %>';
         </script>
+        <% if (!app.useOptimised) { %>
+        <script data-main="/js/app.js" src="/js/require.js"></script>
+        <link rel="stylesheet" href="/css/main.css" />
+        <% } else { %>
+        <script src="/app.<%= app.version %>.js"></script>
+        <link rel="stylesheet" href="/app.<%= app.version %>.css">
+        <% } %>
     </body>
 </html>
 

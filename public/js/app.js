@@ -12,7 +12,7 @@ require.config({
         'mousewheel': 'vendor/jquery-mousewheel/jquery.mousewheel',
         'infinite': 'vendor/jquery-infinite-drag/javascripts/jquery.infinitedrag',
         'throttle': 'util/throttle',
-        'zoom-js': 'vendor/zoom.js/js/zoom'
+        'zoom-js': 'vendor/zoom.js/js/zoom',
     },
     shim: {
         'growl': {
