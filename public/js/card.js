@@ -286,7 +286,11 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     $('#close-card-link-modal').on('click', function() {
         $('#card-link-modal').modal('hide');
     })
+
     var zoomed = false
+    document.addEventListener('keyup', function(event) {
+        if (event.keyCode === 27) zoomed = false 
+    })
     $('.viewport').on('click', '.icon-zoom-in', function(event) {
         $(this).removeClass('icon-zoom-in').addClass('icon-zoom-out')
         zoomed = true
