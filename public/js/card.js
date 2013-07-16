@@ -286,12 +286,15 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     $('#close-card-link-modal').on('click', function() {
         $('#card-link-modal').modal('hide');
     })
+    var zoomed = false
     $('.viewport').on('click', '.icon-zoom-in', function(event) {
         $(this).removeClass('icon-zoom-in').addClass('icon-zoom-out')
+        zoomed = true
         zoom.to({ element: $(this).parent().parent()[0] })
     })
     $('.viewport').on('click', '.icon-zoom-out', function(event) {
         zoom.out($(this).parent().parent()[0])
+        zoomed = false
         $(this).removeClass('icon-zoom-out').addClass('icon-zoom-in')
     })
     $('.viewport').on('click', '.card-colour', function(event) {
