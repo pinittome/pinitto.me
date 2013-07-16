@@ -18,10 +18,17 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     }
 
     Card.prototype.savePosition = function(event, ui) {
+        if (zoomed) {
+            notification.add(
+                'Cards can not be moved whilst zoomed in',
+                'error'
+            )
+            return
+        }
         var position = { 
             x: $(this).css('left').substring(0, $(this).css('left').length - 2),
             y: $(this).css('top').substring(0, $(this).css('top').length - 2)
-        };
+        }
         socket.emit('card.moved', {
             cardId : $(this).attr('id'),
             position : position            
@@ -29,6 +36,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         if (event) event.stopPropagation();
     }
     Card.prototype.updatePosition = function(event, ui) {
+        if (zoomed) return
         var position = { 
             x: $(this).css('left').replace('px', ''),
             y: $(this).css('top').replace('px', '')
@@ -43,7 +51,8 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         element = $('#' + id);
         x = position.x; 
         y = position.y; 
-        element.css('top', y + 'px').css('left', x + 'px').css('position', 'absolute');
+        element.css('top', y + 'px').css('left', x + 'px')
+            .css('position', 'absolute');
     }
     
     Card.prototype.scrollTo = function(id) {
@@ -289,22 +298,27 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
 
     var zoomed = false
     document.addEventListener('keyup', function(event) {
-        if (event.keyCode === 27) zoomed = false 
+        if (event.keyCode !== 27) return
+        $(zoomed).draggable('enable')
+        zoomed = false 
     })
     $('.viewport').on('click', '.icon-zoom-in', function(event) {
         $(this).removeClass('icon-zoom-in').addClass('icon-zoom-out')
-        zoomed = true
+        zoomed = $(this).parent().parent()
+        $(zoomed).draggable('disable')
         zoom.to({ element: $(this).parent().parent()[0] })
     })
     $('.viewport').on('click', '.icon-zoom-out', function(event) {
         zoom.out($(this).parent().parent()[0])
+        $(zoomed).draggable('enable')
         zoomed = false
         $(this).removeClass('icon-zoom-out').addClass('icon-zoom-in')
     })
     $('.viewport').on('click', '.card-colour', function(event) {
         if ('read' == board.access) return
         card = $(this).parents('.card');
-        cardListEntry = $('li.card-list').find('#entry-' + card.attr('id')).find('span');
+        cardListEntry = $('li.card-list')
+            .find('#entry-' + card.attr('id')).find('span')
         
         cssClass = determineCssClass(card);
         card.removeClass();
