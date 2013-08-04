@@ -65,6 +65,8 @@ div.card p {
     margin-right: 5px;
 }
 
+div.card.ui-state-disabled { opacity: 1; }
+
 .card-yellow {
     background-color: #ffee66;
     background: -webkit-linear-gradient(#ffee66, #f5da41, #f6ef97);
