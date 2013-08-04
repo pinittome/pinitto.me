@@ -303,12 +303,14 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         zoomed = false 
     })
     $('.viewport').on('click', '.icon-zoom-in', function(event) {
+        event.stopPropagation()
         $(this).removeClass('icon-zoom-in').addClass('icon-zoom-out')
         zoomed = $(this).parent().parent()
         $(zoomed).draggable('disable')
         zoom.to({ element: $(this).parent().parent()[0] })
     })
     $('.viewport').on('click', '.icon-zoom-out', function(event) {
+        event.stopPropagation()
         zoom.out($(this).parent().parent()[0])
         $(zoomed).draggable('enable')
         zoomed = false
