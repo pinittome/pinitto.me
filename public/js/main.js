@@ -6,7 +6,7 @@ require.config({
         'socket.io': '/socket.io/socket.io',
         'modernizer': 'vendor/modernizr-2.6.2-respond-1.1.0.min',
         'config': '../config',
-        'bootstrap': 'vendor/bootstrap.min',
+        'bootstrap': 'vendor/bootstrap',
         'ui': 'vendor/jquery-ui-1.10.0.min',
     },
     shim: {
