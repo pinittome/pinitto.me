@@ -6,7 +6,9 @@ define(['jquery'], function($) {
         $('.viewport-container').css('height', window.innerHeight - 43);
         $('body').css('background-position', (0.5 * window.width) + 'px ' + (0.5 * window.innerHeight) + 'px');
         $('.card-list').find('ul').css('max-height', window.innerHeight * 0.66);
-        document.body.style.height = (document.height - 43 ) + 'px'
+        var height = (document.height < window.innerHeight) ? 
+            document.height : window.innerHeight
+        document.body.style.height = (height - 43) + 'px'
     }
     window.addEventListener('resize', resizeViewport, false);
     resizeViewport();
