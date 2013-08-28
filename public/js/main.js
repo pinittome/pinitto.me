@@ -20,7 +20,7 @@ require.config({
             exports: '$'
         }
     }
-});
+})
 
 require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'modernizer', 'ui', 'site/create'],
     function($, socket) {

@@ -38,6 +38,8 @@ module.exports = function(data) {
 	config.app.environment = environment;
 
         config.project.errors = {} 
+
+        config.project.captcha = ''
 	    
 	return config
 }
