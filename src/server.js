@@ -9,10 +9,11 @@ var express = require('express')
 
 exports.server = server = require('http').createServer(app)
 
+var server = exports.server = require('http').createServer(app)
 server.listen(config.server.port)
 
-forceSsl = function(req, res, next) {
-    onlySecure = config.project.secure || false;
+var onlySecure = config.project.secure || false
+var forceSsl = function(req, res, next) {
     if ((onlySecure == true) && (req.headers['x-forwarded-proto'] != 'https')) {
         return res.redirect(301, 'https://' + req.host + req.originalUrl)
     }
@@ -20,16 +21,20 @@ forceSsl = function(req, res, next) {
 }
 
 app.configure(function(){
-    app.use(express.cookieParser(config.cookie.secret));
+    require('helmet').defaults(app)
+    app.use(express.cookieParser(config.cookie.secret)); 
     app.use(express.session({
         key: config.cookie.key,
         secret: config.cookie.secret,
-        store: sessionStore
+        store: sessionStore,
+        httpOnly: true,
+        secure: onlySecure
     }))
     app.use(sts(3600000 * 24 * 365, true))
     app.use(express.static(__dirname + '/../public'))
     app.use(require('connect').cookieParser(config.cookie.secret))
-
+    app.disable('x-powered-by')
+    
     if (config.server && config.server.domain && config.server.domain != '')
         app.use(forceDomain(config.server.domain))
 

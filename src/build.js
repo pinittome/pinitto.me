@@ -30,17 +30,19 @@ var mainConfig = {
 
 requirejs.optimize(applicationConfig, function (log) {
 	console.log("Application javascript optimisation complete".green);
-	console.log((log).cyan);
+	if ('string' === typeof(log)) return console.log((log).cyan)
+        console.log(log)
 }, function(error) {
     console.log(("Error optimizing javascript: " + error).red);
-});
+})
 
 requirejs.optimize(mainConfig, function (log) {
-	console.log("Main javascript optimisation complete".green);
-    console.log((log).cyan);
+    console.log("Main javascript optimisation complete".green)
+    if ('string' === typeof(log)) return console.log((log).cyan)
+    console.log(log)
 }, function(error) {
     console.log(("Error optimizing javascript: " + error).red);
-});
+})
 
 var cssConfig = {
 	cssIn: './public/css/main.css',
