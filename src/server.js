@@ -5,7 +5,8 @@ var express = require('express')
   , connect = require('connect')
   , Session = connect.middleware.session.Session
   , forceDomain = require('express-force-domain')
-  
+  , sts = require('connect-sts')
+
 exports.server = server = require('http').createServer(app)
 
 server.listen(config.server.port)
@@ -19,15 +20,16 @@ forceSsl = function(req, res, next) {
 }
 
 app.configure(function(){
-    app.use(express.cookieParser(config.cookie.secret)); 
+    app.use(express.cookieParser(config.cookie.secret));
     app.use(express.session({
         key: config.cookie.key,
         secret: config.cookie.secret,
         store: sessionStore
     }))
+    app.use(sts(3600000 * 24 * 365, true))
     app.use(express.static(__dirname + '/../public'))
     app.use(require('connect').cookieParser(config.cookie.secret))
-    
+
     if (config.server && config.server.domain && config.server.domain != '')
         app.use(forceDomain(config.server.domain))
 
