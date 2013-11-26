@@ -37,3 +37,7 @@ Or to run with ```forever```:
 # Build status
 
 The man he say..... [![Build Status](https://secure.travis-ci.org/pinittome/pinitto.me.png)](http://travis-ci.org/pinittome/pinitto.me)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/pinittome/pinitto.me/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
