@@ -1,6 +1,6 @@
 {
   "name": "pinitto.me",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Open source corkboard-type application",
   "main": "index.js",
   "dependencies": {
