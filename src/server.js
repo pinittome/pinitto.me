@@ -12,6 +12,8 @@ exports.server = server = require('http').createServer(app)
 var server = exports.server = require('http').createServer(app)
 server.listen(config.server.port)
 
+var maxAge = ('development' === ENVIRONMENT) ? 0 : 31557600000
+
 var onlySecure = config.project.secure || false
 var forceSsl = function(req, res, next) {
     if ((onlySecure == true) && (req.headers['x-forwarded-proto'] != 'https')) {
@@ -22,7 +24,7 @@ var forceSsl = function(req, res, next) {
 
 app.configure(function(){
     require('helmet').defaults(app)
-    app.use(express.cookieParser(config.cookie.secret)); 
+    app.use(express.cookieParser(config.cookie.secret))
     app.use(express.session({
         key: config.cookie.key,
         secret: config.cookie.secret,
@@ -31,11 +33,11 @@ app.configure(function(){
         secure: onlySecure
     }))
     app.use(sts(3600000 * 24 * 365, true))
-    app.use(express.static(__dirname + '/../public'))
+    app.use(express.static(__dirname + '/../public', { maxAge: maxAge }))
     app.use(require('connect').cookieParser(config.cookie.secret))
     app.disable('x-powered-by')
-    
-    if (config.server && config.server.domain && config.server.domain != '')
+
+    if (config.server && config.server.domain && (config.server.domain != ''))
         app.use(forceDomain(config.server.domain))
 
     app.use(forceSsl)
