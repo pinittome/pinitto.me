@@ -9,10 +9,12 @@ var express = require('express')
 
 exports.server = server = require('http').createServer(app)
 
+var environment = process.env.NODE_ENV || 'production'
+
 var server = exports.server = require('http').createServer(app)
 server.listen(config.server.port)
 
-var maxAge = ('development' === ENVIRONMENT) ? 0 : 31557600000
+var maxAge = ('development' === environment) ? 0 : 31557600000
 
 var onlySecure = config.project.secure || false
 var forceSsl = function(req, res, next) {
@@ -23,6 +25,8 @@ var forceSsl = function(req, res, next) {
 }
 
 app.configure(function(){
+    app.use(express.favicon(__dirname + '/../public/favicon.ico'))
+    app.use(express.static(__dirname + '/../public', { maxAge: maxAge }))
     require('helmet').defaults(app)
     app.use(express.cookieParser(config.cookie.secret))
     app.use(express.session({
@@ -33,7 +37,6 @@ app.configure(function(){
         secure: onlySecure
     }))
     app.use(sts(3600000 * 24 * 365, true))
-    app.use(express.static(__dirname + '/../public', { maxAge: maxAge }))
     app.use(require('connect').cookieParser(config.cookie.secret))
     app.disable('x-powered-by')
 
@@ -54,7 +57,6 @@ app.configure(function(){
     app.use(express.bodyParser())
     app.use(require('express-validator'))
     app.use(express.methodOverride())
-    app.use(express.favicon(__dirname + '/../public/favicon.ico'))
     app.use(app.router)
     app.use(express.logger)
     var errors = false
