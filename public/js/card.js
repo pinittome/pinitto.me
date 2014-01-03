@@ -310,7 +310,6 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     $('.viewport').on('click', '.icon-zoom-in', function(event) {
         event.stopPropagation()
         zoomed = $(this).parent().parent()
-        console.log('card zooming in')
         board.zoomed(true)
         zoom.to({ element: $(this).parent().parent()[0] })
     })
