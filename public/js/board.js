@@ -1,7 +1,14 @@
 define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-size'],
-    function($, socket, notification, viewport, user, gridCalc) { 
+    function($, socket, notification, viewport, user, gridCalc) {
 
     var accessLevels = ['admin', 'write', 'read']
+
+    var Board = function(socket, access) {
+        this.socket = socket
+        this.preventCardCreation = false
+        this.access = access
+        this.setupBoard()
+    }
 
     Board.prototype.setName = function(name) {
         this.socket.emit('board.name.set', { name : name })
@@ -28,17 +35,26 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
                 $('.admin').remove()
         }
     }
-    Board.prototype.access = 'read'
-  
-    function Board(socket, access) {
-        this.socket = socket
+    Board.prototype.zoomed = function(isZoomed) {
+        this.isZoomed = isZoomed
+        if (true === isZoomed) {
+           $('i.card-zoom').each(function(element) {
+               $(this).removeClass('icon-zoom-in').addClass('icon-zoom-out')
+               $(this).parent().parent().draggable({ disabled: true })
+           })
+           this.preventCardCreation = true
+           return
+        }
+        $('i.card-zoom').each(function(element) {
+            $(this).removeClass('icon-zoom-out').addClass('icon-zoom-in')
+            $(this).parent().parent().draggable({ disabled: false })
+        })
         this.preventCardCreation = false
-        this.access = access
-        this.setupBoard()
     }
-    
+    Board.prototype.access = 'read'
+
     board = new Board(socket, accessLevel)
-   
+
     $('body').on('click', '.open-set-board-name-modal', function() {
         $('#set-board-name-modal').modal({
             backdrop : true
@@ -52,7 +68,7 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
         board.setName(name)
         $('#set-board-name-modal').modal('hide')
     })
-    
+
     $('body').on('click', '.open-board-access-modal', function() {
         $('#board-access-modal').modal({
             backdrop : true
@@ -73,7 +89,7 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
         $('input[name=password-'+level+'-require]').click(function() {
             if ($(this).attr('checked')) return $('input[name=password-'+level+'-value]').removeAttr('disabled')
             $('input[name=password-'+level+'-value]').attr('disabled', 'disabled')
-        
+
         })
     })
 
@@ -83,18 +99,18 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
         var access = {}
         var validData = true
         accessLevels.forEach(function(level) {
-            access[level] = { 
+            access[level] = {
                 require: Boolean($('input[name=password-'+level+'-require]').attr('checked')),
                 password: $('#board-access-modal').find('input[name=password-'+level+'-value]').val()
             }
-               
+
             if (access[level].require && (0 == access[level].password.length)) {
                 if (true == validData) $(document.createElement('div'))
                     .html('<strong>Whoa!</strong> Password is *required*, yet you\'ve left it blank!')
                     .appendTo(error)
                 $('#board-access-modal .modal-body').prepend(error)
                 validData = false
-                return 
+                return
             }
         })
         if (true == validData) {
@@ -113,7 +129,7 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
             notification.add("Board access details successfully updated!", "success")
         }
     })
-    
+
     $('body').on('click', '.open-board-grid-modal', function() {
         $('#board-grid-modal').modal({
             backdrop : true
@@ -129,7 +145,7 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
     	$('#board-grid-modal .modal-body .error').remove()
     	var error  = $(document.createElement('div'))
         var button = $(document.createElement('button'))
-        error.attr('class', 'alert alert-error')        
+        error.attr('class', 'alert alert-error')
         button.attr('class', 'close').attr('data-dismiss', 'alert').html('&times;')
         button.appendTo(error)
         if (0 == $('.grid-confirm:checked').length) {
@@ -183,7 +199,7 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
         }
         $('#board-grid-modal').modal('hide');
     })
-   
+
     socket.on('board.name.set', function(data) {
         var oldName;
         $('.board-name').each(function(index, element) {
@@ -201,6 +217,6 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
     $('.leave').click(function() {
         document.location.href = '/logout';
     })
- 
+
     return board
 })

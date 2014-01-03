@@ -1,9 +1,9 @@
-define(['jquery', 'socket', 'util/determine-css-class', 'board', 
-         'util/notification', 'board/infinite-drag', 'user', 
-         'viewport', 'util/grid-size', 'throttle', 'zoom-js'], 
-    function($, socket, determineCssClass, board, notification, 
+define(['jquery', 'socket', 'util/determine-css-class', 'board',
+         'util/notification', 'board/infinite-drag', 'user',
+         'viewport', 'util/grid-size', 'throttle', 'zoom-js'],
+    function($, socket, determineCssClass, board, notification,
         infiniteDrag, user, viewport, gridCalc, throttle) {
-    
+
     Card.prototype.bringToFront = function(event, element) {
 
         if (element.helper) element = element.helper
@@ -12,32 +12,35 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             socket.emit('card.zIndex', {
                 cardId : $(element).attr('id'),
                 zIndex : $(element).css('z-index')
-            });
+            })
         }
         event.stopPropagation();
     }
 
     Card.prototype.savePosition = function(event, ui) {
-        if (zoomed) {
+        console.debug('Saving card position')
+        if (true === board.isZoomed) {
             notification.add(
                 'Cards can not be moved whilst zoomed in',
                 'error'
             )
             return
         }
-        var position = { 
+        var position = {
             x: $(this).css('left').substring(0, $(this).css('left').length - 2),
             y: $(this).css('top').substring(0, $(this).css('top').length - 2)
         }
         socket.emit('card.moved', {
             cardId : $(this).attr('id'),
-            position : position            
-        });
-        if (event) event.stopPropagation();
+            position : position
+        })
+        if (event) event.stopPropagation()
     }
+
     Card.prototype.updatePosition = function(event, ui) {
-        if (zoomed) return
-        var position = { 
+        console.debug('Updating card position')
+        if (true === board.isZoomed) return
+        var position = {
             x: $(this).css('left').replace('px', ''),
             y: $(this).css('top').replace('px', '')
         };
@@ -47,22 +50,23 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         });
         event.stopPropagation();
     }
+
     Card.prototype.setPosition = function(id, position) {
-        element = $('#' + id);
-        x = position.x; 
-        y = position.y; 
+        element = $('#' + id)
+        x = position.x
+        y = position.y
         element.css('top', y + 'px').css('left', x + 'px')
-            .css('position', 'absolute');
+            .css('position', 'absolute')
     }
-    
+
     Card.prototype.scrollTo = function(id) {
         var viewport = $('.viewport');
         var element = $('#' + id);
         if (element.length == 0) return;
-        newOffsetX = (window.innerWidth / 2) 
+        newOffsetX = (window.innerWidth / 2)
             - (parseFloat(viewport.css('left').replace('px', '')) + parseFloat(element.css('left').replace('px', '')))
             - (parseFloat(element.css('width').replace('px', '')) / 2);
-        newOffsetY = (window.innerHeight / 2) 
+        newOffsetY = (window.innerHeight / 2)
             - (parseFloat(viewport.css('top').replace('px', '')) + parseFloat(element.css('top').replace('px', '')))
             - (parseFloat(element.css('height').replace('px', '')) / 2);
         self = this;
@@ -70,7 +74,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         viewport.animate({
                 top: parseFloat(viewport.css('top').replace('px', '')) + newOffsetY,
                 left: parseFloat(viewport.css('left').replace('px', '')) + newOffsetX,
-            }, 
+            },
             {
                 step: function() {
                     if (counter > 20) {
@@ -92,7 +96,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             },
             300);
     }
-    
+
     Card.prototype.create = function(data) {
         if (data.zIndex) {
             stackOrder = data.zIndex;
@@ -103,13 +107,13 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             stackOrder = ++board.zIndex;
             socket.emit('card.zIndex', {cardId: data.cardId, zIndex: stackOrder});
         }
-        this.draw(data)        
+        this.draw(data)
         this.addCardListEntry(data)
         this.dynamify(data.cardId)
     }
-    
+
     Card.prototype.draw = function(data) {
-        div     = document.createElement('div');        
+        div     = document.createElement('div');
         card    = $(div).attr('class', 'card draggable')
             .attr('id', data.cardId)
             .attr('draggable', 'true')
@@ -121,13 +125,13 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         if (data.cssClass) {
             css = 'card-' + data.cssClass;
         }
-                
+
         card.addClass(css);
-        
+
         anchor = document.createElement('a');
         $(anchor).attr('name', data.cardId);
         $(anchor).appendTo($(div));
-        if ((data.content || "").length > 0) 
+        if ((data.content || "").length > 0)
             $(div).html('<p>' + (data.content || "").split(/\r\n|\r|\n/).join('</p><p>') + '</p>')
 
         if (data.size) $(card).width(data.size.width).height(data.size.height);
@@ -135,7 +139,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         this.addControls(data.cardId);
         this.setPosition(data.cardId, data.position);
     }
-    
+
     Card.prototype.dynamify = function(id) {
         var card = $('#' + id);
         if (card.css('z-index') > board.zIndex) {
@@ -158,19 +162,19 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             return
         }
         card.draggable({
-            cursor : "move",
+            cursor : 'move',
             keyboard : true,
             delay : 0,
             opacity : 0.65,
-            create: function(event, ui) { event.stopPropagation(); }, 
+            create: function(event, ui) { event.stopPropagation() },
             start : function(event, element) {
-                self.bringToFront(event, element);
+                self.bringToFront(event, element)
             },
             stop : this.savePosition,
             drag : this.updatePosition,
             scroll: true,
             iframeFix: true
-        });
+        })
         card.resizable({
             minHeight: 75,
             minWidth: 75,
@@ -188,7 +192,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         	this.setSizeGrid(boardConfig.grid.size, id);
         }
     }
-    
+
     Card.prototype.resized = function(event, ui) {
         socket.emit('card.resize', {
             cardId : $(this).attr('id'),
@@ -198,7 +202,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             }
         });
     }
-    
+
     Card.prototype.addControls = function(id) {
         controls = document.createElement('div');
         $(controls).attr('class', 'controls');
@@ -208,16 +212,16 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             + '&nbsp;&nbsp;<i class="icon-remove card-delete write" title="Delete card">&nbsp;</i> '
             + '<i class="icon-eye-open card-colour write" title="Change card colour">&nbsp;</i> '
             + '<i class="icon-zoom-in card-zoom" title="Zoom in on this card">&nbsp;</i> '
-        ) 
+        )
         $(controls).appendTo($("#" + id));
     }
-    
+
     Card.prototype.setPositionGrid = function(size, id) {
     	var grid = gridCalc.position(size);
     	if (id != null) return $('#' + id).draggable({grid: grid});
         $('div.card').each(function(index, card) { $(card).draggable({grid: grid})})
     }
-    
+
     Card.prototype.setSizeGrid = function(size, id) {
     	var grid = gridCalc.size(size);
     	if (id != null) return $('#' + id).resizable({grid: grid});
@@ -243,15 +247,15 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         this.board = board;
         this.board.setCard(this);
     }
-    
+
     var cardEntity = new Card(socket, infiniteDrag, board)
 
     socket.on('card.zIndex', function(data) {
-        $('#' + data.cardId).css('z-index', data.zIndex);
+        $('#' + data.cardId).css('z-index', data.zIndex)
         board.zIndex = data.zIndex;
     })
     socket.on('card.moving', function(data) {
-        cardEntity.setPosition(data.cardId, data.position);
+        cardEntity.setPosition(data.cardId, data.position)
     })
     socket.on('card.list', function(data) {
         data.forEach(function(d) {
@@ -268,7 +272,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         $('#' + data.cardId).find('textarea').animate({
             width: parseFloat(data.size.width - 10) + 'px',
             height: parseFloat(data.size.height - 10) + 'px'
-        });   
+        });
         $('#' + data.cardId).animate({
             width: data.size.width,
             height: data.size.height
@@ -287,7 +291,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         if (data.userId != user.id) notification.add(data.name + " deleted a card", 'info');
     })
     $('.viewport').on('click', '.card-link', function(event) {
-    	var link = window.location.href.split('#')[0] + '#' 
+    	var link = window.location.href.split('#')[0] + '#'
     	    + $(this).parent().parent().attr('id');
     	$('#card-link-modal .card-link').html('<a href="' + link + '">' + link + '</a>');
     	$('#card-link-modal').modal(true);
@@ -300,28 +304,29 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     document.addEventListener('keyup', function(event) {
         if (event.keyCode !== 27) return
         $(zoomed).draggable('enable')
-        zoomed = false 
+        board.zoomed(false)
+        zoomed = false
     })
     $('.viewport').on('click', '.icon-zoom-in', function(event) {
         event.stopPropagation()
-        $(this).removeClass('icon-zoom-in').addClass('icon-zoom-out')
         zoomed = $(this).parent().parent()
-        $(zoomed).draggable('disable')
+        console.log('card zooming in')
+        board.zoomed(true)
         zoom.to({ element: $(this).parent().parent()[0] })
     })
     $('.viewport').on('click', '.icon-zoom-out', function(event) {
         event.stopPropagation()
         zoom.out($(this).parent().parent()[0])
-        $(zoomed).draggable('enable')
         zoomed = false
-        $(this).removeClass('icon-zoom-out').addClass('icon-zoom-in')
+        console.log('card zooming out')
+        board.zoomed(false)
     })
     $('.viewport').on('click', '.card-colour', function(event) {
         if ('read' == board.access) return
         card = $(this).parents('.card');
         cardListEntry = $('li.card-list')
             .find('#entry-' + card.attr('id')).find('span')
-        
+
         cssClass = determineCssClass(card);
         card.removeClass();
         cardListEntry.removeClass();
@@ -333,17 +338,17 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         );
         event.stopPropagation();
     })
-    
+
     $('li.card-list').on('mouseover', 'li', function(event) {
-         if ($(this).attr('id')) $('#' + $(this).attr('id').replace('entry-', '')).addClass('highlight');    
+         if ($(this).attr('id')) $('#' + $(this).attr('id').replace('entry-', '')).addClass('highlight');
     });
     $('li.card-list').on('mouseout', 'li', function(event) {
-         if ($(this).attr('id')) $('#' + $(this).attr('id').replace('entry-', '')).removeClass('highlight');    
+         if ($(this).attr('id')) $('#' + $(this).attr('id').replace('entry-', '')).removeClass('highlight');
     });
     $('li.card-list').on('click', 'li', function(event) {
          cardEntity.scrollTo($(this).attr('id').replace('entry-', ''));
     });
-    
+
     socket.on('card.colour', function(data) {
         if ('read' == board.access) return
         $('#' + data.cardId).removeClass().addClass('card').addClass('card-' + data.cssClass);
@@ -351,6 +356,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     });
     $('.viewport').on('input propertychange', '.card textarea', throttle(function(event) {
         socket.emit('card.text-change', {cardId: $(this).parent().attr('id'), content: $(this).val()})
+        content = $(this).val();
         content = $(this).val();
         if (content.length == 0) {
             content = '<i>No content</i>';
@@ -363,7 +369,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         $('#' + data.cardId).find('textarea').val(htmlDecode(data.content));
         if (data.content.length == 0) {
             data.content = "<i>No content</i>";
-        } else { 
+        } else {
             data.content = data.content.substring(0, 20) + '...';
         }
         $('#entry-' + data.cardId).find('p').html(data.content);
@@ -376,13 +382,17 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     $("div.viewport-container").click(function(e) {
         lastClick = e
         if ('read' == board.access) return
-        if (board.preventCardCreation)
-            return notification.add(
-                "You can only create a card once every " 
-                  + config.limits.card.wait + " seconds",
-                "notice"
-            )
-        var x = e.pageX - parseFloat($('.viewport').css('left').replace('px', ''));        
+        if (board.preventCardCreation) {
+            if (false === board.isZoomed) {
+                notification.add(
+                    "Card creation disabled due to zooming or rate limit ("
+                      + config.limits.card.wait + " seconds wait)",
+                    "notice"
+                )
+            }
+            return
+        }
+        var x = e.pageX - parseFloat($('.viewport').css('left').replace('px', ''));
         var y = e.pageY - viewport.header.height - parseFloat($('.viewport').css('top').replace('px', ''));
             if (config && config.limits && config.limits.card && config.limits.card.wait) {
                 board.preventCardCreation = true;
@@ -397,7 +407,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             }
         })
     })
-    
+
     function htmlDecode(input) {
         var e = document.createElement('div')
         e.innerHTML = input
