@@ -1,0 +1,3 @@
+./public/app.*.js
+./public/main.*.js
+./public/js/vendor/**/*
