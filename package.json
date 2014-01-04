@@ -27,13 +27,18 @@
     "requirejs": "~2.1.9"
   },
   "devDependencies": {
-    "requirejs": "~2.1.4"
+    "requirejs": "~2.1.4",
+    "grunt-cli": "~0.1.11",
+    "grunt": "~0.4.2",
+    "grunt-mocha-cli": "~1.5.0",
+    "grunt-contrib-jshint": "~0.8.0"
   },
   "scripts": {
     "start": "forever start -a -p . -l logs/forever.log -o logs/pinitto.me.out.log -e logs/pinitto.me.err.log index.js",
     "stop": "forever stop index.js",
     "clean": "forever cleanlogs index.js",
-    "restart": "forever restart index.js"
+    "restart": "forever restart index.js",
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
