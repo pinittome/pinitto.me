@@ -5,30 +5,34 @@ var cloneextend = require('cloneextend'),
     cardsDb = require('../database/cards'),
     totals = require('../util').totals
 
+var request
+  , response
+  , options
+
 var loadedBoard = function(error, board) {
     if (error) {
-        options.title   = "Something is up with our datastore"
-        options.message = "Something has gone around somewhere. Will have to poke the sys admin " +
+        options.title   = 'Something is up with our datastore'
+        options.message = 'Something has gone around somewhere. Will have to poke the sys admin ' +
             "again, or put another coin in the meter!"
         options.type    = 'datastore'
-        return res.render(500, options)
+        return response.render(500, options)
     }
 
-    var id = board.id
+    var id = board._id.toString()
     console.log(board, board.id)
 
     if (!board) {
         options.title   = "Board not found"
         options.message = "Can't find your board anywhere, are you sure you've got the ID right?"
         options.type    = 'board'
-        return res.render(404, options)
+        return response.render(404, options)
     }
 
     allowedAccess = false
-    if (req.session.access
-        && req.session.board
-        && (id == req.session.board)
-        && utils.inArray(req.session.access, [a.ADMIN, a.READ, a.WRITE])
+    if (request.session.access
+        && request.session.board
+        && (id == request.session.board)
+        && utils.inArray(request.session.access, [a.ADMIN, a.READ, a.WRITE])
     ) {
         allowedAccess = true
     } else if (a.NONE != a.getLevel(board, false)) {
@@ -36,12 +40,12 @@ var loadedBoard = function(error, board) {
     }
 
     if (false == allowedAccess)
-        return res.redirect('/?id=' + id.split('#')[0] + '#login')
+        return response.redirect('/?id=' + id.split('#')[0] + '#login')
 
-    boardsDb.update({_id: utils.ObjectId(id)}, {$set: {lastUsed: new Date()}}, function(error, records) {
+    boardsDb.update({_id: utils.ObjectId(id)}, { $set: { lastUsed: new Date() } }, function(error, records) {
         if (error) {
             console.log("Error updating lastUsed for board " + id)
-            return res.redirect('/' + id + '?attempt=' (req.param('attempt') || 1))
+            return response.redirect('/' + id + '?attempt=' (request.param('attempt') || 1))
         }
         cardsDb.fetch('/' + id, function(error, cards) {
             if (error) {
@@ -49,7 +53,7 @@ var loadedBoard = function(error, board) {
                 options.message = "Something has gone around somewhere. Will have to poke " +
                     "the sys admin again, or put another coin in the meter!"
                 options.type    = 'datastore'
-                return res.render(500, options)
+                return response.render(500, options)
             }
             name                = board.name || id
             options._layoutFile = 'layouts/board'
@@ -59,11 +63,11 @@ var loadedBoard = function(error, board) {
             options.config      = {
                 grid: board.grid || { position: 'none', size: 'none' }
             }
-            req.session.access  = req.session.access ?
-                    req.session.access : a.getLevel(board, false)
-            req.session.board   = id
-                options.access      = req.session.access
-            res.render('board', options)
+            request.session.access  = request.session.access ?
+                    request.session.access : a.getLevel(board, false)
+            request.session.board   = id
+                options.access      = request.session.access
+            response.render('board', options)
         })
     })
 }
@@ -76,7 +80,7 @@ exports.get = function(req, res) {
         id = null
     }
     var board   = {}
-    var options =  cloneextend.clone(config.project)
+    options =  cloneextend.clone(config.project)
     options.app = config.app
     options.totals = totals
 
@@ -89,5 +93,7 @@ exports.get = function(req, res) {
         res.render(404, options)
         return
     }
+    request = req
+    response = res
     boardsDb.findOne({_id: utils.ObjectId(id)}, loadedBoard)
 }
