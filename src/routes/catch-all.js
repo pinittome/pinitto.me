@@ -19,7 +19,6 @@ var loadedBoard = function(error, board) {
     }
 
     var id = board._id.toString()
-    console.log(board, board.id)
 
     if (!board) {
         options.title   = "Board not found"
