@@ -13,7 +13,7 @@ var loadedBoard = function(error, board) {
     if (error) {
         options.title   = 'Something is up with our datastore'
         options.message = 'Something has gone around somewhere. Will have to poke the sys admin ' +
-            "again, or put another coin in the meter!"
+            'again, or put another coin in the meter!'
         options.type    = 'datastore'
         return response.render(500, options)
     }
@@ -73,18 +73,20 @@ var loadedBoard = function(error, board) {
 
 exports.get = function(req, res) {
 
-    var id      = req.params[0]
-    if ('n' === req.params[0]) {
-        var name = req.params[1]
+    var name
+    var id = req.params[0]
+    if ('n' === req.path.split('/')[1]) {
+        name = req.path.split('/')[2]
         id = null
+        console.log('here')
     }
-    var board   = {}
+    console.log('name', name, 'id',  id, req.path, req.path.split('/'))
+    var board = {}
     options =  cloneextend.clone(config.project)
     options.app = config.app
     options.totals = totals
 
-    console.log("Trying to load board: " + id || name)
-    if ((id.length !== 24) && !name) {
+    if (!name && (id.length !== 24)) {
     	console.log('404 referrer: ' + req.header('Referer'))
         options.title   = 'Page not found'
         options.message = 'This page doesn\'t exist'
@@ -94,5 +96,11 @@ exports.get = function(req, res) {
     }
     request = req
     response = res
-    boardsDb.findOne({_id: utils.ObjectId(id)}, loadedBoard)
+    if (!name) {
+        console.log("Trying to load board: " + id)
+        boardsDb.findOne({_id: utils.ObjectId(id)}, loadedBoard)
+    } else {
+        console.log("Trying to load board with slug: " + name)
+        boardsDb.findOne({ slug: name }, loadedBoard)
+    }
 }
