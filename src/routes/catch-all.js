@@ -17,16 +17,13 @@ var loadedBoard = function(error, board) {
         options.type    = 'datastore'
         return response.render(500, options)
     }
-
-    var id = board._id.toString()
-
     if (!board) {
         options.title   = "Board not found"
         options.message = "Can't find your board anywhere, are you sure you've got the ID right?"
         options.type    = 'board'
         return response.render(404, options)
     }
-
+    var id = board._id.toString()
     allowedAccess = false
     if (request.session.access
         && request.session.board
@@ -78,7 +75,6 @@ exports.get = function(req, res) {
     if ('n' === req.path.split('/')[1]) {
         name = req.path.split('/')[2]
         id = null
-        console.log('here')
     }
     var board = {}
     options =  cloneextend.clone(config.project)
