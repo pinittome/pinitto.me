@@ -80,7 +80,6 @@ exports.get = function(req, res) {
         id = null
         console.log('here')
     }
-    console.log('name', name, 'id',  id, req.path, req.path.split('/'))
     var board = {}
     options =  cloneextend.clone(config.project)
     options.app = config.app
