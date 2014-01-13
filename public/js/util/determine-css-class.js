@@ -1,7 +1,7 @@
 define(function() {
     return function(card) {
         validCssClasses = [ 
-            'yellow', 'light-green', 'purple', 'grey', 'pink',
+            'yellow', 'lightgreen', 'purple', 'grey', 'pink',
             'green', 'orange', 'blue', 'red', 'lavender', 
             'buff', 'mint', 'white'
         ]
