@@ -153,7 +153,8 @@ div.card.ui-state-disabled { opacity: 1; }
 
 .card-yellow {
     background-color: rgb(255,237,111);
-    background: -webkit-linear-gradient();
-    background: -moz-linear-gradient();
+    background: -webkit-linear-gradient(rgb(255,237,111), rgb(235,217,91), rgb(245,227,101));
+    background: -moz-linear-gradient(rgb(255,237,111), rgb(235,217,91), rgb(245,227,101));
     linear-gradient(rgb(255,237,111), rgb(235,217,91), rgb(245,227,101));
 }
+
