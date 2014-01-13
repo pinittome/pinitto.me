@@ -144,7 +144,7 @@ div.card.ui-state-disabled { opacity: 1; }
     linear-gradient(rgb(217,217,217), rgb(197,197,197), rgb(207,207,207));
 }
 
-.card-light-green {
+.card-lightgreen {
     background-color: rgb(204,235,197);
     background: -webkit-linear-gradient(rgb(204,235,197), rgb(184,215,177), rgb(194,225,187));
     background: -moz-linear-gradient(rgb(204,235,197), rgb(184,215,177), rgb(194,225,187));
