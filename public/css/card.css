@@ -67,33 +67,93 @@ div.card p {
 
 div.card.ui-state-disabled { opacity: 1; }
 
-.card-yellow {
-    background-color: #ffee66;
-    background: -webkit-linear-gradient(#ffee66, #f5da41, #f6ef97);
-    background: -moz-linear-gradient(#ffee66, #f5da41, #f6ef97);
-    linear-gradient(#ffee66, #f5da41, #f6ef97);
-}
-.card-green {
-  background-color: #ccffcc;
-  background: -webkit-linear-gradient(#ccffcc, #c3eba7, #c3ffcc);
-  background: -moz-linear-gradient(#ccffcc, #c3eba7, #c3ffcc);
-  linear-gradient(#ccffcc, #c3eba7, #c3ffcc);
-}
-.card-red {
-    background-color: #de8785;
-    background: -webkit-linear-gradient(#de8785, #d57360, #de8785);
-    background: -moz-linear-gradient(#de8785, #d57360, #de8785);
-    linear-gradient(#de8785, #d57360, #de8785);  
-}
-.card-blue {
-    background-color: #ccccff;
-    background: -webkit-linear-gradient(#ccccff, #c3b9da, #ccccff);
-    background: -moz-linear-gradient(#ccccff, #c3b9da, #ccccff);
-    linear-gradient(#ccccff, #c3b9da, #ccccff);  
-}
 .card-white {
     background-color: #ffffff;
     background: -webkit-linear-gradient(#fefefe, #ffffff, #fefefe);
     background: -moz-linear-gradient(#fefefe, #ffffff, #fefefe);
     linear-gradient(#fefefe, #ffffff, #fefefe);  
+}
+
+.card-mint {
+    background-color: rgb(141, 211, 199);
+    background: -webkit-linear-gradient(rgb(141, 211, 199), rgb(121, 191, 179), rgb(131, 201, 189));
+    background: -moz-linear-gradient(rgb(141, 211, 199), rgb(121, 191, 179), rgb(131, 201, 189));
+    linear-gradient(rgb(141, 211, 199), rgb(121, 191, 179), rgb(131, 201, 189));
+}
+
+.card-buff {
+    background-color: rgb(255, 255, 179);
+    background: -webkit-linear-gradient(rgb(255, 255, 179), rgb(235, 235, 159), rgb(245, 245, 169));
+    background: -moz-linear-gradient(rgb(255, 255, 179), rgb(235, 235, 159), rgb(245, 245, 169));
+    linear-gradient(rgb(255, 255, 179), rgb(235, 235, 159), rgb(245, 245, 169));  
+}
+
+.card-lavender {
+    background-color: rgb(190, 186, 218);
+    background: -webkit-linear-gradient(rgb(190, 186, 218), rgb(170, 166, 198), rgb(180, 176, 208));
+    background: -moz-linear-gradient(rgb(190, 186, 218), rgb(170, 166, 198), rgb(180, 176, 208));
+    linear-gradient(rgb(190, 186, 218), rgb(170, 166, 198), rgb(180, 176, 208));  
+}
+
+.card-red {
+    background-color: rgb(251, 128, 114);
+    background: -webkit-linear-gradient(rgb(251, 128, 114), rgb(231, 108, 94), rgb(241, 118, 104));
+    background: -moz-linear-gradient(rgb(251, 128, 114), rgb(231, 108, 94), rgb(241, 118, 104));
+    linear-gradient(rgb(251, 128, 114), rgb(231, 108, 94), rgb(241, 118, 104));  
+}
+
+.card-blue {
+    background-color: rgb(128, 177, 211);
+    background: -webkit-linear-gradient(rgb(128, 177, 211), rgb(108, 157, 191), rgb(118, 167, 201));
+    background: -moz-linear-gradient(rgb(128, 177, 211), rgb(108, 157, 191), rgb(118, 167, 201));
+    linear-gradient(rgb(128, 177, 211), rgb(108, 157, 191), rgb(118, 167, 201));  
+}
+
+.card-orange {
+    background-color: rgb(253,180,98);
+    background: -webkit-linear-gradient(rgb(253,180,98), rgb(233,160,78), rgb(243,170,88));
+    background: -moz-linear-gradient(rgb(253,180,98), rgb(233,160,78), rgb(243,170,88));
+    linear-gradient(rgb(253,180,98), rgb(233,160,78), rgb(243,170,88));  
+}
+
+.card-green {
+    background-color: rgb(179,222,105);
+    background: -webkit-linear-gradient(rgb(179,222,105), rgb(159,202,85), rgb(169,212,95));
+    background: -moz-linear-gradient(rgb(179,222,105), rgb(159,202,85), rgb(169,212,95));
+    linear-gradient(rgb(179,222,105), rgb(159,202,85), rgb(169,212,95));  
+}
+
+.card-pink {
+    background-color: rgb(252,205,229);
+    background: -webkit-linear-gradient(rgb(252,205,229), rgb(232,185,209), rgb(242,195,219));
+    background: -moz-linear-gradient(rgb(252,205,229), rgb(232,185,209), rgb(242,195,219));
+    linear-gradient(rgb(252,205,229), rgb(232,185,209), rgb(242,195,219));
+}
+
+.card-purple {
+    background-color: rgb(188,128,189);
+    background: -webkit-linear-gradient(rgb(188,128,189), rgb(168,108,169), rgb(178,118,179));
+    background: -moz-linear-gradient(rgb(188,128,189), rgb(168,108,169), rgb(178,118,179));
+    linear-gradient(rgb(188,128,189), rgb(168,108,169), rgb(178,118,179));  
+}
+
+.card-grey {
+    background-color: rgb(217,217,217);
+    background: -webkit-linear-gradient(rgb(217,217,217), rgb(197,197,197), rgb(207,207,207));
+    background: -moz-linear-gradient(rgb(217,217,217), rgb(197,197,197), rgb(207,207,207));
+    linear-gradient(rgb(217,217,217), rgb(197,197,197), rgb(207,207,207));
+}
+
+.card-light-green {
+    background-color: rgb(204,235,197);
+    background: -webkit-linear-gradient(rgb(204,235,197), rgb(184,215,177), rgb(194,225,187));
+    background: -moz-linear-gradient(rgb(204,235,197), rgb(184,215,177), rgb(194,225,187));
+    linear-gradient(rgb(204,235,197), rgb(184,215,177), rgb(194,225,187));
+}
+
+.card-yellow {
+    background-color: rgb(255,237,111);
+    background: -webkit-linear-gradient();
+    background: -moz-linear-gradient();
+    linear-gradient(rgb(255,237,111), rgb(235,217,91), rgb(245,227,101));
 }
