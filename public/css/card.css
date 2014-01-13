@@ -89,7 +89,7 @@ div.card.ui-state-disabled { opacity: 1; }
     background-color: #ccccff;
     background: -webkit-linear-gradient(#ccccff, #c3b9da, #ccccff);
     background: -moz-linear-gradient(#ccccff, #c3b9da, #ccccff);
-    linear-gradient(##ccccff, #c3b9da, #ccccff);  
+    linear-gradient(#ccccff, #c3b9da, #ccccff);  
 }
 .card-white {
     background-color: #ffffff;
