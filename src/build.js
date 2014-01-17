@@ -1,4 +1,6 @@
-var requirejs = require('requirejs');
+var requirejs = require('requirejs')
+
+if ('development' === process.env.NODE_ENV) return
 
 var applicationConfig = {
     baseUrl: './public/js',
