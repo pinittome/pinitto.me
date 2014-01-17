@@ -12,7 +12,7 @@ var applicationConfig = {
     include: [
     	'requireLib'
     ]
-};
+}
 
 var mainConfig = {
     baseUrl: './public/js',
@@ -26,14 +26,14 @@ var mainConfig = {
     include: [
     	'requireLib'
     ]
-};
+}
 
 requirejs.optimize(applicationConfig, function (log) {
-	console.log("Application javascript optimisation complete".green);
+	console.log("Application javascript optimisation complete".green)
 	if ('string' === typeof(log)) return console.log((log).cyan)
         console.log(log)
 }, function(error) {
-    console.log(("Error optimizing javascript: " + error).red);
+    console.log(("Error optimizing javascript: " + error).red)
 })
 
 requirejs.optimize(mainConfig, function (log) {
@@ -41,17 +41,17 @@ requirejs.optimize(mainConfig, function (log) {
     if ('string' === typeof(log)) return console.log((log).cyan)
     console.log(log)
 }, function(error) {
-    console.log(("Error optimizing javascript: " + error).red);
+    console.log(("Error optimizing javascript: " + error).red)
 })
 
 var cssConfig = {
 	cssIn: './public/css/main.css',
 	out: './public/app.' + config.app.version + '.css',
 	optimizeCss: 'standard'
-};
+}
 requirejs.optimize(cssConfig, function(log) {
-	console.log(("Application CSS optimisation complete").green);
+	console.log(("Application CSS optimisation complete").green)
 	console.log((log).cyan);
 }, function(error) {
-    console.log(("Error optimizing CSS: " + error).red);
-});
+    console.log(("Error optimizing CSS: " + error).red)
+})

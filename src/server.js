@@ -44,7 +44,7 @@ app.configure(function(){
         app.use(forceDomain(config.server.domain))
 
     app.use(forceSsl)
-    if ('captcha' == config.captcha.type) {
+    if ('captcha' === config.captcha.type) {
         console.log('Loading captcha...')
         app.use(require('captcha')({
             url: '/img/captcha.jpg',
