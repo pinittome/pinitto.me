@@ -36,9 +36,11 @@ exports.post = function(req, res, options, done) {
     	var errors = req.validationErrors()
     	if (additionalErrors) {
     		if (!errors) errors = []
-    		for (var i=0; i<additionalErrors.length; i++) 
+    		for (var i=0; i<additionalErrors.length; i++)
                     errors.push(additionalErrors[i])
     	}
+        var slug = req.param('slug')
+
 	    if (errors) {
 	        if (req.xhr) {
 	            res.send({error: errors}, 500)
@@ -67,8 +69,8 @@ exports.post = function(req, res, options, done) {
 		            res.send({id: newBoard[0]._id}, 200)
 		        } else {
 		            res.redirect('/' + newBoard[0]._id)
-		        }  
-		        statistics.boardCreated()       
+		        }
+		        statistics.boardCreated()
 		    })
 	    }
 	    parameters = {
@@ -79,7 +81,7 @@ exports.post = function(req, res, options, done) {
 	    		size: req.param('grid-size')
 	    	}
 	    }
-	    if (req.param('board-name') != '')
+	    if (req.param('board-name').length !== 0)
                 parameters['name'] = req.param('board-name')
 
             async.parallel ([
@@ -116,20 +118,29 @@ exports.post = function(req, res, options, done) {
     req.assert('grid-size', 'Invalid card size increment selectd')
         .isIn(['none', 'small', 'medium', 'large'])
     req.sanitize('board-name')
+    req.sanitize('slug')
     req.sanitize('password-admin')
-    if (options.captcha.type == 'captcha') {
-        req.assert('digits').is(req.session.captcha)
-        captchaComplete()
-    } else if (options.captcha.type == 'recaptcha') {
-    	recaptcha.verify(function(success, error_code) {
-    		if (!success) return done([{
-    			param: 'recaptcha_response_field',
-    			msg: 'Captcha failed - please check and try again',
-    			value: ''
-    		}])
-    		captchaComplete()
-    	})
-    } else {
-    	captchaComplete()
+
+    var checkCaptcha = function() {
+        if (options.captcha.type === 'captcha') {
+            req.assert('digits').is(req.session.captcha)
+            captchaComplete()
+        } else if (options.captcha.type === 'recaptcha') {
+            recaptcha.verify(function(success, error_code) {
+                if (!success) return done([{
+                    param: 'recaptcha_response_field',
+                    msg: 'Captcha failed - please check and try again',
+                    value: ''
+                }])
+                captchaComplete()
+            })
+        } else {
+            captchaComplete()
+        }
+    }
+
+    var slug = req.param('slug')
+    if (!slug || (0 === slug.length)) {
+        return checkCaptcha()
     }
 }
