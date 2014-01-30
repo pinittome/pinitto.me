@@ -16,7 +16,7 @@ exports.get = function(req, res, options) {
 }
 
 expressValidator.Filter.prototype.toSlug = function(){
-  this.modify((this.str || '').toLowerCase().replace(/[^0-9A-Z\-]/i, '-'))
+  this.modify((this.str || '').toLowerCase().replace(/[^0-9A-Z\-]/ig, '-'))
   return this.str
 }
 
