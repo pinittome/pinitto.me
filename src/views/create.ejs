@@ -21,14 +21,14 @@
                     <label class="control-label" for="owner">Email address</label>
                     <div class="controls">
                         <input type="email" name="owner" placeholder="Email goes here..." />
-                    
+
                     </div>
                 </div>
             </fieldset>
-            <% if ((typeof(captcha) != undefined) && (captcha.type != 'none')) { %>
+            <% if ((typeof(captcha) !== 'undefined') && (captcha.type !== 'none')) { %>
             <fieldset>
                 <legend>Access</legend>
-                
+
                 <% if (captcha.type == 'captcha') { %>
                 	<img src="/img/captcha.jpg" class="captcha" />
                 	<div class="control-group">
@@ -48,7 +48,7 @@
 					<%- captcha.form %>
 					</div>
             	<% } %>
-            </fieldset> 
+            </fieldset>
             <% } %>
             <fieldset>
                 <legend>Board properties</legend>
@@ -58,13 +58,19 @@
                         <input type="text" name="board-name" placeholder="Board name (optional)" />
                     </div>
                 </div>
+                <div class="control-group">
+                    <label class="control-label" for="slug">Board URL identifier</label>
+                    <div class="controls">
+                        <input type="text" name="slug" placeholder="Board URL identifier" />
+                    </div>
+                </div>
             </fieldset>
         </div>
         <div class="span5">
             <h2>Help</h2>
             <p class="lead">The best bit about this is that only a very small amount of information is required!</p>
             <h3>Email <span class="text-error">- required</span> </h3>
-            <p>Your email is used to remind you of your board 
+            <p>Your email is used to remind you of your board
             password if set<% if (typeof(board) !== 'undefined' && typeof(board.expiry) !== 'undefined') { %>
             , and to inform you when your board is about to expire (currently after <%=board.expiry %> days of inactivity)</p>
             <% } %>. No selling this or spamming you.</p>
@@ -74,10 +80,12 @@
             <% } %>
             <h3>Board name <span class="text-success">- optional</span></h3>
             <p>Completely optional, but hey it makes it all a bit more personal!</p>
+            <h3>Board URL identifier <span class="text-success">- optional</span></h3>
+            <p>If you'd like a friendly URL for your board use this value. 3 - 256 characters and must contain alphanumeric characters and hyphens only.</p>
        </div>
     </div>
     <div class="row">
-	    <div class="control-group">  
+	    <div class="control-group">
 	        <div class="form-actions">
 	            <button type="submit" class="btn btn-primary">Create board</button>
 	            <button type="button" class="btn leave">Cancel</button>
@@ -126,7 +134,7 @@
                         <input type="password" onmouseover="this.title=this.value" name="password-read" placeholder="" />
                         <span class="help-block">Users entering this password will only be able to view the board.</span>
                     </div>
-                </div>                
+                </div>
             </fieldset>
             <p><strong>Don't panic...</strong> you will be able to change access controls once you are in the board too.</p>
             <fieldset>
