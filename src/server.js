@@ -36,7 +36,7 @@ app.configure(function(){
         httpOnly: true,
         secure: onlySecure
     }))
-    app.use(sts(3600000 * 24 * 365, true))
+    app.use(sts(3600000 * 24 * 365, false))
     app.use(require('connect').cookieParser(config.cookie.secret))
     app.disable('x-powered-by')
 
