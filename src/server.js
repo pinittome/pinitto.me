@@ -67,6 +67,8 @@ app.configure(function(){
     app.engine('ejs', engine)
 })
 
+app.get('/', require('./routes/index').get)
+
 app.get('/contact', function(req, res) {
     res.redirect('http://go.pinitto.me/contact')
 })

@@ -92,21 +92,21 @@ exports.post = function(req, res, options, done) {
 
             async.parallel ([
                 function(callback) {
-                    if ('' == req.param('password-admin')) return callback(null, true)
+                    if ('' === req.param('password-admin')) return callback(null, true)
                     utils.hashPassword(req.param('password-admin'), function(password) {
                         parameters['access']['admin'] = password
                         callback(null, true)
                     })
                 },
                 function(callback) {
-                    if ('' == req.param('password-write')) return callback(null, true)
+                    if ('' === req.param('password-write')) return callback(null, true)
                     utils.hashPassword(req.param('password-write'), function(password) {
                         parameters['access']['write'] = password
                         callback(null, true)
                     })
                 },
                 function(callback) {
-                    if ('' == req.param('password-read'))
+                    if ('' === req.param('password-read'))
                         return callback(null, true)
                     utils.hashPassword(req.param('password-read'), function(password) {
                         parameters['access']['read'] = password
