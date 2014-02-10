@@ -11,7 +11,7 @@
     var values = <%- values %>
     </script>
     <% } %>
-    <form class="form-horizontal" method="post" id="create-board" action="/#create">
+    <form class="form-horizontal" method="post" id="create-board" action="/create">
     <div class="row">
         <div class="span7">
             <h2 class="main">A few details...</h2>
@@ -29,7 +29,7 @@
             <fieldset>
                 <legend>Access</legend>
 
-                <% if (captcha.type == 'captcha') { %>
+                <% if (captcha.type === 'captcha') { %>
                 	<img src="/img/captcha.jpg" class="captcha" />
                 	<div class="control-group">
                         <label class="control-label" for="pdigits">Captcha</label>
@@ -74,7 +74,7 @@
             password if set<% if (typeof(board) !== 'undefined' && typeof(board.expiry) !== 'undefined') { %>
             , and to inform you when your board is about to expire (currently after <%=board.expiry %> days of inactivity)</p>
             <% } %>. No selling this or spamming you.</p>
-            <% if ((typeof(captcha) != undefined) && (captcha.type != 'none')) { %>
+            <% if ((typeof captcha != undefined) && (captcha.type != 'none')) { %>
             <h3>Captcha <span class="text-error">- required</span></h3>
             <p>Your not a 'bot are you? Are you? Check things can change very quickly these days.</p>
             <% } %>

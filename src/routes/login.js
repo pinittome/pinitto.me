@@ -7,13 +7,14 @@ exports.get = function(req, res, options) {
     if (!req.param('id')) return
     options.referrer = req.header('Referer')
     options.boardId  = req.param('id')
+    options.slug = req.param('name') || ''
 }
 
 exports.post = function(req, res, options, done) {
     req.check('board').len(24)
     req.sanitize('board')
     req.sanitize('password')
-    
+
     options.referrer = req.param('referrer')
     options.boardId = req.param('board')
     var errors = req.validationErrors()
@@ -34,10 +35,15 @@ exports.post = function(req, res, options, done) {
                 else
                     req.session.access = a.getLevel(board, hash)
         	req.session.board  = id
-        	var url = '/' + id
+            var url
+            if (board.slug) {
+                url = '/n/' + board.slug
+            } else {
+        	    url = '/' + id
+            }
 	        if (req.param('referrer')
 	            && (req.param('referrer').split('/')[2] == req.headers.host)) {
-	            url = req.param('referrer')	
+	            url = req.param('referrer')
 	        }
 	        if (req.session.access != a.NONE) {
                     console.log('User authenticated, sending them to ' + url)

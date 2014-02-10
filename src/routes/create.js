@@ -9,7 +9,7 @@ var boardsDb = require('../database/boards').db,
 exports.get = function(req, res, options) {
     options.captcha  = { type: 'captcha' }
     if (config.captcha && config.captcha.type) options.captcha = config.captcha;
-    if (options.captcha.type == 'recaptcha') {
+    if (options.captcha.type === 'recaptcha') {
     	var recaptcha = new Recaptcha(config.captcha.keys['public'], config.captcha.keys['private'], true)
     	options.captcha.form = recaptcha.toHTML()
     }
@@ -25,7 +25,7 @@ exports.post = function(req, res, options, done) {
     if (config.captcha && config.captcha.type)
         options.captcha = config.captcha
 
-    if (options.captcha.type == 'recaptcha') {
+    if (options.captcha.type === 'recaptcha') {
     	var recaptcha = new Recaptcha(
     		config.captcha.keys['public'],
     		config.captcha.keys['private'],
@@ -48,7 +48,7 @@ exports.post = function(req, res, options, done) {
 
 	    if (errors) {
 	        if (req.xhr) {
-	            res.send({error: errors}, 500)
+	            res.send({ error: errors }, 500)
 	            return
 	       } else {
 	            options.errors.create = JSON.stringify(errors)
@@ -61,7 +61,7 @@ exports.post = function(req, res, options, done) {
 		    boardsDb.insert(parameters, function(error, newBoard) {
 		    	if (error) {
 		    	    var errors = new Array()
-		    	    errors.push({mainMessage: 'Unable to create board, please try again'})
+		    	    errors.push({ mainMessage: 'Unable to create board, please try again' })
 		    	    console.error(errors, error)
 		    	    options.errors.create = JSON.stringify(errors)
 	                    options.values = JSON.stringify(req.body)

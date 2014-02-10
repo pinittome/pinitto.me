@@ -18,7 +18,7 @@ var maxAge = ('development' === environment) ? 0 : 31557600000
 
 var onlySecure = config.project.secure || false
 var forceSsl = function(req, res, next) {
-    if ((onlySecure == true) && (req.headers['x-forwarded-proto'] != 'https')) {
+    if ((onlySecure === true) && (req.headers['x-forwarded-proto'] != 'https')) {
         return res.redirect(301, 'https://' + req.host + req.originalUrl)
     }
     next()
@@ -40,7 +40,7 @@ app.configure(function(){
     app.use(require('connect').cookieParser(config.cookie.secret))
     app.disable('x-powered-by')
 
-    if (config.server && config.server.domain && (config.server.domain != ''))
+    if (config.server && config.server.domain && (config.server.domain !== ''))
         app.use(forceDomain(config.server.domain))
 
     app.use(forceSsl)
@@ -60,15 +60,12 @@ app.configure(function(){
     app.use(app.router)
     app.use(express.logger)
     var errors = false
-    if ('development' == environment) errors = true
+    if ('development' === environment) errors = true
     app.use(express.errorHandler({
         dumpExceptions: errors, showStack: errors
     }))
     app.engine('ejs', engine)
 })
-
-app.get('/', require('./routes/index').serve)
-app.post('/', require('./routes/index').serve)
 
 app.get('/contact', function(req, res) {
     res.redirect('http://go.pinitto.me/contact')
@@ -80,17 +77,15 @@ app.get('/features', function(req, res) {
     res.redirect('http://go.pinitto.me/features')
 })
 
-app.get('/login/*', function(req, res) {
-    res.redirect('/#login' + req._parsedUrl.search)
-})
+app.get('/login/*', require('./routes/login').get)
 app.post('/login/*', require('./routes/login').post)
+
 app.get('/logout', function(req, res) {
     res.redirect('/?logout=1')
 })
 
-app.get('/create', function(req, res) {
-    res.redirect('/#create')
-})
+app.get('/create', require('./routes/create').get)
+app.post('/create', require('./routes/create').post)
 
 // Anything else must be a board link
 app.get('/*', require('./routes/catch-all').get)

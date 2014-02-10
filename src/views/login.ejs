@@ -4,7 +4,7 @@
     <h1>Login</h1>
 </div>
 </div>
-    <% if (typeof(errors.login) != 'undefined') { %>
+    <% if (typeof errors.login != 'undefined') { %>
     <script type="text/javascript">
     errors.login = <%- JSON.stringify(errors.login) %>
     </script>
@@ -14,14 +14,15 @@
             <% if (typeof boardId != 'undefined') { %>
             <h2>This board requires authorisation</h2>
             <% } %>
-            <form class="form-horizontal" method="post" id="login-form" action="/#login">
+            <form class="form-horizontal" method="post" id="login-form" action="/login">
                 <fieldset>
                     <legend>Access details</legend>
                     <div class="control-group">
                         <label class="control-label" for="owner">Board ID</label>
                         <div class="controls">
-                        <% if (typeof boardId != 'undefined') { %>
-                            <%=boardId %><input type="hidden" name="board" value="<%=boardId %>" />
+                        <% if (typeof boardId !== undefined) { %>
+                            <% if (typeof slug !== undefined) { %><%=slug %><% } else { %>
+                            <%=boardId %><% } %><input type="hidden" name="board" value="<%=boardId %>" />
                         <% } else { %>
                             <input type="text" name="board" placeholder="Board ID" required="true" />
                         <% } %>
@@ -50,10 +51,10 @@
             <h2>Help</h2>
             <p>Enter a password here to get access to the board.</p>
             <% if (typeof boardId != 'undefined') { %>
-            <p>If you believe you should be able to access this 
+            <p>If you believe you should be able to access this
             board without a password then
-            <a href="/<%=boardId%>" title="Attempt board access 
-            without a password">click here</a> to attempt board 
+            <a href="/<%=boardId%>" title="Attempt board access
+            without a password">click here</a> to attempt board
             access without a password.</p>
             <% } %>
        </div>

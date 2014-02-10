@@ -36,7 +36,8 @@ var loadedBoard = function(error, board) {
     }
 
     if (false == allowedAccess)
-        return response.redirect('/?id=' + id.split('#')[0] + '#login')
+        return response.redirect('/?id=' + id.split('#')[0] +
+                                 '&name=' + board.slug + '#login')
 
     boardsDb.update({_id: utils.ObjectId(id)}, { $set: { lastUsed: new Date() } }, function(error, records) {
         if (error) {
