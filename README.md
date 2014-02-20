@@ -1,5 +1,7 @@
 # Install
 
+__Always use the latest tagged version of pinitto.me for smooth sailing...__
+
 If you wish to use the ```npm start/stop/restart``` scripts then you'll need to install ```forever```:
 
 ```bash
