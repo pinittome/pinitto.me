@@ -8,6 +8,7 @@ config*.js
 .DS_Store
 npm-debug.log
 logs/*
+!logs/.gitkeep
 public/app*.js
 public/main*.js
 public/app*.css
