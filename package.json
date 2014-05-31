@@ -31,7 +31,8 @@
     "grunt-cli": "~0.1.11",
     "grunt": "~0.4.2",
     "grunt-mocha-cli": "~1.5.0",
-    "grunt-contrib-jshint": "~0.8.0"
+    "grunt-contrib-jshint": "~0.8.0",
+    "massah": "1.X"
   },
   "scripts": {
     "start": "forever start -a -p . -l logs/forever.log -o logs/pinitto.me.out.log -e logs/pinitto.me.err.log index.js",
