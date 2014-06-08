@@ -32,7 +32,7 @@ Or to run with ```forever```:
 # Requires
 
 * Cairo library (for captcha)
-** On Debian/Ubuntu do this using `apt-get install libcairo2-dev`
+** On Debian/Ubuntu do this using ```apt-get install libcairo2-dev libjpeg-dev libgif-dev```
 * Mongodb server
 * Node v6+  (v8+ if using forever)
 
