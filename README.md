@@ -1,4 +1,9 @@
 # Install
+* Clone the repo.
+* run *git submodule init* and *git submodule update*
+* run *npm install*
+* create a *config.production.js* in the pinitto.me folder. Use the content of the existing *config.example.js*. 
+
 
 __Always use the latest tagged version of pinitto.me for smooth sailing...__
 
