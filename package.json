@@ -39,7 +39,7 @@
     "stop": "forever stop index.js",
     "clean": "forever cleanlogs index.js",
     "restart": "forever restart index.js",
-    "test": "grunt test"
+    "test": "./node_modules/.bin/massah test"
   },
   "repository": {
     "type": "git",
