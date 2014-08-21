@@ -26,7 +26,7 @@ require('./src/build')
 httpServer = require('./src/server')
 require('./src/io')
 if (process.mainModule === module) {
-    httpServer.listen(config.server.port)
+    httpServer.server.listen(config.server.port)
 } else {
     exports.httpServer = httpServer
 }
