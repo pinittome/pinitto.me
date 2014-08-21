@@ -12,6 +12,11 @@ module.exports = function(data) {
 
     if (!config.app) config.app = {}
 	if (!config.cookie) config.cookie = {}
+    
+    if (!config.cookie.secret) {
+        config.cookie.secret = 'do-not-tell'
+        console.log('No cookie secret set'.red)   
+    }
 
 	config.cookie.key = 'connect.sid';
 
