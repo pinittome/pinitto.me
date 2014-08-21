@@ -378,7 +378,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         cardEntity.bringToFront(event, $(this));
         event.stopPropagation();
     })
-    $("div.viewport-container").click(function(e) {
+    $("div.viewport-container").dblclick(function(e) {
         lastClick = e
         if ('read' == board.access) return
         if (board.preventCardCreation) {
