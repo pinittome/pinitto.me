@@ -20,13 +20,13 @@ environment  = process.env.NODE_ENV || 'production'
 
 console.log(helloWorld)
 
-readJson('./package.json', function (error, data) {
-    if (error) {
-        console.error("There was an error reading package.json, quitting...".red)
-        process.exit()
-    }
-    config = require('./src/config')(data)
-    require('./src/build')
-    httpServer = require('./src/server')
-    require('./src/io')
-})
+var data = require('./package.json')
+config = require('./src/config')(data)
+require('./src/build')
+httpServer = require('./src/server')
+require('./src/io')
+if (process.mainModule === module) {
+    httpServer.listen(config.server.port)
+} else {
+    exports.httpServer = httpServer
+}

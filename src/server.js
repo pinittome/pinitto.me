@@ -12,7 +12,6 @@ exports.server = server = require('http').createServer(app)
 var environment = process.env.NODE_ENV || 'production'
 
 var server = exports.server = require('http').createServer(app)
-server.listen(config.server.port)
 
 var maxAge = ('development' === environment) ? 0 : 31557600000
 
