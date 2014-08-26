@@ -21,10 +21,8 @@ var beforeSuite = function(done) {
 }
 
 var afterSuite = function(done) {
-    application.httpServer.server.close(function() {
-        application = null
-        done()
-    })
+    application.httpServer.server.close()
+    done()
 }
 
 var beforeScenario = function(annotations, context) {}
