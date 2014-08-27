@@ -25,7 +25,7 @@ exports.post = function(req, res, options, done) {
     if (config.captcha && config.captcha.type)
         options.captcha = config.captcha
 
-    if (options.captcha.type == 'recaptcha') {
+    if (options.captcha.type === 'recaptcha') {
         var Recaptcha = require('recaptcha').Recaptcha
     	var recaptcha = new Recaptcha(
     		config.captcha.keys['public'],
