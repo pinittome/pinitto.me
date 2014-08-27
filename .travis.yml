@@ -4,4 +4,4 @@ node_js:
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
   - git submodule update --init --recursive
-env: NODE_ENV=travis-ci
+env: NODE_ENV=travis-ci MASSAH_BROWSER=phantomjs
