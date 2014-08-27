@@ -28,6 +28,14 @@ module.exports = (function() {
                     throw new Error('Unknown page \'' + page + '\'')
             }
         })
+        .then('I am redirected to a new board', function() {
+            var driver = this.driver
+            driver.wait(function() {
+                return driver.currentUrl(function(url, currentUrl) {
+                    return currentUrl.path.match(/\/[a-z0-9]{24}.*/)
+                })
+            }, 5000, 'Waiting for a new board')
+        })
     
     return library
 })()
