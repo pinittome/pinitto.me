@@ -22,7 +22,6 @@ console.log(helloWorld)
 
 var data = require('./package.json')
 config = require('./src/config')(data)
-require('./src/build')
 httpServer = require('./src/server')
 require('./src/io')
 if (process.mainModule === module) {
