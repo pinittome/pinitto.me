@@ -4,7 +4,9 @@ module.exports = {
     , database: {
         name: 'test',
         host: '127.0.0.1',
-        port: 27017
+        port: 27017,
+        username: 'travis',
+        password: 'password'
     }   
     , app: {
         twitter: "pinittome", 
