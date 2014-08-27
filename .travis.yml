@@ -4,5 +4,4 @@ node_js:
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
   - git submodule update --init --recursive
-  - cp config.example.js config.testing.js
-env: NODE_ENV=testing
+env: NODE_ENV=travis-ci

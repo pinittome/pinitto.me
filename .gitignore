@@ -5,6 +5,7 @@ node_modules
 config*.js
 !src/config.js
 !config.example.js
+!config.travis-ci.js
 .DS_Store
 npm-debug.log
 logs/*
