@@ -28,19 +28,22 @@
     "validator": "~0.4.28"
   },
   "devDependencies": {
-    "requirejs": "~2.1.4",
-    "grunt-cli": "~0.1.11",
-    "grunt": "~0.4.2",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-requirejs": "^0.4.4",
     "grunt-mocha-cli": "~1.5.0",
-    "grunt-contrib-jshint": "~0.8.0",
-    "massah": "*"
+    "grunt-nsp-package": "0.0.5",
+    "massah": "*",
+    "requirejs": "~2.1.4"
   },
   "scripts": {
     "start": "forever start -a -p . -l logs/forever.log -o logs/pinitto.me.out.log -e logs/pinitto.me.err.log index.js",
     "stop": "forever stop index.js",
     "clean": "forever cleanlogs index.js",
     "restart": "forever restart index.js",
-    "test": "./node_modules/.bin/massah test"
+    "test": "./node_modules/.bin/massah test",
+    "postinstall": "git submodule update --init && ./node_modules/.bin/grunt build"
   },
   "repository": {
     "type": "git",
