@@ -1,7 +1,29 @@
 var helper = require('massah/helper')
 
+var checkIdentifier = function(context) {
+    var driver = context.driver
+    var find = new RegExp('[^0-9a-z]', 'ig')
+    var slug = context.params.fields['slug'].replace(find, '-').toLowerCase()
+    var regex = new RegExp('\/n\/' + slug)
+    driver.wait(function() {
+        return driver.currentUrl(function(url, currentUrl) {
+            return currentUrl.path.match(regex)
+        })
+    }, 5000, 'Waiting for a new board with the URL identifier')
+}
+
 module.exports = (function() {
     var library = helper.getLibrary()
+        .given('I create a board with identifier \'(.*)\'', function(identifier) {
+            var driver = this.driver
+            driver.get('http:/localhost:3000/#create')
+            driver.input('*[name="owner"]').enter('user@example.com')
+            driver.input('*[name="slug"]').enter(identifier)
+            if (!this.params.fields) this.params.fields = {}
+            this.params.fields.slug = identifier
+            driver.button('Create board').click()
+            checkIdentifier(this)
+        })
         .then('I expect to see the create board page elements', function(page) {
             this.driver.element('input[type="email"][name="owner"]')
             this.driver.element('input[name="board-name"]')
@@ -26,14 +48,7 @@ module.exports = (function() {
             })
         })
         .then('I am redirected to the identified board', function() {
-            var driver = this.driver
-            var regex = new RegExp('\/n\/' + this.params.fields['slug'])
-            driver.wait(function() {
-                return driver.currentUrl(function(url, currentUrl) {
-                    console.log(currentUrl.path, regex)
-                    return currentUrl.path.match(regex)
-                })
-            }, 5000, 'Waiting for a new board with the URL identifier')
+            checkIdentifier(this)
         })
     
     return library
