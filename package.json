@@ -42,7 +42,7 @@
     "stop": "forever stop index.js",
     "clean": "forever cleanlogs index.js",
     "restart": "forever restart index.js",
-    "test": "./node_modules/.bin/massah test",
+    "test": "mongo test --eval \"db.dropDatabase();\" &&./node_modules/.bin/massah test",
     "postinstall": "git submodule update --init && ./node_modules/.bin/grunt build"
   },
   "repository": {
