@@ -18,6 +18,13 @@ module.exports = (function() {
                 }
             )
         })
+        .then('the new board has the expected title', function() {
+            var expected = this.params.fields['board-name']
+            var selector = 'div.navbar a.board-name'
+            this.driver.element(selector).text(function(title) {
+                title.should.equal(expected)
+            })
+        })
     
     return library
 })()
