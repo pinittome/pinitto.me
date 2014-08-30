@@ -25,6 +25,16 @@ module.exports = (function() {
                 title.should.equal(expected)
             })
         })
+        .then('I am redirected to the identified board', function() {
+            var driver = this.driver
+            var regex = new RegExp('\/n\/' + this.params.fields['slug'])
+            driver.wait(function() {
+                return driver.currentUrl(function(url, currentUrl) {
+                    console.log(currentUrl.path, regex)
+                    return currentUrl.path.match(regex)
+                })
+            }, 5000, 'Waiting for a new board with the URL identifier')
+        })
     
     return library
 })()

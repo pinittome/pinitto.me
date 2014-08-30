@@ -32,3 +32,10 @@ Scenario: Can add a title to a new board
     When I click the 'Create board' button
     Then I am redirected to a new board
     And the new board has the expected title
+    
+Scenario: Can create a board with a URL identifier
+
+    Given I enter 'user@example.com' in the 'owner' field
+    And I enter 'my-new-board' in the 'slug' field
+    When I click the 'Create board' button
+    Then I am redirected to the identified board
