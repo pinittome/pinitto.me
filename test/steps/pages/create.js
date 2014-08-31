@@ -77,7 +77,12 @@ module.exports = (function() {
                     function() { return true }
                 )
             }, 15000, 'Waiting for connection modal to close')
-            
+            this.driver.wait(function() {
+                return self.driver.element('a[title="Settings"]').then(
+                    function() { return true },
+                    function() { return false }
+                )
+            }, 15000, 'Waiting for settings bar to load')
             this.driver.element('a[title="Settings"]').click()
             this.driver.element('a.leave').click()            
         })
