@@ -23,3 +23,16 @@ Scenario: Can log in as [type]
         admin | admin | admin
         write | write | write
         read  | read  | read
+
+Scenario: I can [level] a board without a [level] password
+
+    Given I create a board without a [level] password
+    When I visit the board
+    Then the board has the expected title
+    And the user has the access level [level]
+    
+    Where:
+        level
+        admin
+        write
+        read

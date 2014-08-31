@@ -41,6 +41,46 @@ module.exports = (function() {
                 }
             )
         })
+        .given('I create a board without a (.*) password', function(level) {
+            var self = this
+            this.driver.get(helper.baseUrl + '/#create')
+            this.driver.input('*[name="owner"]').enter('user@example.com')
+            switch (level) {
+                case 'read':
+                    this.driver.input('*[name="password-admin"]').clear()
+            this.driver.input('*[name="password-admin"]').enter('admin')
+                    this.driver.input('*[name="password-read"]').clear()
+                    break
+                case 'write':
+                    this.driver.input('*[name="password-admin"]').clear()
+            this.driver.input('*[name="password-admin"]').enter('admin')
+                    this.driver.input('*[name="password-read"]').clear()
+                    this.driver.input('*[name="password-write"]').clear()
+                case 'admin':
+                    break
+            }
+            this.driver.button('Create board').click()
+            this.driver.wait(function() {
+                return self.driver.currentUrl(function(url, currentUrl) {
+                    var matches = currentUrl.path.match(/\/([a-z0-9]{24}).*/)
+                    if (matches) {
+                        self.params.boardId = matches[1]
+                        self.params.boardTitle = self.params.boardId
+                        return true
+                    }
+                    return false
+                })
+            }, 5000, 'Waiting for a new board')
+            this.driver.wait(function() {
+                return self.driver.element('div.modal-backdrop').then(
+                    function() { return false },
+                    function() { return true }
+                )
+            }, 15000, 'Waiting for connection modal to close')
+            
+            this.driver.element('a[title="Settings"]').click()
+            this.driver.element('a.leave').click()            
+        })
         .given('I create a board with access passwords', function() {
             var self = this
             this.driver.get(helper.baseUrl + '/#create')
