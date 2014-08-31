@@ -10,7 +10,7 @@ exports.inArray = function(needle, haystack) {
 var hasher = function(count, hash, sha1, callback) {
 	if (count == 0) return callback(sha1)
 	sha1.update(hash)
-	process.nextTick(function() { hasher(count-1, hash, sha1, callback) })
+	setImmediate(function() { hasher(count-1, hash, sha1, callback) })
 }
 
 exports.hashPassword = function(password, callback) {
@@ -18,7 +18,7 @@ exports.hashPassword = function(password, callback) {
     var sha1 = crypto.createHash('sha1')
     hasher(config.password.hashes, hash, sha1, function(password) {
     	callback(sha1.digest('hex'))
-    });
+    })
 }
 
 exports.totals = { cards: 0, boards: 0, sockets: 0 }
