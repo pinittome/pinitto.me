@@ -1,4 +1,5 @@
-var helper = require('massah/helper')
+var massahHelper = require('massah/helper')
+  , helper = massahHelper.application.helper
 
 var checkIdentifier = function(context) {
     var driver = context.driver
@@ -13,10 +14,10 @@ var checkIdentifier = function(context) {
 }
 
 module.exports = (function() {
-    var library = helper.getLibrary()
+    var library = massahHelper.getLibrary()
         .given('I create a board with identifier \'(.*)\'', function(identifier) {
             var driver = this.driver
-            driver.get('http:/localhost:3000/#create')
+            driver.get(helper.baseUrl + '/#create')
             driver.input('*[name="owner"]').enter('user@example.com')
             driver.input('*[name="slug"]').enter(identifier)
             if (!this.params.fields) this.params.fields = {}
@@ -39,6 +40,34 @@ module.exports = (function() {
                     throw new Error('Missing home page elements', error)
                 }
             )
+        })
+        .given('I create a board with access passwords', function() {
+            var self = this
+            this.driver.get(helper.baseUrl + '/#create')
+            this.driver.input('*[name="owner"]').enter('user@example.com')
+            this.driver.input('*[name="password-admin"]').enter('admin')
+            this.driver.input('*[name="password-write"]').enter('write')
+            this.driver.input('*[name="password-read"]').enter('read')
+            this.driver.button('Create board').click()
+            this.driver.wait(function() {
+                return self.driver.currentUrl(function(url, currentUrl) {
+                    var matches = currentUrl.path.match(/\/([a-z0-9]{24}).*/)
+                    if (matches) {
+                        self.params.boardId = matches[1]
+                        return true
+                    }
+                    return false
+                })
+            }, 5000, 'Waiting for a new board')
+            this.driver.wait(function() {
+                return self.driver.element('div.modal-backdrop').then(
+                    function() { return false },
+                    function() { return true }
+                )
+            }, 15000, 'Waiting for connection modal to close')
+            
+            this.driver.element('a[title="Settings"]').click()
+            this.driver.element('a.leave').click()
         })
         .then('the new board has the expected title', function() {
             var expected = this.params.fields['board-name']

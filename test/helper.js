@@ -31,5 +31,6 @@ module.exports = {
     beforeSuite: beforeSuite,
     afterSuite: afterSuite,
     beforeScenario: beforeScenario,
-    port: port
+    port: port,
+    baseUrl: 'http://localhost:' + port
 }

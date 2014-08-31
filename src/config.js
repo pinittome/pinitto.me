@@ -17,6 +17,15 @@ module.exports = function(data) {
         config.cookie.secret = 'do-not-tell'
         console.log('No cookie secret set'.red)   
     }
+    
+    if (!config.password) config.password = {}
+    if (!config.password.salt) {
+        config.password.salt = ''
+        console.log('No password salt set'.red)
+    }
+    if (!config.password.hashes) {
+        config.password.hashes = 20
+    }
 
 	config.cookie.key = 'connect.sid';
 
