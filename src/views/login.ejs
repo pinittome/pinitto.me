@@ -17,7 +17,7 @@
             <form class="form-horizontal" method="post" id="login-form" action="/#login">
                 <fieldset>
                     <legend>Access details</legend>
-                    <div class="control-group">
+                    <div class="control-group board-id">
                         <label class="control-label" for="owner">Board ID</label>
                         <div class="controls">
                         <% if (typeof boardId != 'undefined') { %>
@@ -27,7 +27,7 @@
                         <% } %>
                         </div>
                     </div>
-                    <div class="control-group">
+                    <div class="control-group board-password">
                         <label class="control-label" for="password">Password</label>
                         <div class="controls">
                             <input type="password" name="password" placeholder="" />
