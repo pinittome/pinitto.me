@@ -2,6 +2,9 @@ var helper = require('massah/helper')
 
 module.exports = (function() {
     var library = helper.getLibrary()
+        .when('I enter the password \'(.*)\'', function(password) {
+            this.driver.input('div.board-password input').enter(password)
+        })
         .then('I see the authentication elements', function(page) {
             var params = this.params
             this.driver.content('Board ID', 'label')

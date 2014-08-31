@@ -31,7 +31,7 @@ Scenario: Can add a title to a new board
     And I enter 'My new board' in the 'board-name' field
     When I click the 'Create board' button
     Then I am redirected to a new board
-    And the new board has the expected title
+    And the board has the expected title
     
 Scenario: Errors if I add a board identifier which is too short
 

@@ -46,7 +46,9 @@ module.exports = (function() {
             this.driver.get(helper.baseUrl + '/#create')
             this.driver.input('*[name="owner"]').enter('user@example.com')
             this.driver.input('*[name="password-admin"]').enter('admin')
+            this.driver.input('*[name="password-write"]').clear()
             this.driver.input('*[name="password-write"]').enter('write')
+            this.driver.input('*[name="password-read"]').clear()
             this.driver.input('*[name="password-read"]').enter('read')
             this.driver.button('Create board').click()
             this.driver.wait(function() {
@@ -54,6 +56,7 @@ module.exports = (function() {
                     var matches = currentUrl.path.match(/\/([a-z0-9]{24}).*/)
                     if (matches) {
                         self.params.boardId = matches[1]
+                        self.params.boardTitle = self.params.boardId
                         return true
                     }
                     return false
@@ -69,8 +72,9 @@ module.exports = (function() {
             this.driver.element('a[title="Settings"]').click()
             this.driver.element('a.leave').click()
         })
-        .then('the new board has the expected title', function() {
-            var expected = this.params.fields['board-name']
+        .then('the board has the expected title', function() {
+            var expected = (this.params.fields && this.params.fields['board-name']) ||
+                this.params.boardTitle
             var selector = 'div.navbar a.board-name'
             this.driver.element(selector).text(function(title) {
                 title.should.equal(expected)

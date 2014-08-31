@@ -48,6 +48,14 @@ module.exports = (function() {
                 })
             }, 5000, 'Waiting for a new board')
         })
+        .then('I am redirected to the board', function() {
+            var driver = this.driver
+            driver.wait(function() {
+                return driver.currentUrl(function(url, currentUrl) {
+                    return currentUrl.path.match(/\/[a-z0-9]{24}.*/)
+                })
+            }, 5000, 'Waiting for board access')
+        })
     
     return library
 })()
