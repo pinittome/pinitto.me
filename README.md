@@ -30,9 +30,9 @@ Or to run with ```forever```:
 # Requires
 
 * Cairo library (for captcha)
-** On Debian/Ubuntu do this using `apt-get install libcairo2-dev`
+  * On Debian/Ubuntu do this using `apt-get install libcairo2-dev`
 * Mongodb server
-* Node v6+  (v8+ if using forever)
+* Node v0.10.0 (may work on other versions too)
 
 # Build status
 
