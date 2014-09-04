@@ -1,4 +1,3 @@
-@Only
 Feature: Card actions
 
 Background:
