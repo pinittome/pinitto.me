@@ -12,6 +12,14 @@ module.exports = (function() {
             this.driver.element('div.card textarea').click()
             this.driver.element('div.card .card-delete').click()
         })
+        .when('I click zoom', function() {
+            this.driver.element('div.card textarea').click()
+            this.driver.element('div.card .card-zoom').click()
+        })
+        .when('I click to zoom out', function() {
+            this.driver.element('div.card textarea').click()
+            this.driver.element('div.card .card-zoom').click()
+        })
         .then('the user has the access level (.*)', function(level) {
             var driver = this.driver
             driver.wait(function() {
@@ -99,6 +107,20 @@ module.exports = (function() {
                 function() {},
                 function() { throw new Error('Missing card element') }
             )
+        })
+        .then('I see a zoomed card', function() {
+            this.driver.element('body').attr('style', function(style) {
+                var scale = style.split('scale(')[1].split(')')[0]
+                scale = parseFloat(scale)
+                scale.should.be.greaterThan(1)
+            })
+        })
+        .then('I see a reset view', function() {
+            this.driver.element('body').attr('style', function(style) {
+                var scale = style.split('scale(')[1].split(')')[0]
+                scale = parseFloat(scale)
+                scale.should.equal(1)
+            })
         })
     
     return library
