@@ -8,6 +8,10 @@ module.exports = (function() {
                .doubleClick(this.driver.element('div.viewport-container div'))
                .perform()
         })
+        .when('I click delete', function() {
+            this.driver.element('div.card textarea').click()
+            this.driver.element('div.card .card-delete').click()
+        })
         .then('the user has the access level (.*)', function(level) {
             var driver = this.driver
             driver.wait(function() {
@@ -27,6 +31,12 @@ module.exports = (function() {
         .then('I see a card', function() {
             this.driver.elements('div.card').count(function(cardCount) {
                 cardCount.should.equal(1)
+            })
+        })
+        .then('I see ([0-9]*) cards', function(count) {
+            count = parseInt(count)
+            this.driver.elements('div.card').count(function(cardCount) {
+                cardCount.should.equal(count)
             })
         })
         .then('I see the card elements', function() {
