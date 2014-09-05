@@ -117,6 +117,29 @@ module.exports = (function() {
             this.driver.element('a[title="Settings"]').click()
             this.driver.element('a.leave').click()
         })
+        .given('a created board', function() {
+            var self = this
+            this.driver.get(helper.baseUrl + '/#create')
+            this.driver.input('*[name="owner"]').enter('user@example.com')
+            this.driver.button('Create board').click()
+            this.driver.wait(function() {
+                return self.driver.currentUrl(function(url, currentUrl) {
+                    var matches = currentUrl.path.match(/\/([a-z0-9]{24}).*/)
+                    if (matches) {
+                        self.params.boardId = matches[1]
+                        self.params.boardTitle = self.params.boardId
+                        return true
+                    }
+                    return false
+                })
+            }, 5000, 'Waiting for a new board')
+            this.driver.wait(function() {
+                return self.driver.element('div.modal-backdrop').then(
+                    function() { return false },
+                    function() { return true }
+                )
+            }, 15000, 'Waiting for connection modal to close')
+        })
         .then('the board has the expected title', function() {
             var expected = (this.params.fields && this.params.fields['board-name']) ||
                 this.params.boardTitle

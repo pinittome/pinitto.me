@@ -1,6 +1,7 @@
 .project
 .settings
 .classpath
+.brackets.json
 node_modules
 config*.js
 !src/config.js
