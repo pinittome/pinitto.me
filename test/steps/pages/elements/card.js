@@ -110,10 +110,10 @@ module.exports = (function() {
                 scale.should.equal(1)
             })
         })
-        .then('I see the link modal', function() {
+        .define('[When|Then|And] I see the link modal', function() {
             var driver = this.driver
             driver.wait(function() {
-                return driver.element('.modal-body').then(
+                return driver.element('#card-link-modal .modal-body').then(
                     function() { return true },
                     function() { return false }
                 )
@@ -135,10 +135,18 @@ module.exports = (function() {
                 link.should.match(/.*#[a-f0-9]{24}$/)
             })
             var closeSelector = '#card-link-modal .modal-footer ' +
-                'a#close-card-link-modal'
+                'button#close-card-link-modal'
             this.driver.element(closeSelector).html(function(label) {
                 label.should.equal('Close')
             })
+        })
+        .then('the card link modal is closed', function() {
+            var driver = this.driver
+            driver.wait(function() {
+                return driver.element('#card-link-modal').isDisplayed(function(visible) {
+                    return visible === false
+                })
+            }, 5000, 'Waiting for the card link modal to close')
         })
     
     return library
