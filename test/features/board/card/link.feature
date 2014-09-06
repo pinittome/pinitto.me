@@ -17,4 +17,10 @@ Scenario: I can use the close button to close the modal
     And I see the link modal
     And I click the 'Close' button
     Then the card link modal is closed
-    
+
+Scenario: I can use the '×' to close the modal
+
+    When I click for card link
+    And I see the link modal
+    And I click element '#card-link-modal .modal-header button'
+    Then the card link modal is closed

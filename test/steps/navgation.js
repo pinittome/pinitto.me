@@ -18,6 +18,12 @@ module.exports = (function() {
         .when('I click the \'(.*)\' button', function(label) {
             this.driver.button(label).click()
         })
+        .when('I click the \'(.*)\' link', function(linkText) {
+            this.driver.link(linkText).click()
+        })
+        .when('I click element \'(.*)\'', function(selector) {
+            this.driver.element(selector).click()  
+        })
         .when('I visit the board', function() {
             this.driver.get(helper.baseUrl + '/' + this.params.boardId)  
         })
