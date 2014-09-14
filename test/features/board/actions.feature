@@ -11,5 +11,7 @@ Scenario: When creating a board the name popup appears
 @Only
 Scenario: Can change the board title
 
-    When I change the board title to 'This is my board'
+    When I open the board title modal
+    And I change the board title to 'This is my board'
+    And I click the 'Save board' button
     Then the board title is updated 
