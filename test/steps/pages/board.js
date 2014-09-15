@@ -1,12 +1,6 @@
 var massahHelper = require('massah/helper')
   , helper = massahHelper.application.helper
 
-/**
-    When I open the board title modal
-    And I change the board title to 'This is my board'
-    And I click the 'Save board' button
-    Then the board title is updated
- */
 module.exports = (function() {
     var library = massahHelper.getLibrary()
         .then('the user has the access level (.*)', function(level) {
