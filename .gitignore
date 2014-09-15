@@ -15,3 +15,4 @@ public/main*.js
 public/app*.css
 test/screenshots/*
 phantomjsdriver.log
+.com.google.Chrome*
