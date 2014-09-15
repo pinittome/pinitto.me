@@ -7,11 +7,12 @@ Background:
     
 Scenario: When I click zoom I see a zoomed card
 
-    When I click zoom
+    Given I click zoom
     Then I see a zoomed card
 
 Scenario: Should allow zooming out
 
-    When I click zoom
-    And I click to zoom out
+    Given I click zoom
+    And I see the zoom out link
+    When I click to zoom out
     Then I see a reset view

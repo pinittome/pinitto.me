@@ -12,13 +12,27 @@ module.exports = (function() {
             this.driver.element('div.card textarea').click()
             this.driver.element('div.card .card-delete').click()
         })
-        .when('I click zoom', function() {
+        .given('I click zoom', function() {
             this.driver.element('div.card textarea').click()
-            this.driver.element('div.card .card-zoom').click()
+            this.driver.element('div.card .icon-zoom-in').click()
+        })
+        .given('I see the zoom out link', function() {
+            var driver = this.driver
+            var zoomOut = 'div.card .card-zoom'
+
+            driver.wait(function() {
+                return driver.element(zoomOut).attr('class', function(cssClass) {
+                    return -1 !== cssClass.indexOf('icon-zoom-out')
+                })
+            }, 5000, 'Waiting for zoom out button')
         })
         .when('I click to zoom out', function() {
-            this.driver.element('div.card textarea').click()
-            this.driver.element('div.card .card-zoom').click()
+            var driver = this.driver
+            /* Transform time is 0.8 seconds */
+            setTimeout(function() {
+                var zoomOut = 'div.card .card-zoom'
+                driver.element(zoomOut).click()
+            }, 1000)
         })
         .when('I click for card link', function() {
             this.driver.element('div.card textarea').click()
@@ -104,11 +118,15 @@ module.exports = (function() {
             })
         })
         .then('I see a reset view', function() {
-            this.driver.element('body').attr('style', function(style) {
-                var scale = style.split('scale(')[1].split(')')[0]
-                scale = parseFloat(scale)
-                scale.should.equal(1)
-            })
+            var driver = this.driver
+            /* Transform time is 0.8 seconds */
+            setTimeout(function() {
+                driver.element('body').attr('style', function(style) {
+                    var scale = style.split('scale(')[1].split(')')[0]
+                    scale = parseFloat(scale)
+                    scale.should.equal(1)
+                })
+            }, 1000)
         })
         .define('[When|Then|And] I see the link modal', function() {
             var driver = this.driver
