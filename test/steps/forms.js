@@ -9,14 +9,17 @@ module.exports = (function() {
             this.params.fields[field] = value
         })
         .then('the \'(.*)\' field has error \'(.*)\'', function(field, error) {
+            var driver = this.driver
             var selector = 'div.error span.help-inline'
-            this.driver.element(selector).text(function(text) {
-                text.should.equal(error)
-            })
-            this.driver.element('div.error input[name="' + field + '"]').then(
-                function() {},
-                function() { throw new Error('Expected error field') }
-            )
+            driver.wait(function() {
+                return driver.element(selector).text(function(text) {
+                    if (text !== error) return false
+                    driver.element('div.error input[name="' + field + '"]').then(
+                        function() {},
+                        function() { throw new Error('Expected error field') }
+                    )
+                })
+            }, 5000, 'Waiting for error')
         })
     
     return library
