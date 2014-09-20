@@ -12,6 +12,23 @@ module.exports = (function() {
             this.driver.element('div.card textarea').click()
             this.driver.element('div.card .card-delete').click()
         })
+        .when('I (double )click change colour', function(double) {
+            this.driver.element('div.card textarea').click()
+            var element = this.driver.element('div.card .card-colour')
+            if (double) {
+                new massahHelper.Webdriver
+                    .ActionSequence(this.driver)
+                   .doubleClick(element)
+               .perform()
+            } else {
+                element.click()
+            }
+        })
+        .when('I double click controls', function(double) {
+            this.driver.element('div.card textarea').click()
+            var element = this.driver.element('div.card .controls i.separator')
+            element.click()
+        })
         .given('I click zoom', function() {
             this.driver.element('div.card textarea').click()
             this.driver.element('div.card .icon-zoom-in').click()

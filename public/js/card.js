@@ -212,6 +212,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             + '&nbsp;&nbsp;<i class="icon-remove card-delete write" title="Delete card">&nbsp;</i> '
             + '<i class="icon-eye-open card-colour write" title="Change card colour">&nbsp;</i> '
             + '<i class="icon-zoom-in card-zoom" title="Zoom in on this card">&nbsp;</i> '
+            + '<i class="separator">&nbsp;</i> '
         )
         $(controls).appendTo($("#" + id));
     }
@@ -320,7 +321,13 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         console.log('card zooming out')
         board.zoomed(false)
     })
+    $('.viewport').on('dblclick', '.controls', function(event) {
+        event.preventDefault()
+        event.stopPropagation()
+    })
     $('.viewport').on('click', '.card-colour', function(event) {
+        event.preventDefault()
+        event.stopPropagation()
         if ('read' == board.access) return
         card = $(this).parents('.card');
         cardListEntry = $('li.card-list')
