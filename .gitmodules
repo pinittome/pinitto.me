@@ -16,3 +16,6 @@
 [submodule "public/js/vendor/zoom.js"]
 	path = public/js/vendor/zoom.js
 	url = https://github.com/hakimel/zoom.js.git
+[submodule "public/js/vendor/es5-shim"]
+	path = public/js/vendor/es5-shim
+	url = https://github.com/es-shims/es5-shim
