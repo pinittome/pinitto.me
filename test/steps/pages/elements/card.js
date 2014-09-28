@@ -147,11 +147,11 @@ module.exports = (function() {
         })
         .define('[When|Then|And] I see the link modal', function() {
             var driver = this.driver
+            var selector = '#card-link-modal .modal-body'
             driver.wait(function() {
-                return driver.element('#card-link-modal .modal-body').then(
-                    function() { return true },
-                    function() { return false }
-                )
+                return driver.element(selector).isDisplayed(function(visible) {
+                    return true === visible
+                })
             }, 5000, 'Waiting for link modal to appear')
         })
         .then('the expected link modal elements', function() {
@@ -172,7 +172,7 @@ module.exports = (function() {
             var closeSelector = '#card-link-modal .modal-footer ' +
                 'button#close-card-link-modal'
             this.driver.element(closeSelector).html(function(label) {
-                label.should.equal('Close')
+                label.should.equal('Done')
             })
         })
         .then('the card link modal is closed', function() {
