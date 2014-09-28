@@ -5,4 +5,9 @@ before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
   - export DISPLAY=:99.0
   - "sh -e /etc/init.d/xvfb start"
-env: NODE_ENV=travis-ci MASSAH_BROWSER=phantomjs
+env:
+  global:
+    - NODE_ENV=travis-ci
+  matrix:
+    - MASSAH_BROWSER=phantomjs
+    - MASSAH_BROWSER=firefox
