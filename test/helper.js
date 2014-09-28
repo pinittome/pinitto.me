@@ -1,10 +1,5 @@
 var port = 3000
 
-var getLibrary = function(dictionary) {
-    var library = new Yadda.localisation.English.library(dictionary)
-    return library
-}
-
 var application = null
 
 var beforeSuite = function(done) {
