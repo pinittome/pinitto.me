@@ -382,9 +382,15 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     })
     $('.viewport-container').on('click', '.card', function(event) {
         if ('read' == board.access) return
+        $(this).find('div.controls').show()
         cardEntity.bringToFront(event, $(this));
         event.stopPropagation();
     })
+    $('.viewport-container').on('dblclick', '.card', function(event) {
+        event.preventDefault()
+        event.stopPropagation()
+    })
+    
     $("div.viewport-container").dblclick(function(e) {
         lastClick = e
         if ('read' == board.access) return
