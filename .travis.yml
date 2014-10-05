@@ -10,4 +10,3 @@ env:
     - NODE_ENV=travis-ci
   matrix:
     - MASSAH_BROWSER=phantomjs
-    - MASSAH_BROWSER=firefox
