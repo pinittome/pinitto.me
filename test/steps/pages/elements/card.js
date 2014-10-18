@@ -26,7 +26,7 @@ module.exports = (function() {
         })
         .when('I double click controls', function(double) {
             this.driver.element('div.card textarea').click()
-            var element = this.driver.element('div.card .controls i.separator')
+            var element = this.driver.element('div.card .controls a.separator')
             element.click()
         })
         .given('I click zoom', function() {
@@ -96,23 +96,23 @@ module.exports = (function() {
                 name.should.equal(cardId)
             })
             var cardLinkSelector = 'div.card div.controls ' +
-                'i.icon-magnet.card-link'
+                'a.card-link'
             this.driver.element(cardLinkSelector).attr('title', function(title) {
                 title.should.include(helper.baseUrl)
                 title.should.include(cardId)
             })
             var cardDeleteSelector = 'div.card div.controls ' +
-                'i.icon-remove.card-delete.write'
+                'a.card-delete.write'
             this.driver.element(cardDeleteSelector).attr('title', function(title) {
                 title.should.equal('Delete card')
             })
             var cardColourSelector = 'div.card div.controls ' +
-                'i.icon-eye-open.card-colour.write'
+                'a.card-colour.write'
             this.driver.element(cardColourSelector).attr('title', function(title) {
                 title.should.equal('Change card colour')
             })
             var cardZoomSelector = 'div.card div.controls ' +
-                'i.icon-zoom-in.card-zoom'
+                'a.card-zoom'
             this.driver.element(cardZoomSelector).attr('title', function(title) {
                 title.should.equal('Zoom in on this card')
             })

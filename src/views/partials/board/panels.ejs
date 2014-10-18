@@ -6,7 +6,7 @@
         <% for (var i = 0; i < cards.length; i++) { %>
         <li id="entry-<%= cards[i]._id %>" data-icon="false">
             <a href="#<%= cards[i]._id %>">
-                <span class="card-icon card-<%= cards[i].cssClass || 'yellow' %>">&nbsp;</span>
+                <span class="card-colour card-<%= cards[i].cssClass || 'yellow' %>">&nbsp;</span>
                 <span class="content">
                 <% if (cards[i].content && cards[i].content.length > 0) { %>
                     <%= cards[i].content.substr(0, 20) %>...
@@ -30,7 +30,7 @@
     <ul data-role="listview" data-inset="true" data-divider-theme="a">
         <li data-role="list-divider">User Settings</li>
         <li><a href="#" class="open-set-name-modal">Set name</a></li>
-        <li><a href="/login?id=<%= boardId %>" title="Change access level" class="change-access-level">Change access level (<%= access %>)</a></li>
+        <li><a href="/login?id=<%= boardId %>" title="Change access level" class="change-access-level">Change access <p class="ui-li-aside"><%= access %></p></a></li>
         <li><a href="/logout" class="leave">Logout</a></li>
     </ul>
     <ul data-role="listview" data-inset="true" data-divider-theme="a">        

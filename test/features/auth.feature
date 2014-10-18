@@ -24,7 +24,7 @@ Scenario: Can log in as [type]
         write | write | write
         read  | read  | read
 
-Scenario: I can [level] a board without a [level] password
+Scenario: I can [level] a board without [action] password
 
     Given I create a board without a [level] password
     When I visit the board
@@ -32,7 +32,7 @@ Scenario: I can [level] a board without a [level] password
     And the user has the access level [level]
     
     Where:
-        level
-        admin
-        write
-        read
+        level   | action
+        admin   | an admin
+        write   | a write
+        read    | a read

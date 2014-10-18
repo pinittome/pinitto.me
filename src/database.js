@@ -1,4 +1,4 @@
-var mongo = require('mongodb');
+var mongo = require('mongodb')
 
 exports.connection = db = new mongo.Db(
     config.database.name, 
@@ -7,8 +7,8 @@ exports.connection = db = new mongo.Db(
         config.database.port,
         {}
     ),
-    {auto_reconnect: true, safe: true},
-    {strict: false}
+    { auto_reconnect: true, safe: true },
+    { strict: false }
 );
 
 database = db.open(function(error, pClient) {
@@ -16,9 +16,9 @@ database = db.open(function(error, pClient) {
     if (config.database.username) {
         db.authenticate(config.database.username, config.database.password, function (error, replies) {
             if (error) throw Error(error)
-            console.log("Successfully connected to database");
-        });
+            console.log('Successfully connected to database')
+        })
     } else {
-        console.log("Successfully connected to database (no auth requested)");
+        console.log('Successfully connected to database (no auth requested)')
     }
-});
+})

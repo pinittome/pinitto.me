@@ -41,7 +41,7 @@ module.exports = (function() {
                 }
             )
         })
-        .given('I create a board without a (.*) password', function(level) {
+        .given('I create a board without an? (.*) password', function(level) {
             var self = this
             this.driver.get(helper.baseUrl + '/#create')
             this.driver.input('*[name="owner"]').enter('user@example.com')
@@ -84,20 +84,27 @@ module.exports = (function() {
                 )
             }, 15000, 'Waiting for settings bar to load')
             this.driver.element('a[title="Settings"]').click()
-            this.driver.element('a.leave').click()            
+            this.driver.wait(function() {
+                return self.driver.element('a.leave').isDisplayed(function(visible) {
+                    if (!visible) return false
+                    self.driver.element('a.leave').click() 
+                    return true
+                })
+            }, 5000, 'Waiting for logout link')
         })
         .given('I create a board with access passwords', function() {
             var self = this
-            this.driver.get(helper.baseUrl + '/#create')
-            this.driver.input('*[name="owner"]').enter('user@example.com')
-            this.driver.input('*[name="password-admin"]').enter('admin')
-            this.driver.input('*[name="password-write"]').clear()
-            this.driver.input('*[name="password-write"]').enter('write')
-            this.driver.input('*[name="password-read"]').clear()
-            this.driver.input('*[name="password-read"]').enter('read')
-            this.driver.button('Create board').click()
-            this.driver.wait(function() {
-                return self.driver.currentUrl(function(url, currentUrl) {
+            var driver = this.driver
+            driver.get(helper.baseUrl + '/#create')
+            driver.input('*[name="owner"]').enter('user@example.com')
+            driver.input('*[name="password-admin"]').enter('admin')
+            driver.input('*[name="password-write"]').clear()
+            driver.input('*[name="password-write"]').enter('write')
+            driver.input('*[name="password-read"]').clear()
+            driver.input('*[name="password-read"]').enter('read')
+            driver.button('Create board').click()
+            driver.wait(function() {
+                return driver.currentUrl(function(url, currentUrl) {
                     var matches = currentUrl.path.match(/\/([a-z0-9]{24}).*/)
                     if (matches) {
                         self.params.boardId = matches[1]
@@ -107,15 +114,21 @@ module.exports = (function() {
                     return false
                 })
             }, 5000, 'Waiting for a new board')
-            this.driver.wait(function() {
-                return self.driver.element('div.modal-backdrop').then(
+            driver.wait(function() {
+                return driver.element('div.modal-backdrop').then(
                     function() { return false },
                     function() { return true }
                 )
             }, 15000, 'Waiting for connection modal to close')
             
-            this.driver.element('a[title="Settings"]').click()
-            this.driver.element('a.leave').click()
+            driver.element('a[title="Settings"]').click()
+            driver.wait(function() {
+                return driver.element('a.leave').isDisplayed(function(visible) {
+                    if (!visible) return false
+                    driver.element('a.leave').click()
+                    return true
+                })
+            }, 5000, 'Waiting for settings panel to open')
         })
         .given('a created board', function() {
             var self = this
@@ -143,7 +156,7 @@ module.exports = (function() {
         .then('the board has the expected title', function() {
             var expected = (this.params.fields && this.params.fields['board-name']) ||
                 this.params.boardTitle
-            var selector = 'div.navbar a.board-name'
+            var selector = 'div[data-role="header"] h4.board-name'
             this.driver.element(selector).text(function(title) {
                 title.should.equal(expected)
             })

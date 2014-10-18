@@ -22,8 +22,8 @@ io.configure(function (){
         data.sessionStore = require('./database/session').store
         require('./database/session').store.get(data.sessionID, function(error, session) {
             if (error || !session) {
-                console.log("ERROR", error)
-                console.log("session:", session)
+                console.log('ERROR', error)
+                console.log('session:', session)
                 return accept('No session', false)
             }
             data.session = new Session(data, session)
@@ -39,10 +39,10 @@ if (environment == 'production') {
         io.enable('browser client minification') // send minified client
         io.enable('browser client etag')         // apply etag caching logic based on version number
         io.enable('browser client gzip')         // gzip the file
-        io.set('log level', 1)                   // reduce logging
+        //io.set('log level', 1)                   // reduce logging
         
         io.set('transports', config.transports)
-    });
+    })
 }
 
 io.sockets.on('connection', function (socket) {

@@ -13,11 +13,17 @@ module.exports = (function() {
             }, 15000, 'Waiting for connection modal to close')
             
             driver.element('a[title="Settings"]').click()
-            this.driver.element('a.change-access-level').text(function(label) {
-                label.should.equal(
-                    'Change access level (' + level + ')'
-                )
-            })
+            driver.wait(function() {
+                return driver.element('a.change-access-level').isDisplayed(function(displayed) {
+                    if (!displayed) return false
+                    driver.element('a.change-access-level').text(function(label) {
+                        label.should.equal(
+                            'Change access\n' + level
+                        )
+                    })
+                    return true
+                })
+            }, 5000, 'Waiting for access level label')
         })
     
     return library

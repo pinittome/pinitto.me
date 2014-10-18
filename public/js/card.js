@@ -200,21 +200,24 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
                 width : ui.size.width,
                 height : ui.size.height
             }
-        });
+        })
     }
 
     Card.prototype.addControls = function(id) {
-        controls = document.createElement('div');
-        $(controls).attr('class', 'controls');
+        controls = document.createElement('div')
+        $(controls).attr('class', 'controls')
+        var buttonCssClasses = ' ui-btn ui-btn-icon-notext ui-shadow ui-corner-all'
         $(controls).append(''
-            + '<i class="icon-magnet card-link" title="' + window.location.href + '#' + id + '">&nbsp;</i>')
-        if ('read' != board.access) $(controls).append(''
-            + '&nbsp;&nbsp;<i class="icon-remove card-delete write" title="Delete card">&nbsp;</i> '
-            + '<i class="icon-eye-open card-colour write" title="Change card colour">&nbsp;</i> '
-            + '<i class="icon-zoom-in card-zoom" title="Zoom in on this card">&nbsp;</i> '
-            + '<i class="separator">&nbsp;</i> '
-        )
-        $(controls).appendTo($("#" + id));
+            + '<a class="ui-icon-action card-link' + buttonCssClasses + '" title="' + window.location.href + '#' + id + '">Permalink</a>')
+        if ('read' !== board.access) {
+            $(controls).append(''
+                + '&nbsp;&nbsp;<a class=" ui-icon-delete card-delete write ' + buttonCssClasses + '" title="Delete card">Delete Card</a> '
+                + '<a class="ui-icon-eye card-colour write' + buttonCssClasses + '" title="Change card colour">Card Colour</a> '
+                + '<a class="ui-icon-search card-zoom' + buttonCssClasses + '" title="Zoom in on this card">Zoom Card</a> '
+                + '<a class="separator">&nbsp;</a> '
+            )
+        }
+        $(controls).appendTo($("#" + id))
     }
 
     Card.prototype.setPositionGrid = function(size, id) {
@@ -229,12 +232,13 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         $('div.card').each(function(index, card) { $(card).resizable({grid: grid}) });
     }
     Card.prototype.addCardListEntry = function(data) {
-        content = "<i>No content</i>";
+        var content = "<i>No content</i>";
         if (data.content && (data.content !== '')) {
             content = data.content.substring(0, 30) + '...'
         }
-        css = 'card-yellow';
+        var css = 'card-yellow';
         if (data.cssClass) css = 'card-' + data.cssClass
+        css += ' card-colour'
         cardListEntry = $(document.createElement('li'))
         cardListEntry.attr('id', 'entry-' + data.cardId)
         cardListEntry.attr('data-icon', 'false')
@@ -330,15 +334,16 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         event.preventDefault()
         event.stopPropagation()
         if ('read' === board.access) return
-        card = $(this).parents('.card');
+        card = $(this).parents('.card')
         cardListEntry = $('#card-list')
             .find('#entry-' + card.attr('id')).find('span.card-colour')
 
-        cssClass = determineCssClass(card);
+        cssClass = determineCssClass(card)
         card.removeClass()
         cardListEntry.removeClass()
         card.addClass('card').addClass('card-' + cssClass)
         cardListEntry.addClass('card-' + cssClass)
+        cardListEntry.addClass('card-colour')
         socket.emit(
             'card.colour',
             { cardId: card.attr('id'), cssClass: cssClass}

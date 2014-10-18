@@ -17,7 +17,7 @@ var maxAge = ('development' === environment) ? 0 : 31557600000
 
 var onlySecure = config.project.secure || false
 var forceSsl = function(req, res, next) {
-    if ((onlySecure == true) && (req.headers['x-forwarded-proto'] != 'https')) {
+    if ((onlySecure === true) && (req.headers['x-forwarded-proto'] !== 'https')) {
         return res.redirect(301, 'https://' + req.host + req.originalUrl)
     }
     next()
@@ -39,8 +39,9 @@ app.configure(function(){
     app.use(require('connect').cookieParser(config.cookie.secret))
     app.disable('x-powered-by')
 
-    if (config.server && config.server.domain && (config.server.domain != ''))
+    if (config.server && config.server.domain && (config.server.domain !== '')) {
         app.use(forceDomain(config.server.domain))
+    }
 
     app.use(forceSsl)
     if ('captcha' === config.captcha.type) {
@@ -57,11 +58,13 @@ app.configure(function(){
     app.use(require('express-validator'))
     app.use(express.methodOverride())
     app.use(app.router)
-    app.use(express.logger)
     var errors = false
-    if ('development' == environment) errors = true
+    if ('development' === environment) {
+        errors = true
+    }
     app.use(express.errorHandler({
-        dumpExceptions: errors, showStack: errors
+        dumpExceptions: errors,
+        showStack: errors
     }))
     app.engine('ejs', engine)
 })
