@@ -51,7 +51,7 @@ define(['jquery', 'socket', 'util/notification', 'util/update-user-count', 'boot
         });
     });
     $('#close-set-name-modal').click(function() {
-        $('#set-name-modal').modal('hide');
+        $('#set-name-modal').popup('close');
     });
     $('#set-name-modal .update-name').click(function() {
         name = $('#set-name-modal').find('input').val();
@@ -60,7 +60,7 @@ define(['jquery', 'socket', 'util/notification', 'util/update-user-count', 'boot
                 socket.emit('user.name.set', {
             name : name
         });
-        $('#set-name-modal').modal('hide');
+        $('#set-name-modal').popup('close');
     });
     socket.on('user.name.set', function(data) {
         var oldName;

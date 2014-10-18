@@ -54,29 +54,25 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
     Board.prototype.access = 'read'
 
     board = new Board(socket, accessLevel)
-
+console.log($)
     $('body').on('click', '.open-set-board-name-modal', function() {
-        $('#set-board-name-modal').modal({
-            backdrop : true
-        })
+        $('#set-board-name-modal').popup('open')
     })
     $('#close-set-board-name-modal').click(function() {
-        $('#set-board-name-modal').modal('hide')
+        $('#set-board-name-modal').popup('close')
     })
     $('#update-board-name').click(function() {
         name = $('#set-board-name-modal').find('input').val()
         board.setName(name)
-        $('#set-board-name-modal').modal('hide')
+        $('#set-board-name-modal').popup('close')
     })
 
     $('body').on('click', '.open-board-access-modal', function() {
-        $('#board-access-modal').modal({
-            backdrop : true
-        })
+        $('#board-access-modal').popup('open')
         $('#board-access-modal .modal-body .error').remove()
     })
     $('#close-board-access-modal').click(function() {
-        $('#board-access-modal').modal('hide')
+        $('#board-access-modal').popup('close')
     })
 
     var error  = $(document.createElement('div'))
@@ -113,9 +109,9 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
                 return
             }
         })
-        if (true == validData) {
+        if (true === validData) {
             board.setAccess(access)
-            $('#board-access-modal').modal('hide')
+            $('#board-access-modal').popup('close')
         }
     })
 
@@ -139,7 +135,7 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
         $('#board-grid-modal input.grid-confirm').attr('checked', false)
     })
     $('#close-board-grid-modal').click(function() {
-        $('#board-grid-modal').modal('hide')
+        $('#board-grid-modal').popup('close')
     })
     $('#update-board-grid').on('click', function() {
     	$('#board-grid-modal .modal-body .error').remove()
@@ -197,7 +193,7 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
 	            });
 	        }
         }
-        $('#board-grid-modal').modal('hide');
+        $('#board-grid-modal').popup('close');
     })
 
     socket.on('board.name.set', function(data) {

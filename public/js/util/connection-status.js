@@ -1,6 +1,7 @@
 define(['socket', 'user', 'jquery'], function(socket, user) {
 
     var connectionAttempts = 0
+    var open = false
 
     var connectionCheck = setInterval(function() {
     	console.log('Attempting board connection')
@@ -14,15 +15,19 @@ define(['socket', 'user', 'jquery'], function(socket, user) {
     })
  
     var openConnectionStatusModal = function() {
-        $('#connection-status-modal').modal({
-            backdrop: 'static',
-            keyboard: false
-        });
-    };
-    openConnectionStatusModal();
+        try {
+            $('#connection-status-modal').popup('open')
+        } catch(e) {
+            return
+        }
+        open = true
+    }
+    openConnectionStatusModal()
     
     var closeConnectionStatusModal = function() {
-        $('#connection-status-modal').modal('hide');
+        if (false === open) return
+        $('#connection-status-modal').popup('close')
+        open = false
     }
     var setConnectionStatus = function(message, status) {            
         $('#connection-status-modal').addClass(status);

@@ -1,7 +1,8 @@
 require.config({
     paths: {
     	'requireLib': 'require',
-        'jquery': 'vendor/jquery-1.8.3.min',
+        'jquery': 'vendor/jquery-1.11.1.min',
+        'jquery-mobile': 'vendor/jquery.mobile-1.4.4.min',
         'tweet': 'vendor/jquery-twitter-display/tweet/jquery.tweet',
         'socket.io': '/socket.io/socket.io',
         'modernizer': 'vendor/modernizr-2.6.2-respond-1.1.0.min',
@@ -27,6 +28,9 @@ require.config({
         'ui': {
             deps: ['jquery']
         },
+        'jquery-mobile': {
+            deps: ['jquery']
+        },
         'socket': {
             deps: ['socket.io']
         },
@@ -41,7 +45,7 @@ require.config({
 
 require([
     'jquery', 'viewport', 'user', 'card', 'util/notification', 'socket', 'board',
-        'board/connection', 'analytics', 'board/infinite-drag', 'modernizer', 'util/connection-status'], 
+        'board/connection', 'jquery-mobile', 'analytics', 'board/infinite-drag', 'modernizer', 'util/connection-status'], 
     function($, viewport, user, card, notification, socket, board) {
     
     $('#connection-status-modal').modal('show')

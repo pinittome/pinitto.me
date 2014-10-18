@@ -10,8 +10,6 @@
         boardId = '<%= boardId %>'
     </script>
     <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css" />
-    <script src="//code.jquery.com/jquery-1.8.2.min.js"></script>
-    <script src="//code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js"></script>
 </head>
 <body class="board ui-body-b ui-body">
     <% include ../partials/connection-status-modal%>
@@ -32,30 +30,24 @@
         <div data-role="content" class="container">
             <%- body %>
             <% include ../partials/board/panels %>
+            <% include ../partials/name-modal %>
+            <% include ../partials/board-name-modal %>
+            <% include ../partials/board-access-modal %>
+            <% include ../partials/board-grid-modal %>
+            <% include ../partials/card-link-modal %>
         </div>
-        <div data-role="footer">
 
-        </div>
-    
-
-
-    </div><!-- /page -->
+    </div>
 
         <script type="text/javascript" src="/js/vendor/es5-shim/es5-shim.min.js"></script>
         <script type="text/javascript" src="/js/vendor/es5-shim/es5-sham.min.js"></script>
         <% if (!app.useOptimised) { %>
         <script data-main="/js/app.js" src="/js/require.js"></script>
-        <link rel="stylesheet" href="/style/main.css" />-->
+        <link rel="stylesheet" href="/style/main.css" />
         <% } else { %>
         <script src="/app.<%= app.version %>.js"></script>
        <!-- <link rel="stylesheet" href="/app.<%= app.version %>.css" />-->
         <% } %>
-<!--
-        <% include ../partials/name-modal %>
-        <% include ../partials/board-name-modal %>
-        <% include ../partials/board-access-modal %>
-        <% include ../partials/board-grid-modal %>
-        <% include ../partials/card-link-modal %>
--->
+
     </body>
 </html>

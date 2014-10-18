@@ -303,7 +303,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     	$('#card-link-modal').modal(true);
     })
     $('#close-card-link-modal').on('click', function() {
-        $('#card-link-modal').modal('hide');
+        $('#card-link-modal').popup('close');
     })
 
     var zoomed = false
