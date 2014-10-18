@@ -147,11 +147,11 @@ Board.prototype.join = function(details) {
         }
         self.socket.set('access', session.access, function() {
             self.socket.set('board', '/' + self.board, function() {
-            	console.log("User is joining board " + self.boardName);
-                self.socket.join(self.boardName);
-                userNameIndex = 1;
-                self.sendUserList(details);
-                self.socket.emit('board.connected');
+            	console.log("User is joining board " + self.boardName)
+                self.socket.join(self.boardName)
+                userNameIndex = 1
+                self.sendUserList(details)
+                self.socket.emit('board.connected')
             });
         });
     });

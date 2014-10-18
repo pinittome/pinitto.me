@@ -5,7 +5,7 @@ define(['jquery'], function($) {
         $('.viewport-container').css('width', window.width);
         $('.viewport-container').css('height', window.innerHeight - 43);
         $('body').css('background-position', (0.5 * window.width) + 'px ' + (0.5 * window.innerHeight) + 'px');
-        $('.card-list').find('ul').css('max-height', window.innerHeight * 0.66);
+        $('#card-list').find('ul').css('max-height', window.innerHeight * 0.66);
         var height = (document.height < window.innerHeight) ? 
             document.height : window.innerHeight
         document.body.style.height = (height - 43) + 'px'

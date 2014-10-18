@@ -230,17 +230,18 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     }
     Card.prototype.addCardListEntry = function(data) {
         content = "<i>No content</i>";
-        if (data.content && data.content != '') {
-            content = data.content.substring(0, 30) + '...';
+        if (data.content && (data.content !== '')) {
+            content = data.content.substring(0, 30) + '...'
         }
         css = 'card-yellow';
-        if (data.cssClass) css = 'card-' + data.cssClass;
-        cardListEntry = $(document.createElement('li'));
-        cardListEntry.attr('id', 'entry-' + data.cardId);
-        cardListEntry.append('<a href="#' + data.cardId + '" onclick="return false;"><span class="' + css + '"></span><p class="content-preview">' + content + '</p></a>');
-        $('.card-list').find('li.no-cards').addClass('hidden');
-        ul = $('.card-list').find('ul');
-        cardListEntry.appendTo($(ul));
+        if (data.cssClass) css = 'card-' + data.cssClass
+        cardListEntry = $(document.createElement('li'))
+        cardListEntry.attr('id', 'entry-' + data.cardId)
+        cardListEntry.attr('data-icon', 'false')
+        cardListEntry.append('<a href="#' + data.cardId + '" class="ui-btn"><span class="' + css + '">&nbsp;</span>' + content + '</a>')
+        $('#card-list').find('li.no-cards').addClass('hidden')
+        ul = $('#card-list').find('ul')
+        cardListEntry.appendTo($(ul))
     }
     function Card(socket, infinite, board) {
         this.socket = socket;
@@ -282,13 +283,13 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     $('.viewport').on('click', '.card-delete', function(event) {
         if ('read' == board.access) return
         socket.emit('card.delete', { cardId: $(this).parents('.card').attr('id') });
-        $('ul.card-list').find('li.no-cards').removeClass('hidden');
+        $('#card-list').find('li.no-cards').removeClass('hidden');
         event.stopPropagation();
     })
     socket.on('card.delete', function(data) {
         $('#' + data.cardId).remove();
         $('#entry-' + data.cardId).remove();
-        if ($('li.card-list ul li').length < 2) $('.no-cards').removeClass('hidden')
+        if ($('#card-list ul li').length < 2) $('.no-cards').removeClass('hidden')
         if (data.userId != user.id) notification.add(data.name + " deleted a card", 'info');
     })
     $('.viewport').on('click', '.card-link', function(event) {
@@ -328,16 +329,16 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     $('.viewport').on('click', '.card-colour', function(event) {
         event.preventDefault()
         event.stopPropagation()
-        if ('read' == board.access) return
+        if ('read' === board.access) return
         card = $(this).parents('.card');
-        cardListEntry = $('li.card-list')
-            .find('#entry-' + card.attr('id')).find('span')
+        cardListEntry = $('#card-list')
+            .find('#entry-' + card.attr('id')).find('span.card-colour')
 
         cssClass = determineCssClass(card);
-        card.removeClass();
-        cardListEntry.removeClass();
-        card.addClass('card').addClass('card-' + cssClass);
-        cardListEntry.addClass('card-' + cssClass);
+        card.removeClass()
+        cardListEntry.removeClass()
+        card.addClass('card').addClass('card-' + cssClass)
+        cardListEntry.addClass('card-' + cssClass)
         socket.emit(
             'card.colour',
             { cardId: card.attr('id'), cssClass: cssClass}
@@ -345,13 +346,13 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         event.stopPropagation();
     })
 
-    $('li.card-list').on('mouseover', 'li', function(event) {
+    $('#card-list').on('mouseover', 'li', function(event) {
          if ($(this).attr('id')) $('#' + $(this).attr('id').replace('entry-', '')).addClass('highlight');
     });
-    $('li.card-list').on('mouseout', 'li', function(event) {
+    $('#card-list').on('mouseout', 'li', function(event) {
          if ($(this).attr('id')) $('#' + $(this).attr('id').replace('entry-', '')).removeClass('highlight');
     });
-    $('li.card-list').on('click', 'li', function(event) {
+    $('#card-list').on('click', 'li', function(event) {
          cardEntity.scrollTo($(this).attr('id').replace('entry-', ''));
     });
 
@@ -369,10 +370,10 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         } else {
             content = content.substring(0, 20) + '...';
         }
-        $('#entry-' + $(this).parent().attr('id')).find('p').html(content);
+        $('#entry-' + $(this).parent().attr('id')).find('span.content').html(content);
     }, 300))
     socket.on('card.text-change', function(data) {
-        $('#' + data.cardId).find('textarea').val(htmlDecode(data.content));
+        $('#' + data.cardId).find('textarea').val(htmlDecode(data.content))
         if (data.content.length == 0) {
             data.content = "<i>No content</i>";
         } else {
