@@ -1,0 +1,51 @@
+ <div data-role="panel" data-position="right" id="card-list" data-display="overlay">
+    <h1>Card List</h1>
+    <ul data-role="listview" data-inset="true">
+    
+        <li class="no-cards <% if (cards.length > 0) { %>hidden<% } %>" data-icon="false"><a href="#">No cards at present</a></li>
+        <% for (var i = 0; i < cards.length; i++) { %>
+        <li id="entry-<%= cards[i]._id %>" data-icon="false">
+            <a href="#<%= cards[i]._id %>" onclick="return false;">
+                <span class="card-<%= cards[i].cssClass || 'yellow' %>">&nbsp;</span>
+                <% if (cards[i].content && cards[i].content.length > 0) { %>
+                    <%= cards[i].content.substr(0, 20) %>...
+                <% } else { %>
+                    <i>No content</i>
+                <% } %>
+            </a>
+        </li>
+        <% } %>
+    </ul>
+</div>
+
+<div data-role="panel" data-position="right" id="user-list" data-display="overlay">
+    <div class="userlist"></div>
+</div>
+
+<div data-role="panel" id="settings" data-display="overlay" data-position="right">
+    <ul class="dropdown-menu">
+        <li class="nav-header">User settings</li>
+        <li><a href="#" class="open-set-name-modal">Set name</a></li>
+        <li><a href="/?id=<%=boardId%>#login" title="Change access level" class="change-access-level">Change access level (<%=access%>)</a></li>
+        <li><a href="/?logout=1" class="leave">Logout</a></li>
+        <li class="nav-header admin">Board settings</li>
+        <li><a href="#" class="open-set-board-name-modal admin">Set board name</a></li>
+        <li><a href="#" class="open-board-access-modal admin">Set password</a></li>
+        <li><a href="#" class="open-board-grid-modal admin">Set up grid</a></li>
+        <li class="divider"></li>
+    </ul>
+</div>
+
+<div data-role="panel" id="more-settings" data-position="right" data-display="overlay">
+    <ul class="dropdown-menu">
+        <li class="nav-header">Site</li>
+        <li><a href="http://go.pinitto.me/about">About</a><li>
+        <li><a href="http://go.pinitto.me/contact">Contact us</a></li>
+        <li class="divider"></li>
+        <li class="nav-header">Project</li>
+        <li><a target="_blank" href="https://github.com/pinittome/pinitto.me">Source code</a></li>
+        <li><a target="_blank" href="https://github.com/pinittome/pinitto.me/issues">Bugs</a></li>
+        <li><a target="_blank" href="http://pinittome.github.com">Documentation</a></li>
+        <li><a href="#">Version: <%= app.version %><% if (app.environment === 'development') { %>-development<% } %></a></li>
+    </ul>
+</div>

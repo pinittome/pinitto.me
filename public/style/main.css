@@ -1,0 +1,7 @@
+@import url('board/index.css');
+
+
+
+.hidden {
+    display: none !important;
+}

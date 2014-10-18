@@ -1,0 +1,5 @@
+div[data-role="panel"]#card-list ul li a span {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+}

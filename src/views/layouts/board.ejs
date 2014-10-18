@@ -1,134 +1,60 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <title>Viewing board: <%=boardName %></title>
-        <meta name="description" content="" />
-        <meta name="viewport" content="width=device-width" />
-        <style>
-            body {
-                padding-top: 60px;
-                padding-bottom: 40px;
-            }
-        </style>        
-        <script type="text/javascript">
+<!doctype html>
+<html>
+<head>
+    <title>Viewing board: <%=boardName %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="text/javascript">
         config      = <%- JSON.stringify(app) %>
         boardConfig = <%- JSON.stringify(config) %>
-        accessLevel = '<%=access%>'
-        </script>
-    </head>
-    <body class="board">
-        <% include ../partials/connection-status-modal%>
-        <!--[if lt IE 10]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-        <![endif]-->
+        accessLevel = '<%= access %>'
+        boardId = '<%= boardId %>'
+    </script>
+    <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css" />
+    <script src="//code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script src="//code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js"></script>
+</head>
+<body class="board ui-body-b ui-body">
+    <% include ../partials/connection-status-modal%>
+    <div data-role="page">
 
-        <!-- This code is taken from http://twitter.github.com/bootstrap/examples/hero.html -->
-
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand board-name" href="#" title="<%=boardName %>"><%=boardName %></a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav pull-right">
-                            <li class="dropdown card-list">
-                                <a title="Card List" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-file-alt icon-white"></i> <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                <% if (cards.length > 0) { %>
-                                    <li class="no-cards hidden"><a href="#">No cards at present</a></li>
-                                    <% for (var i=0; i<cards.length; i++) { %>
-                                    <li id="entry-<%= cards[i]._id %>">
-                                        <a href="#<%= cards[i]._id %>" onclick="return false;">
-                                            <span class="card-<%= cards[i].cssClass || 'yellow' %>"></span>
-                                            <p class="content-preview">
-                                                <% if (cards[i].content && cards[i].content.length > 0) { %>
-                                                    <%= cards[i].content.substr(0, 20) %>...
-                                                <% } else { %>
-                                                    <i>No content</i>
-                                                <% } %>
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <% } %>
-                                <% } else { %>
-                                    <li class="no-cards"><a href="#">No cards at present</a></li>
-                                <% } %>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a title="User list" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> <span class="usercount"></span>  <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-header">User list</li>
-                                    <div class="userlist">
-                                    </div>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a title="Settings" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog icon-white"></i> <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-header">User settings</li>
-                                    <li><a href="#" class="open-set-name-modal">Set name</a></li>
-                                    <li><a href="/?id=<%=boardId%>#login" title="Change access level" class="change-access-level">Change access level (<%=access%>)</a></li>
-                                    <li><a href="/?logout=1" class="leave">Logout</a></li>
-                                    <li class="nav-header admin">Board settings</li>
-                                    <li><a href="#" class="open-set-board-name-modal admin">Set board name</a></li>
-                                    <li><a href="#" class="open-board-access-modal admin">Set password</a></li>
-                                    <li><a href="#" class="open-board-grid-modal admin">Set up grid</a></li>
-                                    <li class="divider"></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a title="More" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-plus"></i> <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-header">Site</li>
-                                    <li><a href="http://go.pinitto.me/about">About</a><li>
-                                    <li><a href="http://go.pinitto.me/contact">Contact us</a></li>
-                                    <li class="divider"></li>
-                                    <li class="nav-header">Project</li>
-                                    <li><a target="_blank" href="https://github.com/pinittome/pinitto.me">Source code</a></li>
-                                    <li><a target="_blank" href="https://github.com/pinittome/pinitto.me/issues">Bugs</a></li>
-                                    <li><a target="_blank" href="http://pinittome.github.com">Documentation</a></li>
-                                    <li><a href="#">Version: <%= app.version %><% if (app.environment == 'development') { %>-development<% } %></a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div><!--/.nav-collapse -->
-                </div>
+        <div data-role="header" class="ui-grid-a">
+            <div class="ui-block-a">
+            <h4><%=boardName %></h4>
+            </div>
+            <div data-role="navbar"  data-iconpos="left" class="ui-block-b">
+              
+                <a title="Card List" href="#card-list" class="card-list" data-icon="grid" >Card List</a>
+                <a title="User list" href="#user-list" data-icon="user">User List (<span class="usercount"></span>)</a>
+                <a title="Settings" href="#settings" data-icon="gear">Settings</a>
+                <a title="More" href="#more-settings" data-icon="plus">More</a>
             </div>
         </div>
-
-        <div class="container">
-
+        <div data-role="content" class="container">
             <%- body %>
+            <% include ../partials/board/panels %>
+        </div>
+        <div data-role="footer">
 
-        </div> <!-- /container -->
+        </div>
+    
 
-        <script type="text/javascript">
-          var boardId = '<%= boardId %>';
-        </script>
+
+    </div><!-- /page -->
+
         <script type="text/javascript" src="/js/vendor/es5-shim/es5-shim.min.js"></script>
         <script type="text/javascript" src="/js/vendor/es5-shim/es5-sham.min.js"></script>
         <% if (!app.useOptimised) { %>
         <script data-main="/js/app.js" src="/js/require.js"></script>
-        <link rel="stylesheet" href="/css/main.css" />
+        <link rel="stylesheet" href="/style/main.css" />-->
         <% } else { %>
         <script src="/app.<%= app.version %>.js"></script>
-        <link rel="stylesheet" href="/app.<%= app.version %>.css">
+       <!-- <link rel="stylesheet" href="/app.<%= app.version %>.css" />-->
         <% } %>
+
+        <% include ../partials/name-modal %>
+        <% include ../partials/board-name-modal %>
+        <% include ../partials/board-access-modal %>
+        <% include ../partials/board-grid-modal %>
+        <% include ../partials/card-link-modal %>
     </body>
 </html>
-
-<% include ../partials/name-modal %>
-<% include ../partials/board-name-modal %>
-<% include ../partials/board-access-modal %>
-<% include ../partials/board-grid-modal %>
-<% include ../partials/card-link-modal %>

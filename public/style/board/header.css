@@ -1,0 +1,7 @@
+body.board div[data-role="header"] h4 {
+    text-align: center;
+}
+
+body.board div[data-role="header"] div[data-role="navbar"] {
+    line-height: 3.5em;
+}
