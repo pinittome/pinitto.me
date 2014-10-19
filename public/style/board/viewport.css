@@ -6,11 +6,12 @@ body.board {
 
 body.board div[data-role="content"] {
     padding: 0;
+    width: 100%;
 }
 
 body.board div[data-role="content"] .viewport-container {
 	width: 100%;
- /*   height: 100%;*/
+    height: 100%;
 	display:block;
     position:absolute;
     overflow:hidden;    
