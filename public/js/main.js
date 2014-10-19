@@ -26,7 +26,7 @@ require.config({
     }
 })
 
-require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'modernizer', 'ui', 'jquery-mobile', 'site/create'],
+require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'modernizer', 'ui', 'site/create'],
     function($, socket) {
 
     $(document).ready(function() {
