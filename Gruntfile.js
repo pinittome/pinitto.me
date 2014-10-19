@@ -49,7 +49,7 @@ module.exports = function(grunt) {
             },
             css: {
                 options: {
-                    cssIn: './public/css/main.css',
+                    cssIn: './public/style/main.css',
                     out: './public/app.' + version + '.css',
                     optimizeCss: 'standard'
                 }
