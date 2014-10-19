@@ -8,12 +8,22 @@ Scenario: Can change the board name
 
     When I open the board title modal
     And I change the board title to 'This is my board'
-    And I click the 'Set name' button
+    And I click element '#update-board-name'
     Then the board title is updated
   
-Scenario: Can change the board name
+Scenario: Can cancel updating the board name
 
     When I open the board title modal
     And I change the board title to 'This is my board'
-    And I click the 'Close' button
-    Then the board title is not updated 
+    And I click element '#close-set-board-name-modal'
+    Then the board title is not updated
+    
+@Pending
+Scenario: Notification is shown when board name updated
+
+    When I open the board title modal
+    
+@Pending
+Scenario: Incoming board name update
+
+    When I open t board title modal

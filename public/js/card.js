@@ -300,7 +300,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     	var link = window.location.href.split('#')[0] + '#'
     	    + $(this).parent().parent().attr('id');
     	$('#card-link-modal .card-link').html('<a href="' + link + '">' + link + '</a>');
-    	$('#card-link-modal').modal(true);
+    	$('#card-link-modal').popup('open')
     })
     $('#close-card-link-modal').on('click', function() {
         $('#card-link-modal').popup('close');

@@ -5,13 +5,7 @@ module.exports = (function() {
     var library = massahHelper.getLibrary()
         .then('the user has the access level (.*)', function(level) {
             var driver = this.driver
-            driver.wait(function() {
-                return driver.element('div.modal-backdrop').then(
-                    function() { return false },
-                    function() { return true }
-                )
-            }, 15000, 'Waiting for connection modal to close')
-            
+
             driver.element('a[title="Settings"]').click()
             driver.wait(function() {
                 return driver.element('a.change-access-level').isDisplayed(function(displayed) {

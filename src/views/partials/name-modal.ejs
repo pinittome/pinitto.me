@@ -1,13 +1,11 @@
-<div data-role="popup" data-dialog="true" id="set-name-modal">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>Update your name</h3>
+<div data-role="popup" id="set-name-modal" data-overlay-theme="b" data-theme="a" data-dismissible="false" class="ui-content">
+    <div data-role="header" data-theme="b">
+        <h1>Update your name</h1>
     </div>
-    <div class="modal-body">
-        <input type="text" name="name" class="name-set" placeholder="add a name here..."/>
-    </div>
-    <div class="modal-footer">
-        <a href="#" id="close-set-name-modal" class="btn">Close</a>
-        <a href="#" class="btn btn-primary update-name">Set name</a>
+    <div role="main" class="ui-content">
+        <input type="text" name="name" class="name-set" data-theme="a" placeholder="add your name here..." />
+
+        <button id="close-set-name-modal" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back">Close</button>
+        <button id="update-name" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a update-name" data-rel="back">Set name</button>
     </div>
 </div>

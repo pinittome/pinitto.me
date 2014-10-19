@@ -1,9 +1,8 @@
-<div data-role="popup" data-dialog="true" class="admin" id="board-grid-modal">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>Setup board grid</h3>
+<div data-role="popup" data-dialog="true" id="board-grid-modal"  data-overlay-theme="b" data-theme="a" data-dismissible="false" class="ui-content admin">
+    <div data-role="header" data-theme="b">
+        <h1>Setup board grid</h1>
     </div>
-    <div class="modal-body">
+    <div data-role="main" class="ui-content">
 	    <form class="form-horizontal">
 	        <div class="control-group">
 	            <label class="control-label" for="grid-size">Card size increment</label>
@@ -38,9 +37,7 @@
 	            </div>
 	        </div>
 	    </form>
-    </div>
-    <div class="modal-footer">
-        <a href="#" id="close-board-grid-modal" class="btn">Close</a>
-        <a href="#" id="update-board-grid" class="btn btn-primary">Update grid settings</a>
+        <button id="close-board-grid-modal" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back">Close</button>
+        <button id="update-board-grid" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back">Update grid settings</button>
     </div> 
 </div>

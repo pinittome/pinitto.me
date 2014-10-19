@@ -47,9 +47,7 @@ require([
     'jquery', 'viewport', 'user', 'card', 'util/notification', 'socket', 'board',
         'board/connection', 'jquery-mobile', 'analytics', 'board/infinite-drag', 'modernizer', 'util/connection-status'], 
     function($, viewport, user, card, notification, socket, board) {
-    
-    $('#connection-status-modal').modal('show')
-    
+        
     $('.card').each(function() {
         if ($(this).css('z-index') > board.zIndex) board.zIndex = $(this).css('z-index')
         card.dynamify($(this).attr('id'));
@@ -57,7 +55,7 @@ require([
     });
     
     setTimeout(function() {
-        if (user.hasSetName == true) return;
+        if (user.hasSetName === true) return;
         notification.add('Hey! Did you know you can set your name ' 
             + 'by clicking "set name" in the settings ' 
             + 'menu, or <a href="#" class="open-set-name-modal">click here... quick!</a>', 'success', {

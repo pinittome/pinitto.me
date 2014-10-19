@@ -30,6 +30,14 @@ require(['jquery', 'socket', 'analytics', 'totals', 'tweet', 'bootstrap', 'moder
     function($, socket) {
 
     $(document).ready(function() {
+        
+        $(document).on("mobileinit", function () {
+            $.extend($.mobile, {
+                linkBindingEnabled: false,
+                ajaxEnabled: false
+            })
+        })
+        
         var addErrors = function(element, errors) {
             for (var i = 0; i < errors.length; i++) {
                 var error = errors[i]

@@ -1,3 +1,4 @@
+@Only
 Feature: Card colour
 
 Background:

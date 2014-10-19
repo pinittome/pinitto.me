@@ -29,13 +29,13 @@
     <h1>Settings</h1>
     <ul data-role="listview" data-inset="true" data-divider-theme="a">
         <li data-role="list-divider">User Settings</li>
-        <li><a href="#set-board-name-modal" data-rel="popup" data-position-to="window" data-transition="pop">Set name</a></li>
+        <li><a href="#set-name-modal" data-rel="popup" data-position-to="window" data-transition="pop">Set name</a></li>
         <li><a href="/login?id=<%= boardId %>" title="Change access level" class="change-access-level">Change access <p class="ui-li-aside"><%= access %></p></a></li>
         <li><a href="/logout" class="leave">Logout</a></li>
     </ul>
     <ul data-role="listview" data-inset="true" data-divider-theme="a">        
         <li data-role="list-divider">Board Settings</li>
-        <li><a href="#" class="open-set-board-name-modal admin">Set board name</a></li>
+        <li><a href="#set-board-name-modal" data-rel="popup" data-position-to="window" data-transition="pop">Set board name</a></li>
         <li><a href="#" class="open-board-access-modal admin">Set password</a></li>
         <li><a href="#" class="open-board-grid-modal admin">Set up grid</a></li>
     </ul>

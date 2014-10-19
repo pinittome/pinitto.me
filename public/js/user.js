@@ -18,6 +18,9 @@ define(['jquery', 'socket', 'util/notification', 'util/update-user-count', 'boot
         $('#user-' + data.userId).remove()
         var newUser = document.createElement('li')
         $(newUser).attr('data-icon', 'false')
+        if (user.id === data.userId) {
+            $(newUser).addClass('user-me')
+        }
         $(newUser).attr('id', 'user-' + data.userId).append(
             '<a href="#" class="ui-btn ui-icon-user ui-btn-icon-left"><span>' 
                 + data.name + '</span>' + isUser + '</a>'
@@ -46,9 +49,7 @@ define(['jquery', 'socket', 'util/notification', 'util/update-user-count', 'boot
         user.addToList(data);
     })
         $('body').on('click', '.open-set-name-modal', function() {
-        $('#set-name-modal').modal({
-            backdrop : true
-        });
+        $('#set-name-modal').popup('open')
     });
     $('#close-set-name-modal').click(function() {
         $('#set-name-modal').popup('close');

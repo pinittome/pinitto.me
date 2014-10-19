@@ -90,25 +90,26 @@ console.log($)
     })
 
     $('.update-board-access').click(function() {
-        $('#board-access-modal .modal-body .alert-error div').remove()
-        $('#board-access-modal .modal-body .alert-error').remove()
+        $('#board-access-modal .alert-error div').remove()
+        $('#board-access-modal .alert-error').remove()
         var access = {}
         var validData = true
         accessLevels.forEach(function(level) {
             access[level] = {
-                require: Boolean($('input[name=password-'+level+'-require]').attr('checked')),
-                password: $('#board-access-modal').find('input[name=password-'+level+'-value]').val()
+                require: Boolean($('input[name=password-' + level + '-require]').attr('checked')),
+                password: $('#board-access-modal').find('input[name=password-' + level + '-value]').val()
             }
 
-            if (access[level].require && (0 == access[level].password.length)) {
-                if (true == validData) $(document.createElement('div'))
+            if (access[level].require && (0 === access[level].password.length)) {
+                if (true === validData) $(document.createElement('div'))
                     .html('<strong>Whoa!</strong> Password is *required*, yet you\'ve left it blank!')
                     .appendTo(error)
-                $('#board-access-modal .modal-body').prepend(error)
+                $('#board-access-modal div[data-role="main"]').prepend(error)
                 validData = false
                 return
             }
         })
+        console.debug('Board password data invalid? ' + validData)
         if (true === validData) {
             board.setAccess(access)
             $('#board-access-modal').popup('close')
@@ -127,9 +128,7 @@ console.log($)
     })
 
     $('body').on('click', '.open-board-grid-modal', function() {
-        $('#board-grid-modal').modal({
-            backdrop : true
-        })
+        $('#board-grid-modal').popup('open')
         $('#board-grid-modal select.grid-position').val(boardConfig.grid.position || 'none')
         $('#board-grid-modal select.grid-size').val(boardConfig.grid.size || 'none')
         $('#board-grid-modal input.grid-confirm').attr('checked', false)
@@ -138,7 +137,7 @@ console.log($)
         $('#board-grid-modal').popup('close')
     })
     $('#update-board-grid').on('click', function() {
-    	$('#board-grid-modal .modal-body .error').remove()
+    	$('#board-grid-modal .error').remove()
     	var error  = $(document.createElement('div'))
         var button = $(document.createElement('button'))
         error.attr('class', 'alert alert-error')
@@ -148,7 +147,7 @@ console.log($)
             var message = '<strong>Hang on a minute...</strong><br/>'
                 + 'Please check the confirmation below in order to continue'
             $(document.createElement('div')).html(message).appendTo(error)
-            $('#board-grid-modal .modal-body').prepend(error)
+            $('#board-grid-modal div[data-role="main"]').append(error)
             return
         }
         var getValue = function(element) {
@@ -158,7 +157,7 @@ console.log($)
         var position = getValue($('.grid-position'))
         var size     = getValue($('.grid-size'))
 
-        if (!boardConfig.grid) boardConfig.grid = { position: 'none', size: 'none'}
+        if (!boardConfig.grid) boardConfig.grid = { position: 'none', size: 'none' }
 
         if (boardConfig.grid.position != position) {
             socket.emit('board.grid.position', position)
@@ -175,6 +174,7 @@ console.log($)
 	            })
 	        }
         }
+        console.debug(boardConfig.grid.size, size)
         if (boardConfig.grid.size !== size) {
             socket.emit('board.grid.size', size)
             if ('none' !== size) {
@@ -193,7 +193,7 @@ console.log($)
 	            });
 	        }
         }
-        $('#board-grid-modal').popup('close');
+        $('#board-grid-modal').popup('close')
     })
 
     socket.on('board.name.set', function(data) {

@@ -72,12 +72,6 @@ module.exports = (function() {
                 })
             }, 5000, 'Waiting for a new board')
             this.driver.wait(function() {
-                return self.driver.element('div.modal-backdrop').then(
-                    function() { return false },
-                    function() { return true }
-                )
-            }, 15000, 'Waiting for connection modal to close')
-            this.driver.wait(function() {
                 return self.driver.element('a[title="Settings"]').then(
                     function() { return true },
                     function() { return false }
@@ -114,12 +108,6 @@ module.exports = (function() {
                     return false
                 })
             }, 5000, 'Waiting for a new board')
-            driver.wait(function() {
-                return driver.element('div.modal-backdrop').then(
-                    function() { return false },
-                    function() { return true }
-                )
-            }, 15000, 'Waiting for connection modal to close')
             
             driver.element('a[title="Settings"]').click()
             driver.wait(function() {
@@ -133,6 +121,7 @@ module.exports = (function() {
         .given('a created board', function() {
             var self = this
             this.driver.get(helper.baseUrl + '/#create')
+            this.driver.exec('localStorage.clear()')
             this.driver.input('*[name="owner"]').enter('user@example.com')
             this.driver.button('Create board').click()
             this.driver.wait(function() {
@@ -146,12 +135,6 @@ module.exports = (function() {
                     return false
                 })
             }, 5000, 'Waiting for a new board')
-            this.driver.wait(function() {
-                return self.driver.element('div.modal-backdrop').then(
-                    function() { return false },
-                    function() { return true }
-                )
-            }, 15000, 'Waiting for connection modal to close')
         })
         .then('the board has the expected title', function() {
             var expected = (this.params.fields && this.params.fields['board-name']) ||
