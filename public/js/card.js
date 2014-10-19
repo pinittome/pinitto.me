@@ -392,14 +392,17 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         cardEntity.bringToFront(event, $(this));
         event.stopPropagation();
     })
-    $('.viewport-container').on('dblclick', '.card', function(event) {
+    
+    var preventDefault = function(event) {
         event.preventDefault()
         event.stopPropagation()
-    })
+    }
+    $('.viewport-container').on('dblclick', '.card', preventDefault)
+    $(".viewport-container").on('tap', '.card', preventDefault)
     
-    $("div.viewport-container").dblclick(function(e) {
+    var createCard = function(e) {
         lastClick = e
-        if ('read' == board.access) return
+        if ('read' === board.access) return
         if (board.preventCardCreation) {
             if (false === board.isZoomed) {
                 notification.add(
@@ -424,8 +427,11 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
                 y : y
             }
         })
-    })
-
+    }
+    
+    $("div.viewport-container").dblclick(createCard)
+    $("div.viewport-container").on('tap', createCard)
+    
     function htmlDecode(input) {
         var e = document.createElement('div')
         e.innerHTML = input
