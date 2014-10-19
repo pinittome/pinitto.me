@@ -73,9 +73,9 @@ exports.post = function(req, res, options, done) {
 		        if (error) throw Error(error)
                 statistics.boardCreated()
                 if (parameters.slug) {
-                    return res.redirect('/n/' + parameters.slug)
+                    return res.redirect('/n/' + parameters.slug + '#')
                 }
-		        res.redirect('/' + newBoard[0]._id)
+		        res.redirect('/' + newBoard[0]._id + '#')
 		    })
 	    }
 	    parameters = {

@@ -41,7 +41,7 @@ exports.post = function(req, res, options, done) {
 	        }
 	        if (req.session.access != a.NONE) {
                     console.log('User authenticated, sending them to ' + url)
-	            res.redirect(url.replace('#login', ''))
+	            res.redirect(url.replace('#login', '#'))
                     return
 	        }
 	        console.log("Password incorrect")

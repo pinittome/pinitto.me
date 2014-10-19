@@ -175,9 +175,9 @@ console.log($)
 	            })
 	        }
         }
-        if (boardConfig.grid.size != size) {
+        if (boardConfig.grid.size !== size) {
             socket.emit('board.grid.size', size)
-            if ('none' != size) {
+            if ('none' !== size) {
 	            var grid = gridCalc.size(size)
 	            socket.once('board.grid.size', function(size) {
 	            	$('.card').each(function(index, c) {
@@ -197,12 +197,12 @@ console.log($)
     })
 
     socket.on('board.name.set', function(data) {
-        var oldName;
+        var oldName
         $('.board-name').each(function(index, element) {
-            $(element).html(data.name);
-            $(element).attr('title', data.name);
-        });
-        notification.add('The board name has been changed to "' + data.name + '"');
+            $(element).html(data.name)
+            $(element).attr('title', data.name)
+        })
+        notification.add('The board name has been changed to "' + data.name + '"')
     })
     socket.on('board.grid.postion', function(data) {
         board.setPositionGrid(data.size);
@@ -213,6 +213,8 @@ console.log($)
     $('.leave').click(function() {
         document.location.href = '/logout';
     })
+    
+    $.mobile.popup.prototype.options.history = false
 
     return board
 })
