@@ -213,7 +213,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             $(controls).append(''
                 + '&nbsp;&nbsp;<a class=" ui-icon-delete card-delete write ' + buttonCssClasses + '" title="Delete card">Delete Card</a> '
                 + '<a class="ui-icon-eye card-colour write' + buttonCssClasses + '" title="Change card colour">Card Colour</a> '
-                + '<a class="ui-icon-search card-zoom' + buttonCssClasses + '" title="Zoom in on this card">Zoom Card</a> '
+                + '<a class="ui-icon-search icon-zoom-in card-zoom' + buttonCssClasses + '" title="Zoom in on this card">Zoom Card</a> '
                 + '<a class="separator">&nbsp;</a> '
             )
         }

@@ -38,14 +38,14 @@ define(['jquery', 'socket', 'util/notification', 'viewport', 'user', 'util/grid-
     Board.prototype.zoomed = function(isZoomed) {
         this.isZoomed = isZoomed
         if (true === isZoomed) {
-           $('i.card-zoom').each(function(element) {
+           $('a.card-zoom').each(function(element) {
                $(this).removeClass('icon-zoom-in').addClass('icon-zoom-out')
                $(this).parent().parent().draggable({ disabled: true })
            })
            this.preventCardCreation = true
            return
         }
-        $('i.card-zoom').each(function(element) {
+        $('a.card-zoom').each(function(element) {
             $(this).removeClass('icon-zoom-out').addClass('icon-zoom-in')
             $(this).parent().parent().draggable({ disabled: false })
         })

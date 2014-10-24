@@ -124,7 +124,7 @@ module.exports = (function() {
             this.driver.exec('localStorage.clear()')
             this.driver.input('*[name="owner"]').enter('user@example.com')
             this.driver.button('Create board').click()
-            this.driver.wait(function() {
+            self.driver.wait(function() {
                 return self.driver.currentUrl(function(url, currentUrl) {
                     var matches = currentUrl.path.match(/\/([a-z0-9]{24}).*/)
                     if (matches) {
@@ -135,6 +135,11 @@ module.exports = (function() {
                     return false
                 })
             }, 5000, 'Waiting for a new board')
+            time = 1100
+            var endTime = new Date().getTime() + time
+            this.driver.wait(function() {
+                return new Date().getTime() > endTime
+            }, endTime + 5000, 'Error with wait helper')
         })
         .then('the board has the expected title', function() {
             var expected = (this.params.fields && this.params.fields['board-name']) ||

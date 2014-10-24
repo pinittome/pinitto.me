@@ -147,7 +147,7 @@ module.exports = (function() {
         })
         .define('[When|Then|And] I see the link modal', function() {
             var driver = this.driver
-            var selector = '#card-link-modal .modal-body'
+            var selector = '#card-link-modal div[data-role="main"]'
             driver.wait(function() {
                 return driver.element(selector).isDisplayed(function(visible) {
                     return true === visible
@@ -155,21 +155,17 @@ module.exports = (function() {
             }, 5000, 'Waiting for link modal to appear')
         })
         .then('the expected link modal elements', function() {
-            var selector = '#card-link-modal .modal-header button.close'
             var params = this.params
-            this.driver.element(selector).html(function(html) {
-                html.should.equal('×')
-            })
-            var headerSelector = '#card-link-modal .modal-header h3'
+            var headerSelector = '#card-link-modal div[data-role="header"] h1'
             this.driver.element(headerSelector).html(function(header) {
-                header.should.equal('Link to this card')
+                header.should.equal('Permalink to this card')
             })
-            var cardLinkSelector = '#card-link-modal .modal-body div.card-link a'
+            var cardLinkSelector = '#card-link-modal div.card-link a'
             this.driver.element(cardLinkSelector).attr('href', function(link) {
                 link.should.include(helper.baseUrl + '/' + params.boardId + '#')
                 link.should.match(/.*#[a-f0-9]{24}$/)
             })
-            var closeSelector = '#card-link-modal .modal-footer ' +
+            var closeSelector = '#card-link-modal div[data-role="footer"] ' +
                 'button#close-card-link-modal'
             this.driver.element(closeSelector).html(function(label) {
                 label.should.equal('Done')
