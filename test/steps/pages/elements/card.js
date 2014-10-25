@@ -168,7 +168,7 @@ module.exports = (function() {
             var closeSelector = '#card-link-modal div[data-role="footer"] ' +
                 'button#close-card-link-modal'
             this.driver.element(closeSelector).html(function(label) {
-                label.should.equal('Done')
+                label.should.equal('All linked up')
             })
         })
         .then('the card link modal is closed', function() {
