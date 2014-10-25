@@ -12,7 +12,8 @@ module.exports = (function() {
                     if (!displayed) return false
                     driver.element('a.change-access-level').html(function(label) {
                         label.should.equal(
-                            'Change access\n' + level
+                            'Change access <p class="ui-li-aside">' +
+                                level + '</p>'
                         )
                     })
                     return true
