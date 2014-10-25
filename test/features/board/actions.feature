@@ -8,7 +8,7 @@ Scenario: Can change the board name
 
     When I open the board title modal
     And I change the board title to 'This is my board'
-    And I click element '#update-board-name'
+    And I click the 'Set board name' button
     Then the board title is updated
   
 Scenario: Can cancel updating the board name

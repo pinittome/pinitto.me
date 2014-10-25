@@ -10,7 +10,7 @@ module.exports = (function() {
             driver.wait(function() {
                 return driver.element('a.change-access-level').isDisplayed(function(displayed) {
                     if (!displayed) return false
-                    driver.element('a.change-access-level').text(function(label) {
+                    driver.element('a.change-access-level').html(function(label) {
                         label.should.equal(
                             'Change access\n' + level
                         )
