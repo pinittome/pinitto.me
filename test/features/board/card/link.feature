@@ -15,5 +15,5 @@ Scenario: I can use the done button to close the modal
 
     When I click for card link
     And I see the link modal
-    And I click the 'Done' button
+    And I click the 'All linked up' button
     Then the card link modal is closed
