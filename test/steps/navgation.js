@@ -16,7 +16,14 @@ module.exports = (function() {
             }
         })
         .when('I click the \'(.*)\' button', function(label) {
-            this.driver.button(label).click()
+            var driver = this.driver
+            driver.wait(function() {
+                return driver.button(label).isDisplayed(function(visible) {
+                    if (!visible) return false
+                    driver.button(label).click()
+                    return true
+                })
+            }, 3000, 'Waiting for button to appear')
         })
         .when('I click the \'(.*)\' link', function(linkText) {
             this.driver.link(linkText).click()
