@@ -15,22 +15,22 @@ Scenario: Can change user's name
 @Pending
 Scenario: Notification is shown when user changes name
 
-    When I open the board title modal
+    When I open the user name modal
     
 @Pending
 Scenario: Incoming user name update
 
-    When I open the board title modal
+    When I open the user name modal
         
 @Pending
 Scenario: I can open the user name modal from the notification
 
-    Given I see the user name notification
+    When I open the user name modal
     
 @Pending
 Scenario: If I have set my name then I don't see the user name notification
 
-    Given I see the user name notification
+   When I open the user name modal
     
 Scenario: Can cancel changing the user's name
 
