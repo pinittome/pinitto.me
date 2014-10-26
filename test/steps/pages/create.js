@@ -26,7 +26,7 @@ module.exports = (function() {
             checkIdentifier(this)
         })
         .then('I expect to see the create board page elements', function(page) {
-            this.driver.element('input[type="email"][name="owner"]')
+            this.driver.element('input[type="text"][name="owner"]')
             this.driver.element('input[name="board-name"]')
             this.driver.element('input[type="password"][name="password-admin"]')
             this.driver.element('input[type="password"][name="password-write"]')
