@@ -1,4 +1,6 @@
 language: node_js
+addons:
+  firefox: "24.5.0esr"
 services:
   - mongodb
 before_install:
