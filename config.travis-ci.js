@@ -7,10 +7,10 @@ module.exports = {
         port: 27017
     }   
     , app: {
-        twitter: "pinittome", 
+        twitter: 'pinittome', 
         limits: {
             card: {
-                wait: 0.5
+                wait: 0.005
             }
         },
         useOptimised: true

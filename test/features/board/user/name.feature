@@ -4,6 +4,7 @@ Background:
 
     Given a created board
 
+@pending
 Scenario: Can change user's name
 
     When I open the user name modal
@@ -31,7 +32,8 @@ Scenario: I can open the user name modal from the notification
 Scenario: If I have set my name then I don't see the user name notification
 
    When I open the user name modal
-    
+
+@pending
 Scenario: Can cancel changing the user's name
 
     When I open the user name modal

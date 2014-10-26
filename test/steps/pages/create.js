@@ -135,7 +135,7 @@ module.exports = (function() {
                     return false
                 })
             }, 5000, 'Waiting for a new board')
-            time = 1100
+            time = 2000
             var endTime = new Date().getTime() + time
             this.driver.wait(function() {
                 return new Date().getTime() > endTime
