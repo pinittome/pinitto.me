@@ -34,12 +34,12 @@ io.configure(function (){
     io.set('transports', config.transports)
 });
 
-if (environment == 'production') {
+if (environment === 'production') {
     io.configure('production', function() {
         io.enable('browser client minification') // send minified client
         io.enable('browser client etag')         // apply etag caching logic based on version number
         io.enable('browser client gzip')         // gzip the file
-        //io.set('log level', 1)                   // reduce logging
+        io.set('log level', 1)                   // reduce logging
         
         io.set('transports', config.transports)
     })
