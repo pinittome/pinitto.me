@@ -34,6 +34,10 @@ Or to run with ```forever```:
 * Mongodb server
 * Node v0.10.0 (may work on other versions too)
 
+```
+sudo apt-get install krb5-multidev
+```
+
 # Build status
 
 The man he say..... [![Build Status](https://secure.travis-ci.org/pinittome/pinitto.me.png)](http://travis-ci.org/pinittome/pinitto.me)
