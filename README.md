@@ -36,6 +36,7 @@ Or to run with ```forever```:
 
 ```
 sudo apt-get install krb5-multidev
+sudo apt-get install libjpeg-dev
 ```
 
 # Build status
