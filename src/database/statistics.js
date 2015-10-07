@@ -1,4 +1,4 @@
-var database = require('../database').connection,
+var database = require('../database').connection(),
     utils    = require('../util');
 
 database.collection('statistics', function(error, db) {

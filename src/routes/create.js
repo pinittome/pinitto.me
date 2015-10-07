@@ -64,17 +64,17 @@ exports.post = function(req, res, options, done) {
 		    	    errors.push({mainMessage: 'Unable to create board, please try again'})
 		    	    console.error(errors, error)
 		    	    options.errors.create = JSON.stringify(errors)
-	                    options.values = JSON.stringify(req.body)
-                            return done()
+	                options.values = JSON.stringify(req.body)
+                    return done()
 		    	}
 		        req.session.access = a.ADMIN
-		        req.session.board  = newBoard[0]._id
+		        req.session.board  = newBoard.ops[0]._id
 		        if (error) throw Error(error)
                 statistics.boardCreated()
                 if (parameters.slug) {
                     return res.redirect('/n/' + parameters.slug)
                 }
-		        res.redirect('/' + newBoard[0]._id)
+		        res.redirect('/' + newBoard.ops[0]._id + '#')
 		    })
 	    }
 	    parameters = {
