@@ -1,4 +1,4 @@
-var db       = require('../database').connection,
+var db       = require('../database').connection(),
     utils    = require('../util.js');
 
 db.collection('cards', function(error, cards) {
@@ -18,7 +18,8 @@ db.collection('cards', function(error, cards) {
             {_id: new utils.ObjectId(data.cardId), board: board},
             {$set:{position:data.position}},
             {w:1},
-            function(error, numberOfResults) {
+            function(error, result) {
+                var numberOfResults = result.result.nModified
                 if (error || (numberOfResults != 1)) {
                 	console.log(error);
                     error ='Could not save new card position'
