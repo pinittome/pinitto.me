@@ -24,7 +24,7 @@ Card.prototype.create = function(data) {
         }
         db.add(data, function(error, result) {
             if (error) return self.socket.emit('error', {message: 'New card could not be created'})
-            data.cardId = result[0]._id;
+            data.cardId = result.ops[0]._id;
             self.io.sockets.in('/' + config._id).emit('card.created', data);
             statistics.cardAdded();
         });    

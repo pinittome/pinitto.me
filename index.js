@@ -22,10 +22,17 @@ console.log(helloWorld)
 
 var data = require('./package.json')
 config = require('./src/config')(data)
-httpServer = require('./src/server')
-require('./src/io')
-if (process.mainModule === module) {
-    httpServer.server.listen(config.server.port)
-} else {
-    exports.httpServer = httpServer
-}
+
+var databaseProvider = require('./src/database')
+var dbLoader = require('./src/database-loader')
+dbLoader(function(database, error) {
+    if (error) throw new Error(error)
+    databaseProvider.setDb(database)
+    httpServer = require('./src/server')
+    require('./src/io')
+    if (process.mainModule === module) {
+        httpServer.server.listen(config.server.port)
+    } else {
+        exports.httpServer = httpServer
+    }
+})
