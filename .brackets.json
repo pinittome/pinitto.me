@@ -1,0 +1,19 @@
+{
+    "jscodehints.detectedExclusions": [
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/node_modules/grunt-contrib-jshint/node_modules/jshint/node_modules/htmlparser2/node_modules/readable-stream/node_modules/inherits/inherits_browser.js",
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/node_modules/grunt-contrib-jshint/node_modules/jshint/node_modules/htmlparser2/node_modules/readable-stream/node_modules/inherits/test.js",
+        "main.js",
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/node_modules/grunt-contrib-jshint/node_modules/jshint/node_modules/htmlparser2/node_modules/readable-stream/node_modules/string_decoder/index.js",
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/node_modules/grunt-contrib-jshint/node_modules/jshint/node_modules/shelljs/scripts/generate-docs.js",
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/node_modules/grunt-contrib-jshint/node_modules/jshint/node_modules/shelljs/make.js",
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/config.example.js",
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/node_modules/grunt-contrib-jshint/node_modules/jshint/node_modules/htmlparser2/node_modules/readable-stream/lib/_stream_passthrough.js",
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/node_modules/grunt-contrib-jshint/node_modules/jshint/node_modules/htmlparser2/node_modules/readable-stream/node_modules/isarray/index.js",
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/node_modules/grunt-contrib-jshint/node_modules/jshint/node_modules/shelljs/src/tempdir.js",
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/Gruntfile.js",
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/index.js",
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/config.development.js",
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/config.travis-ci.js",
+        "/home/lloyd/Dropbox/code/pinitto.me/pinitto.me/public/js/card.js"
+    ]
+}
