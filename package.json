@@ -15,7 +15,7 @@
     "crypto": "0.0.3",
     "debug": "^1.0.4",
     "ejs-locals": "~1.0.2",
-    "express": "^3.16.7",
+    "express": "^4.15.3",
     "express-force-domain": "0.0.6",
     "express-validator": "~0.3.2",
     "forever": "~0.10.11",
@@ -25,7 +25,8 @@
     "recaptcha": "~1.2.0",
     "requirejs": "~2.1.9",
     "socket.io": "~0.9.16",
-    "validator": "~0.4.28"
+    "validator": "~0.4.28",
+    "snyk": "^1.30.1"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -43,7 +44,9 @@
     "clean": "forever cleanlogs index.js",
     "restart": "forever restart index.js",
     "test": "mongo test --eval \"db.dropDatabase();\" &&./node_modules/.bin/massah test",
-    "postinstall": "git submodule update --init && ./node_modules/.bin/grunt build"
+    "postinstall": "git submodule update --init && ./node_modules/.bin/grunt build",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -66,5 +69,6 @@
   ],
   "engines": {
     "node": ">=0.8.x"
-  }
+  },
+  "snyk": true
 }
