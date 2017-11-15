@@ -24,7 +24,7 @@
     "read-package-json": "~0.2.2",
     "recaptcha": "~1.2.0",
     "requirejs": "~2.1.9",
-    "socket.io": "~0.9.16",
+    "socket.io": "~1.0.1",
     "validator": "~0.4.28"
   },
   "devDependencies": {
