@@ -339,8 +339,13 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             .find('#entry-' + card.attr('id')).find('span.card-colour')
 
         cssClass = determineCssClass(card)
-        card.removeClass()
-        cardListEntry.removeClass()
+
+        var colors = ['card-yellow','card-lightgreen','card-purple','card-grey','card-pink','card-green','card-orange','card-blue','card-red','card-lavender','card-buff','card-mint','card-white'];
+        colors.forEach(function(item) {
+            card.removeClass(item)
+            cardListEntry.removeClass(item)
+        });
+        
         card.addClass('card').addClass('card-' + cssClass)
         cardListEntry.addClass('card-' + cssClass)
         cardListEntry.addClass('card-colour')
