@@ -339,8 +339,10 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
             .find('#entry-' + card.attr('id')).find('span.card-colour')
 
         cssClass = determineCssClass(card)
-        card.removeClass()
-        cardListEntry.removeClass()
+
+        card.attr('class', "");
+        cardListEntry.attr('class', "");
+        
         card.addClass('card').addClass('card-' + cssClass)
         cardListEntry.addClass('card-' + cssClass)
         cardListEntry.addClass('card-colour')
