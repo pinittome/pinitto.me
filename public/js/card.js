@@ -232,7 +232,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         $('div.card').each(function(index, card) { $(card).resizable({grid: grid}) });
     }
     Card.prototype.addCardListEntry = function(data) {
-        var content = '<span class="content">No content</span>';
+        var content = "<i>No content</i>";
         if (data.content && (data.content !== '')) {
             content = data.content.substring(0, 30) + '...'
         }
@@ -373,7 +373,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
         content = $(this).val();
         content = $(this).val();
         if (content.length == 0) {
-            content = '<span class="content">No content</span>';
+            content = '<i>No content</i>';
         } else {
             content = content.substring(0, 20) + '...';
         }
@@ -382,7 +382,7 @@ define(['jquery', 'socket', 'util/determine-css-class', 'board',
     socket.on('card.text-change', function(data) {
         $('#' + data.cardId).find('textarea').val(htmlDecode(data.content))
         if (data.content.length == 0) {
-            data.content = '<span class="content">No content</span>';
+            data.content = "<i>No content</i>";
         } else {
             data.content = data.content.substring(0, 20) + '...';
         }
